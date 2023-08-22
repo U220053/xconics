@@ -49,9 +49,9 @@ export default function UserNewEditForm({ currentUser }) {
     city: Yup.string().required('City is required'),
     role: Yup.string().required('Role is required'),
     zipCode: Yup.string().required('Zip code is required'),
-    avatarUrl: Yup.mixed().nullable().required('Avatar is required'),
+    // avatarUrl: Yup.mixed().nullable().required('Avatar is required'),
     // not required
-    status: Yup.string(),
+    // status: Yup.string(),
     isVerified: Yup.boolean(),
   });
 
@@ -67,7 +67,7 @@ export default function UserNewEditForm({ currentUser }) {
       country: currentUser?.country || '',
       zipCode: currentUser?.zipCode || '',
       company: currentUser?.company || '',
-      avatarUrl: currentUser?.avatarUrl || null,
+      // avatarUrl: currentUser?.avatarUrl || null,
       phoneNumber: currentUser?.phoneNumber || '',
       isVerified: currentUser?.isVerified || true,
     }),
@@ -120,9 +120,9 @@ export default function UserNewEditForm({ currentUser }) {
   return (
     <FormProvider methods={methods} onSubmit={onSubmit}>
       <Grid container spacing={3}>
-        <Grid xs={12} md={4}>
-          <Card sx={{ pt: 10, pb: 5, px: 3 }}>
-            {currentUser && (
+        {/* <Grid xs={12} md={4}>
+          <Card sx={{ pt: 10, pb: 5, px: 3 }}> */}
+            {/* {currentUser && (
               <Label
                 color={
                   (values.status === 'active' && 'success') ||
@@ -133,13 +133,13 @@ export default function UserNewEditForm({ currentUser }) {
               >
                 {values.status}
               </Label>
-            )}
+            )} */}
 
-            <Box sx={{ mb: 5 }}>
+            {/* <Box sx={{ mb: 5 }}>
               <RHFUploadAvatar
                 name="avatarUrl"
                 maxSize={3145728}
-                onDrop={handleDrop}
+                 onDrop={handleDrop}
                 helperText={
                   <Typography
                     variant="caption"
@@ -151,14 +151,14 @@ export default function UserNewEditForm({ currentUser }) {
                       color: 'text.disabled',
                     }}
                   >
-                    Allowed *.jpeg, *.jpg, *.png, *.gif
-                    <br /> max size of {fData(3145728)}
-                  </Typography>
-                }
-              />
-            </Box>
+                    {/* Allowed *.jpeg, *.jpg, *.png, *.gif
+                    <br /> max size of {fData(3145728)} */}
+                  {/* </Typography> */}
+                {/* }
+              /> */}
+            {/* </Box> */} 
 
-            {currentUser && (
+            {/* {currentUser && (
               <FormControlLabel
                 labelPlacement="start"
                 control={
@@ -188,25 +188,25 @@ export default function UserNewEditForm({ currentUser }) {
                 }
                 sx={{ mx: 0, mb: 3, width: 1, justifyContent: 'space-between' }}
               />
-            )}
+            )} */}
 
-            <RHFSwitch
+            {/* <RHFSwitch
               name="isVerified"
               labelPlacement="start"
-              label={
+              label={ */}
                 <>
-                  <Typography variant="subtitle2" sx={{ mb: 0.5 }}>
+                  {/* <Typography variant="subtitle2" sx={{ mb: 0.5 }}>
                     Email Verified
-                  </Typography>
-                  <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                  </Typography> */}
+                  {/* <Typography variant="body2" sx={{ color: 'text.secondary' }}>
                     Disabling this will automatically send the user a verification email
-                  </Typography>
+                  </Typography> */}
                 </>
-              }
-              sx={{ mx: 0, width: 1, justifyContent: 'space-between' }}
-            />
+              {/* }
+              // sx={{ mx: 0, width: 1, justifyContent: 'space-between' }}
+            /> */}
 
-            {currentUser && (
+            {/* {currentUser && (
               <Stack justifyContent="center" alignItems="center" sx={{ mt: 3 }}>
                 <Button variant="soft" color="error">
                   Delete User
@@ -214,10 +214,10 @@ export default function UserNewEditForm({ currentUser }) {
               </Stack>
             )}
           </Card>
-        </Grid>
+        </Grid> */}
 
-        <Grid xs={12} md={8}>
-          <Card sx={{ p: 3 }}>
+        <Grid xs={10} md={8} sx={{ p: 5 }}>
+          <Card sx={{ p: 6 }}>
             <Box
               rowGap={3}
               columnGap={2}

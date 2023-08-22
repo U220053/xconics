@@ -1,8 +1,9 @@
 // routes
+// eslint-disable-next-line import/no-extraneous-dependencies
+import Cookies from 'js-cookie';
 import { paths } from 'src/routes/paths';
 // utils
 import axios from 'src/utils/axios';
-
 // ----------------------------------------------------------------------
 
 function jwtDecode(token) {
@@ -58,17 +59,13 @@ export const tokenExpired = (exp) => {
 
 // ----------------------------------------------------------------------
 
-export const setSession = (accessToken) => {
-  if (accessToken) {
-    sessionStorage.setItem('accessToken', accessToken);
-
-    axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
-
-    // This function below will handle when token is expired
-    const { exp } = jwtDecode(accessToken); // ~3 days by minimals server
-    tokenExpired(exp);
+export const setCookie = (authToken) => {
+  Cookies.remove('authToken');
+  if (authToken) {
+    Cookies.set('authToken',`Bearer ${authToken}`);
+    console.log(authToken);
   } else {
-    sessionStorage.removeItem('accessToken');
+    Cookies.remove('authToken');
 
     delete axios.defaults.headers.common.Authorization;
   }
