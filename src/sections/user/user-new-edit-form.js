@@ -206,6 +206,11 @@ export default function UserNewEditForm({ currentUser }) {
               // sx={{ mx: 0, width: 1, justifyContent: 'space-between' }}
             /> */}
 
+
+
+
+
+  
             {/* {currentUser && (
               <Stack justifyContent="center" alignItems="center" sx={{ mt: 3 }}>
                 <Button variant="soft" color="error">
@@ -216,7 +221,7 @@ export default function UserNewEditForm({ currentUser }) {
           </Card>
         </Grid> */}
 
-        <Grid xs={10} md={8} sx={{ p: 5 }}>
+        <Grid xs={10} md={8} sx={{  px: { xs: 2, md: 4, lg: 6 }, }}>
           <Card sx={{ p: 6 }}>
             <Box
               rowGap={3}
