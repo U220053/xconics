@@ -4,7 +4,7 @@ import { _id, _postTitles } from 'src/_mock/assets';
 
 // ----------------------------------------------------------------------
 
-const MOCK_ID = _id[0];
+const MOCK_ID = _id[1];
 
 const MOCK_TITLE = _postTitles[2];
 
@@ -112,8 +112,10 @@ export const paths = {
       new: `${ROOTS.DASHBOARD}/user/new`,
       list: `${ROOTS.DASHBOARD}/user/list`,
       cards: `${ROOTS.DASHBOARD}/user/cards`,
-      profile: `${ROOTS.DASHBOARD}/user/profile`,
+      profile: `${ROOTS.DASHBOARD}/user/list`,
       account: `${ROOTS.DASHBOARD}/user/account`,
+      groupcreate:`${ROOTS.DASHBOARD}/user/groupcreate`,
+      management:`${ROOTS.DASHBOARD}/user/management`,
       edit: (id) => `${ROOTS.DASHBOARD}/user/${id}/edit`,
       demo: {
         edit: `${ROOTS.DASHBOARD}/user/${MOCK_ID}/edit`,

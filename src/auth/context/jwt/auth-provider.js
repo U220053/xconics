@@ -236,12 +236,13 @@ export function AuthProvider({ children }) {
   
 
     const response = await axios.post(endpoints.auth.login, payload);
+  
     if(!response.data.status){
       throw new CustomError(response.data.message);
     }
     const { result, id } = response.data;
 if(response.data.status&&response.data.newToken){
- 
+ console.log(response);
   setCookie(result.accessToken);}
    
     dispatch({

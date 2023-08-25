@@ -24,10 +24,10 @@ export default function UserTableFiltersResult({
     onFilters('status', 'all');
   };
 
-  const handleRemoveRole = (inputValue) => {
-    const newValue = filters.role.filter((item) => item !== inputValue);
-    onFilters('role', newValue);
-  };
+  // const handleRemoveRole = (inputValue) => {
+  //   const newValue = filters.role.filter((item) => item !== inputValue);
+  //   onFilters('role', newValue);
+  // };
 
   return (
     <Stack spacing={1.5} {...other}>
@@ -45,13 +45,6 @@ export default function UserTableFiltersResult({
           </Block>
         )}
 
-        {!!filters.role.length && (
-          <Block label="Role:">
-            {filters.role.map((item) => (
-              <Chip key={item} label={item} size="small" onDelete={() => handleRemoveRole(item)} />
-            ))}
-          </Block>
-        )}
 
         <Button
           color="error"

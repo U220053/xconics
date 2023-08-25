@@ -45,7 +45,7 @@ export default function AuthClassicLayout({ children, image, title }) {
         mx: 'auto',
         maxWidth: 480,
         px: { xs: 2, md: 8 },
-        py: { xs: 10, md: 20 },
+        py: { xs: 15, md: 30 },
       }}
     >
       {children}
@@ -83,7 +83,7 @@ export default function AuthClassicLayout({ children, image, title }) {
     component="img"
     alt="auth"
     src={image || '/assets/illustrations/login.png'}
-    sx={{ maxWidth: 900 }}
+    sx={{ maxWidth: 1400 }}
   />
   );
 
@@ -92,7 +92,7 @@ export default function AuthClassicLayout({ children, image, title }) {
       component="main"
       direction="row"
       sx={{
-        maxHeight: '100vh',
+        minHeight: '100vh',
       }}
     >
       {renderLogo}

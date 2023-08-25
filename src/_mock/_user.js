@@ -8,8 +8,8 @@ import { _mock } from './_mock';
 export const USER_STATUS_OPTIONS = [
   { value: 'active', label: 'Active' },
   { value: 'pending', label: 'Pending' },
-  // { value: 'banned', label: 'Banned' },
-  // { value: 'rejected', label: 'Rejected' },
+  { value: 'banned', label: 'Banned' },
+  { value: 'rejected', label: 'Rejected' },
 ];
 
 export const _userAbout = {
@@ -43,14 +43,14 @@ export const _userFriends = [...Array(18)].map((_, index) => ({
   id: _mock.id(index),
   role: _mock.role(index),
   name: _mock.fullName(index),
-  // avatarUrl: _mock.image.avatar(index),
+  avatarUrl: _mock.image.avatar(index),
 }));
 
 export const _userGallery = [...Array(12)].map((_, index) => ({
   id: _mock.id(index),
   postedAt: _mock.time(index),
   title: _mock.postTitle(index),
-  // imageUrl: _mock.image.cover(index),
+  imageUrl: _mock.image.cover(index),
 }));
 
 export const _userFeeds = [...Array(3)].map((_, index) => ({
@@ -60,7 +60,7 @@ export const _userFeeds = [...Array(3)].map((_, index) => ({
   message: _mock.sentence(index),
   personLikes: [...Array(20)].map((__, personIndex) => ({
     name: _mock.fullName(personIndex),
-    // avatarUrl: _mock.image.avatar(personIndex + 2),
+    avatarUrl: _mock.image.avatar(personIndex + 2),
   })),
   comments: (index === 2 && []) || [
     {
@@ -89,7 +89,7 @@ export const _userFeeds = [...Array(3)].map((_, index) => ({
 
 export const _userCards = [...Array(21)].map((_, index) => ({
   id: _mock.id(index),
-  // role: _mock.role(index),
+  role: _mock.role(index),
   name: _mock.fullName(index),
   coverUrl: _mock.image.cover(index),
   avatarUrl: _mock.image.avatar(index),
@@ -144,7 +144,7 @@ export const _userList = [...Array(20)].map((_, index) => ({
   zipCode: '85807',
   state: 'Virginia',
   city: 'Rancho Cordova',
-  // role: _mock.role(index),
+  role: _mock.role(index),
   email: _mock.email(index),
   address: '908 Jack Locks',
   name: _mock.fullName(index),
@@ -152,7 +152,7 @@ export const _userList = [...Array(20)].map((_, index) => ({
   company: _mock.companyName(index),
   country: countries[index + 1].label,
   avatarUrl: _mock.image.avatar(index),
-  // phoneNumber: _mock.phoneNumber(index),
+  phoneNumber: _mock.phoneNumber(index),
   status:
-    (index % 2 && 'pending') ||'active',
+    (index % 2 && 'pending') || (index % 3 && 'banned') || (index % 4 && 'rejected') || 'active',
 }));

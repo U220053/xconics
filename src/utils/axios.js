@@ -8,7 +8,12 @@ import { useAuthContext } from 'src/auth/hooks';
 
 // ----------------------------------------------------------------------
 
-const axiosInstance = axios.create({ baseURL: HOST_API,withCredentials: true });
+const axiosInstance = axios.create({ 
+  baseURL: HOST_API,
+  headers: {
+    'Content-Type': 'application/json', // Set the Content-Type header
+  },
+  withCredentials: true });
 
 axiosInstance.interceptors.request.use((config) => { 
 const storedAuthToken = Cookies.get('authToken');
@@ -37,6 +42,7 @@ export const fetcher = async (args) => {
 // ----------------------------------------------------------------------
 
 export const endpoints = {
+
   chat: '/api/chat',
   kanban: '/api/kanban',
   calendar: '/api/calendar',
