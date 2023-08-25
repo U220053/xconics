@@ -63,7 +63,7 @@ export default function UserTableRow({ row, selected, onEditRow, onSelectRow, on
             color={
               (status === 'active' && 'success') ||
               (status === 'pending' && 'warning') ||
-              (status === 'banned' && 'error') ||
+              // (status === 'banned' && 'error') ||
               'default'
             }
           >

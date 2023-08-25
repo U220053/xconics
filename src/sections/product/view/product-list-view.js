@@ -10,6 +10,8 @@ import TableBody from '@mui/material/TableBody';
 import IconButton from '@mui/material/IconButton';
 import TableContainer from '@mui/material/TableContainer';
 // routes
+import Cookies from 'js-cookie';
+import axios from 'src/utils/axios';
 import { paths } from 'src/routes/paths';
 import { useRouter } from 'src/routes/hooks';
 import { RouterLink } from 'src/routes/components';
@@ -36,11 +38,9 @@ import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
 import { ConfirmDialog } from 'src/components/custom-dialog';
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
-//
 import ProductTableRow from '../product-table-row';
 import ProductTableToolbar from '../product-table-toolbar';
 import ProductTableFiltersResult from '../product-table-filters-result';
-
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
@@ -75,16 +75,31 @@ export default function ProductListView() {
   const [tableData, setTableData] = useState([]);
 
   const [filters, setFilters] = useState(defaultFilters);
-
-  const { products, productsLoading, productsEmpty } = useGetProducts();
+  const [addPermission,setaddPermission] = useState(true);
+const [deletePermission,setdeletePermission] = useState(true);
+  const { products, productsLoading, productsEmpty } ={products:"1",productsLoading:false,productsEmpty:true};
 
   const confirm = useBoolean();
-
-  useEffect(() => {
-    if (products.length) {
-      setTableData(products);
+  const fetchData = async () => {
+    try {
+      const response = await axios.post('/api/user/permissions', {
+        screen_name: 'Sample Screen',
+      });
+      console.log(response.data);
+      setaddPermission(response.data.add_permission);
+      setdeletePermission(response.data.delete_permission);
+    } catch (error) {
+     
+      console.error('Error fetching permissions:', error);
     }
-  }, [products]);
+  };
+  useEffect(() => {
+    console.log(Cookies.get('authToken'));
+ 
+
+    fetchData();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const dataFiltered = applyFilter({
     inputData: tableData,
@@ -103,6 +118,7 @@ export default function ProductListView() {
 
   const notFound = (!dataFiltered.length && canReset) || productsEmpty;
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const handleFilters = useCallback(
     (name, value) => {
       table.onResetPage();
@@ -111,19 +127,19 @@ export default function ProductListView() {
         [name]: value,
       }));
     },
-    [table]
   );
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const handleDeleteRow = useCallback(
     (id) => {
       const deleteRow = tableData.filter((row) => row.id !== id);
       setTableData(deleteRow);
 
       table.onUpdatePageDeleteRow(dataInPage.length);
-    },
-    [dataInPage.length, table, tableData]
+    }
   );
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const handleDeleteRows = useCallback(() => {
     const deleteRows = tableData.filter((row) => !table.selected.includes(row.id));
     setTableData(deleteRows);
@@ -133,20 +149,20 @@ export default function ProductListView() {
       totalRowsInPage: dataInPage.length,
       totalRowsFiltered: dataFiltered.length,
     });
-  }, [dataFiltered.length, dataInPage.length, table, tableData]);
+  });
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const handleEditRow = useCallback(
     (id) => {
       router.push(paths.dashboard.product.edit(id));
-    },
-    [router]
+    }
   );
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const handleViewRow = useCallback(
     (id) => {
       router.push(paths.dashboard.product.details(id));
-    },
-    [router]
+    }
   );
 
   const handleResetFilters = useCallback(() => {
@@ -167,15 +183,20 @@ export default function ProductListView() {
             { name: 'List' },
           ]}
           action={
-            <Button
-              component={RouterLink}
-              href={paths.dashboard.product.new}
-              variant="contained"
-              startIcon={<Iconify icon="mingcute:add-line" />}
-            >
-              New Product
-            </Button>
+            addPermission ? (
+              <Button
+                component={RouterLink}
+                href={paths.dashboard.product.new}
+                variant="contained"
+                startIcon={<Iconify icon="mingcute:add-line" />}
+              >
+                New Product
+              </Button>
+            ) : null 
           }
+          
+        
+        
           sx={{ mb: { xs: 3, md: 5 } }}
         />
 
@@ -255,7 +276,7 @@ export default function ProductListView() {
                             row={row}
                             selected={table.selected.includes(row.id)}
                             onSelectRow={() => table.onSelectRow(row.id)}
-                            onDeleteRow={() => handleDeleteRow(row.id)}
+                            onDeleteRow={() => (deletePermission&&handleDeleteRow(row.id))}
                             onEditRow={() => handleEditRow(row.id)}
                             onViewRow={() => handleViewRow(row.id)}
                           />

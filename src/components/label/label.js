@@ -15,7 +15,7 @@ const Label = forwardRef(
     const iconStyle = {
       width: 16,
       height: 16,
-      '& svg, img': { width: 1, height: 1, objectFit: 'cover' },
+      // '& svg, img': { width: 1, height: 1, objectFit: 'cover' },
     };
 
     return (

@@ -1,10 +1,21 @@
+/* eslint-disable import/no-extraneous-dependencies */
 import axios from 'axios';
+import Cookies from 'js-cookie';
 // config
 import { HOST_API } from 'src/config-global';
 
+import { useAuthContext } from 'src/auth/hooks';
+
 // ----------------------------------------------------------------------
 
-const axiosInstance = axios.create({ baseURL: HOST_API });
+const axiosInstance = axios.create({ baseURL: HOST_API,withCredentials: true });
+
+axiosInstance.interceptors.request.use((config) => { 
+const storedAuthToken = Cookies.get('authToken');
+console.log(storedAuthToken);
+if (storedAuthToken) {config.headers.Authorization = storedAuthToken} ;
+return config;
+});
 
 axiosInstance.interceptors.response.use(
   (res) => res,
@@ -31,7 +42,7 @@ export const endpoints = {
   calendar: '/api/calendar',
   auth: {
     me: '/api/auth/me',
-    login: '/api/auth/login',
+    login: '/api/user/login',
     register: '/api/auth/register',
   },
   mail: {

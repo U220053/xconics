@@ -8,7 +8,7 @@ import { useSettingsContext } from 'src/components/settings';
 
 // ----------------------------------------------------------------------
 
-export default function BlankView() {
+export default function BlankView(props) {
   const settings = useSettingsContext();
 
   return (
