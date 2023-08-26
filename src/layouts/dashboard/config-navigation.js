@@ -97,17 +97,32 @@ export function useNavData() {
         items: [
           // USER
           {
-            title: t('user'),
+            title: t('Customer'),
             path: paths.dashboard.user.root,
             icon: ICONS.user,
             children: [
-              { title: t('profile'), path: paths.dashboard.user.root },
-              { title: t('cards'), path: paths.dashboard.user.cards },
               { title: t('list'), path: paths.dashboard.user.list },
               { title: t('create'), path: paths.dashboard.user.new },
-              { title: t('edit'), path: paths.dashboard.user.demo.edit },
-              { title: t('account'), path: paths.dashboard.user.account },
-              { title: t('management'), path: paths.dashboard.user.management },
+            ],
+          },
+
+          {
+            title: t('Customer Group'),
+            path: paths.dashboard.user.root,
+            icon: ICONS.user,
+            children: [
+              { title: t('Group list'), path: paths.dashboard.user.list },
+              { title: t('create group'), path: paths.dashboard.user.new },
+            ],
+          },
+
+          {
+            title: t('Group Permission'),
+            path: paths.dashboard.user.root,
+            icon: ICONS.user,
+            children: [
+              { title: t('list'), path: paths.dashboard.user.list },
+              { title: t('create'), path: paths.dashboard.user.new },
             ],
           },
 
