@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunk_minimal_kit_cra_js=self.webpackChunk_minimal_kit_cra_js||[]).push([[9605],{38676:function(n,i,r){r.r(i),r.d(i,{default:function(){return a}});var s=r(6907),e=r(56305),t=r(80184);function a(){return(0,t.jsxs)(t.Fragment,{children:[(0,t.jsx)(s.ql,{children:(0,t.jsx)("title",{children:" Dashboard: User List"})}),(0,t.jsx)(e.Qu,{})]})}}}]);
+//# sourceMappingURL=9605.e81f8245.chunk.js.map
