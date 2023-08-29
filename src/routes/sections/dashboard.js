@@ -37,7 +37,7 @@ const UserAccountPage = lazy(() => import('src/pages/dashboard/user/account'));
 const UserCreatePage = lazy(() => import('src/pages/dashboard/user/new'));
 const UserEditPage = lazy(() => import('src/pages/dashboard/user/edit'));
 const UserManagementPage = lazy(() => import('src/pages/dashboard/user/management'));
-const GroupCreatePage=lazy(() => import('src/pages/dashboard/user/creategroup'));
+const GroupCreatePage = lazy(() => import('src/pages/dashboard/user/creategroup'));
 // BLOG
 const BlogPostsPage = lazy(() => import('src/pages/dashboard/post/list'));
 const BlogPostPage = lazy(() => import('src/pages/dashboard/post/details'));
@@ -94,10 +94,10 @@ export const dashboardRoutes = [
           { path: 'cards', element: <UserCardsPage /> },
           { path: 'list', element: <UserListPage /> },
           { path: 'new', element: <UserCreatePage /> },
-          { path: ':id/edit', element: <UserEditPage /> },
+          { path: 'group/:id/edit', element: <UserEditPage /> },
           { path: 'account', element: <UserAccountPage /> },
-          {path:'management',element:<UserManagementPage/>},
-          {path:'groupcreate',element:<GroupCreatePage/>}
+          { path: 'group', element: <UserManagementPage /> },
+          { path: 'groupcreate', element: <GroupCreatePage /> },
         ],
       },
       {
@@ -108,7 +108,6 @@ export const dashboardRoutes = [
           { path: ':id', element: <ProductDetailsPage /> },
           { path: 'new', element: <ProductCreatePage /> },
           { path: ':id/edit', element: <ProductEditPage /> },
-          
         ],
       },
       {

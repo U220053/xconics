@@ -287,11 +287,11 @@
 import PropTypes from 'prop-types';
 import * as Yup from 'yup';
 // eslint-disable-next-line import/no-duplicates
-import { useCallback, useMemo,useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 // eslint-disable-next-line import/no-duplicates
-import {useEffect } from 'react';
+import { useEffect } from 'react';
 
 // @mui
 import LoadingButton from '@mui/lab/LoadingButton';
@@ -336,11 +336,11 @@ export default function UserNewEditForm({ currentUser }) {
 
   const defaultValues = useMemo(
     () => ({
-      name: currentUser?.user_group_name ||'',
-     
+      name: currentUser?.user_group_name || '',
+
       description: currentUser?.user_group_description || '',
-      status: currentUser?.status===1?'Active':'InActive' ||'',
-}),
+      status: currentUser?.status === 1 ? 'Active' : 'InActive' || '',
+    }),
     [currentUser]
   );
 
@@ -358,95 +358,89 @@ export default function UserNewEditForm({ currentUser }) {
     formState: { isSubmitting },
   } = methods;
 
-const [user,setUser]=useState(false);
+  const [user, setUser] = useState(false);
   useEffect(() => {
-   // eslint-disable-next-line react-hooks/exhaustive-deps
-   console.log(currentUser?._id);
-   if(currentUser?.user_group_name)setUser(true);
-   else setUser(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    console.log(currentUser?._id);
+    if (currentUser?.user_group_name) setUser(true);
+    else setUser(false);
     setValue('name', currentUser?.user_group_name || '');
     setValue('description', currentUser?.user_group_description || '');
     setValue('status', currentUser?.status === 1 ? 'Active' : 'InActive' || '');
-  },[currentUser,setValue]);
+  }, [currentUser, setValue]);
   const values = watch();
 
   const onSubmit = handleSubmit(async (data) => {
     try {
-      const newData={
-       user_group_name:data.name,
-       user_group_description:data.description,
-       status:data.status==='Active'?1:0
+      const newData = {
+        user_group_name: data.name,
+        user_group_description: data.description,
+        status: data.status === 'Active' ? 1 : 0,
       };
-     
-    if(!user){
-      await axios.post('/api/user/create/usergroup',newData);
-    }else{
-      await axios.post(`/api/user/update/usergroup/${currentUser._id}`,newData);
-    }
+
+      if (!user) {
+        await axios.post('/api/user/create/usergroup', newData);
+      } else {
+        await axios.post(`/api/user/update/usergroup/${currentUser._id}`, newData);
+      }
       await new Promise((resolve) => setTimeout(resolve, 500));
       reset();
       enqueueSnackbar(currentUser ? 'Update success!' : 'Create success!');
-      router.push(paths.dashboard.user.management);
+      router.push(paths.dashboard.user.group);
       console.info('DATA', data);
     } catch (error) {
       console.error(error);
     }
   });
-  const statuses = [ { label: 'Active',value:'Active'}
-  ,{label:"Inactive", value :"InActive"}]
+  const statuses = [
+    { label: 'Active', value: 'Active' },
+    { label: 'Inactive', value: 'InActive' },
+  ];
   return (
     <FormProvider methods={methods} onSubmit={onSubmit}>
-    
+      <Grid xs={12} md={8}>
+        <Card sx={{ p: 3 }}>
+          <Box
+            rowGap={3}
+            columnGap={2}
+            display="grid"
+            gridTemplateColumns={{
+              xs: 'repeat(1, 1fr)',
+              sm: 'repeat(2, 1fr)',
+            }}
+          >
+            <RHFTextField name="name" label="Group Name" />
+            <RHFTextField name="description" label="Group Description" />
 
-        <Grid xs={12} md={8}>
-          <Card sx={{ p: 3 }}>
-            <Box
-              rowGap={3}
-              columnGap={2}
-              display="grid"
-              gridTemplateColumns={{
-                xs: 'repeat(1, 1fr)',
-                sm: 'repeat(2, 1fr)',
+            <RHFAutocomplete
+              name="status"
+              label="Status"
+              options={statuses.map((status) => status.label)}
+              getOptionLabel={(option) => option}
+              isOptionEqualToValue={(option, value) => option === value}
+              renderOption={(props, option) => {
+                const { label } = statuses.filter((status) => status.label === option)[0];
+
+                if (!label) {
+                  return null;
+                }
+
+                return (
+                  <li {...props} key={label === 'Active' ? 0 : 1}>
+                    {label}
+                  </li>
+                );
               }}
-            >
-              <RHFTextField name="name" label="Group Name" />
-              <RHFTextField name="description" label="Group Description" />
-           
-              <RHFAutocomplete
-                name="status"
-                label="Status"
-                options={statuses.map((status) => status.label)}
-                getOptionLabel={(option) => option}
-                isOptionEqualToValue={(option, value) => option === value}
-                renderOption={(props, option) => {
-                  const { label } = statuses.filter(
-                    (status) => status.label === option
-                  )[0];
+            />
+          </Box>
 
-                  if (!label) {
-                    return null;
-                  }
-
-                  return (
-                    <li {...props} key={label==="Active"?0:1}>
-                   
-                      {label}
-                    </li>
-                  );
-                }}
-              />
-
-        
-            </Box>
-
-            <Stack alignItems="flex-end" sx={{ mt: 3 }}>
-              <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
-                {!currentUser ? 'Create Group' : 'Save Changes'}
-              </LoadingButton>
-            </Stack>
-          </Card>
-        </Grid>
-    
+          <Stack alignItems="flex-end" sx={{ mt: 3 }}>
+            <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
+              {!currentUser ? 'Create Group' : 'Save Changes'}
+            </LoadingButton>
+          </Stack>
+        </Card>
+      </Grid>
     </FormProvider>
   );
 }

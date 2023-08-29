@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import isEqual from 'lodash/isEqual';
-import { useState, useCallback,useEffect } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 // @mui
 import { alpha } from '@mui/material/styles';
 import Tab from '@mui/material/Tab';
@@ -44,7 +44,11 @@ import UserTableRow from '../user-table-row';
 import UserTableToolbar from '../user-table-toolbar';
 import UserTableFiltersResult from '../user-table-filters-result';
 
-const STATUS_OPTIONS = [{ value: 'all', label: 'All' },   { value: 'active', label: 'Active' },  { value: 'inactive', label: 'InActive' },];
+const STATUS_OPTIONS = [
+  { value: 'all', label: 'All' },
+  { value: 'active', label: 'Active' },
+  { value: 'inactive', label: 'InActive' },
+];
 const TABLE_HEAD = [
   { id: 'name', label: 'Group Name' },
   { id: 'group_description', label: 'Group Description', width: 400 },
@@ -74,19 +78,16 @@ function UserManagementView() {
       try {
         const response = await axios.get('api/user/usergroups');
         // const data = await response.json();
-       
-      setisSuccess(response.data.success);
-      setTableData(response.data.data);
-   
-      
+
+        setisSuccess(response.data.success);
+        setTableData(response.data.data);
       } catch (error) {
         console.error('Error fetching API data:', error);
       }
     }
-  
-    fetchData();
-  },[]);
 
+    fetchData();
+  }, []);
 
   const dataFiltered = applyFilter({
     inputData: tableData,
@@ -113,19 +114,18 @@ function UserManagementView() {
     },
     [table]
   );
- async function deletegroup(id){
-  await axios.post(`api/user/delete/deletegroup/${id}`);
- }
+  async function deletegroup(id) {
+    await axios.post(`api/user/delete/deletegroup/${id}`);
+  }
   /// have to call API
   const handleDeleteRow = useCallback(
     (id) => {
       const deleteRow = tableData.filter((row) => row._id !== id);
-       try{
+      try {
         deletegroup(id);
-       }
-       catch(err){
+      } catch (err) {
         console.error('Error fetching API data:', err);
-       }
+      }
       setTableData(deleteRow);
 
       table.onUpdatePageDeleteRow(dataInPage.length);
@@ -133,9 +133,7 @@ function UserManagementView() {
     [dataInPage.length, table, tableData]
   );
 
-
   const deleteSelectedGroups = async (selectedIds) => {
-  
     const deletePromises = selectedIds.map((id) => deletegroup(id));
 
     try {
@@ -147,11 +145,11 @@ function UserManagementView() {
     }
   };
   const handleDeleteRows = useCallback(() => {
-     const selectedIds = table.selected;
+    const selectedIds = table.selected;
     const deleteRows = tableData.filter((row) => !table.selected.includes(row._id));
     try {
       deleteSelectedGroups(selectedIds);
-  
+
       console.log('Selected groups deleted successfully');
     } catch (error) {
       console.error('Error deleting selected groups:', error);
@@ -181,112 +179,110 @@ function UserManagementView() {
   }, []);
   return (
     <>
-    <Container maxWidth={settings.themeStretch ? false : 'lg'}>
-    <CustomBreadcrumbs
-    heading="Group"
-    links={[
-      { name: 'Dashboard', href: paths.dashboard.root },
-      { name: 'User', href: paths.dashboard.user.root },
-      { name: 'Group' },
-    ]}
-    action={
-      <Button
-        component={RouterLink}
-        href={paths.dashboard.user.groupcreate}
-        variant="contained"
-        startIcon={<Iconify icon="mingcute:add-line" />}
-      >
-        New Group
-      </Button>
-    }
-    sx={{
-      mb: { xs: 3, md: 5 },
-    }}
-  />
-  <Card>
-  <Tabs
-    value={filters.status}
-    onChange={handleFilterStatus}
-    sx={{
-      px: 2.5,
-      boxShadow: (theme) => `inset 0 -2px 0 0 ${alpha(theme.palette.grey[500], 0.08)}`,
-    }}
-  >
-  {STATUS_OPTIONS.map((tab) => (
-    <Tab
-      key={tab.value}
-      iconPosition="end"
-      value={tab.value}
-      label={tab.label}
-      icon={<Label
-        variant={
-          ((tab.value === 'all') && 'filled') || 'soft'
-        }
-        color={
-          (tab.value === 'active' && 'success') ||
-          (tab.value === 'inactive' && 'warning') ||
-          'default'
-        }
-      >
-      {tab.value === 'all' && tableData.length}
-      {tab.value === 'active' &&
-      tableData.filter((user) => user.status === 1).length}
+      <Container maxWidth={settings.themeStretch ? false : 'lg'}>
+        <CustomBreadcrumbs
+          heading="Group"
+          links={[
+            { name: 'Dashboard', href: paths.dashboard.root },
+            { name: 'User', href: paths.dashboard.user.root },
+            { name: 'Group' },
+          ]}
+          action={
+            <Button
+              component={RouterLink}
+              href={paths.dashboard.user.groupcreate}
+              variant="contained"
+              startIcon={<Iconify icon="mingcute:add-line" />}
+            >
+              New Group
+            </Button>
+          }
+          sx={{
+            mb: { xs: 3, md: 5 },
+          }}
+        />
+        <Card>
+          <Tabs
+            value={filters.status}
+            onChange={handleFilterStatus}
+            sx={{
+              px: 2.5,
+              boxShadow: (theme) => `inset 0 -2px 0 0 ${alpha(theme.palette.grey[500], 0.08)}`,
+            }}
+          >
+            {STATUS_OPTIONS.map((tab) => (
+              <Tab
+                key={tab.value}
+                iconPosition="end"
+                value={tab.value}
+                label={tab.label}
+                icon={
+                  <Label
+                    variant={(tab.value === 'all' && 'filled') || 'soft'}
+                    color={
+                      (tab.value === 'active' && 'success') ||
+                      (tab.value === 'inactive' && 'warning') ||
+                      'default'
+                    }
+                  >
+                    {tab.value === 'all' && tableData.length}
+                    {tab.value === 'active' && tableData.filter((user) => user.status === 1).length}
 
-      {tab.value === 'inactive' &&
-      tableData.filter((user) => user.status === 0).length}
-    </Label>
-  }
-  />
-  ))}
-</Tabs>
-{canReset && (
-  <UserTableFiltersResult
-    filters={filters}
-    onFilters={handleFilters}
-    //
-    onResetFilters={handleResetFilters}
-    //
-    results={dataFiltered.length}
-    sx={{ p: 2.5, pt: 0 }}
-  />
-)}
-<TableContainer sx={{ position: 'relative', overflow: 'unset' }}>
-<TableSelectedAction
-  dense={table.dense}
-  numSelected={table.selected.length}
-  rowCount={tableData.length}
-  onSelectAllRows={(checked) =>
-    table.onSelectAllRows(
-      checked,
-      tableData.map((row) => row._id)
-    )
-  }
-  action={
-    <Tooltip title="Delete">
-      <IconButton color="primary" onClick={confirm.onTrue}>
-        <Iconify icon="solar:trash-bin-trash-bold" />
-      </IconButton>
-    </Tooltip>
-  }
-/>
+                    {tab.value === 'inactive' &&
+                      tableData.filter((user) => user.status === 0).length}
+                  </Label>
+                }
+              />
+            ))}
+          </Tabs>
+          {canReset && (
+            <UserTableFiltersResult
+              filters={filters}
+              onFilters={handleFilters}
+              //
+              onResetFilters={handleResetFilters}
+              //
+              results={dataFiltered.length}
+              sx={{ p: 2.5, pt: 0 }}
+            />
+          )}
+          <TableContainer sx={{ position: 'relative', overflow: 'unset' }}>
+            <TableSelectedAction
+              dense={table.dense}
+              numSelected={table.selected.length}
+              rowCount={tableData.length}
+              onSelectAllRows={(checked) =>
+                table.onSelectAllRows(
+                  checked,
+                  tableData.map((row) => row._id)
+                )
+              }
+              action={
+                <Tooltip title="Delete">
+                  <IconButton color="primary" onClick={confirm.onTrue}>
+                    <Iconify icon="solar:trash-bin-trash-bold" />
+                  </IconButton>
+                </Tooltip>
+              }
+            />
 
-<Scrollbar>
-<Table size={table.dense ? 'small' : 'medium'} sx={{ minWidth: 960 }}>
-  <TableHeadCustom
-    order={table.order}
-    orderBy={table.orderBy}
-    headLabel={TABLE_HEAD}
-    rowCount={tableData.length}
-    numSelected={table.selected.length}
-    onSort={table.onSort}
-    onSelectAllRows={(checked) =>
-      table.onSelectAllRows(
-        checked,
-        tableData.map((row) => row._id)
-      )
-    }
-  />
-  <TableBody>
+            <Scrollbar>
+              <Table size={table.dense ? 'small' : 'medium'} sx={{ minWidth: 960 }}>
+                <TableHeadCustom
+                  order={table.order}
+                  orderBy={table.orderBy}
+                  headLabel={TABLE_HEAD}
+                  rowCount={tableData.length}
+                  numSelected={table.selected.length}
+                  onSort={table.onSort}
+                  onSelectAllRows={(checked) =>
+                    table.onSelectAllRows(
+                      checked,
+                      tableData.map((row) => row._id)
+                    )
+                  }
+                />
+                <TableBody>
                   {dataFiltered
                     .slice(
                       table.page * table.rowsPerPage,
@@ -300,19 +296,18 @@ function UserManagementView() {
                         onSelectRow={() => table.onSelectRow(row._id)}
                         onDeleteRow={() => handleDeleteRow(row._id)}
                         onEditRow={() => handleEditRow(row._id)}
-                      
                       />
-                    ))} 
-                    <TableEmptyRows
+                    ))}
+                  <TableEmptyRows
                     height={denseHeight}
                     emptyRows={emptyRows(table.page, table.rowsPerPage, tableData.length)}
-                  />    
+                  />
                   <TableNoData notFound={notFound} />
-                  </TableBody>
-                </Table>
-              </Scrollbar>
-            </TableContainer>   
-            <TablePaginationCustom
+                </TableBody>
+              </Table>
+            </Scrollbar>
+          </TableContainer>
+          <TablePaginationCustom
             count={dataFiltered.length}
             page={table.page}
             rowsPerPage={table.rowsPerPage}
@@ -323,32 +318,31 @@ function UserManagementView() {
             onChangeDense={table.onChangeDense}
           />
         </Card>
-    </Container>
-    <ConfirmDialog
-    open={confirm.value}
-    onClose={confirm.onFalse}
-    title="Delete"
-    content={
-      <>
-        Are you sure want to delete <strong> {table.selected.length} </strong> items?
-      </>
-    }
-    action={
-      <Button
-        variant="contained"
-        color="error"
-        onClick={() => {
-          handleDeleteRows();
-          confirm.onFalse();
-        }}
-      >
-        Delete
-      </Button>
-    }
-  />
-
+      </Container>
+      <ConfirmDialog
+        open={confirm.value}
+        onClose={confirm.onFalse}
+        title="Delete"
+        content={
+          <>
+            Are you sure want to delete <strong> {table.selected.length} </strong> items?
+          </>
+        }
+        action={
+          <Button
+            variant="contained"
+            color="error"
+            onClick={() => {
+              handleDeleteRows();
+              confirm.onFalse();
+            }}
+          >
+            Delete
+          </Button>
+        }
+      />
     </>
-  )
+  );
 }
 // ----------------------------------------------------------------------
 
@@ -372,13 +366,13 @@ function applyFilter({ inputData, comparator, filters }) {
   }
 
   if (status !== 'all') {
-    if(status==='active'){
-    inputData = inputData.filter((user) => user.status === 1);
-    }else{
+    if (status === 'active') {
+      inputData = inputData.filter((user) => user.status === 1);
+    } else {
       inputData = inputData.filter((user) => user.status === 0);
     }
   }
 
   return inputData;
 }
-export default UserManagementView
+export default UserManagementView;
