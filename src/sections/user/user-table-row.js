@@ -39,15 +39,15 @@
 //   //     try {
 //   //       // const response = await axios.get('api/user/usergroups');
 //   //       // // const data = await response.json();
-       
+
 //   //     console.log(row);
-   
-      
+
+
 //   //     } catch (error) {
 //   //       console.error('Error fetching API data:', error);
 //   //     }
 //   //   }
-  
+
 //   //   fetchData();
 //   // });
 
@@ -76,7 +76,7 @@
 
 //         <TableCell sx={{ whiteSpace: 'nowrap' }}>{user_group_description}</TableCell>
 
-        
+
 
 //         <TableCell>
 //           <Label
@@ -102,7 +102,7 @@
 //         //     <Iconify icon="eva:more-vertical-fill" />
 //         //   </IconButton>
 //         // </TableCell>
-      
+
 //       </TableRow>
 
 
@@ -160,54 +160,54 @@
 // };
 /* eslint-disable react/jsx-no-comment-textnodes */
 /* eslint-disable no-sequences */
-import PropTypes from 'prop-types';
-import { useState, useCallback,useEffect } from 'react';
+import PropTypes from 'prop-types'
+import { useState, useCallback, useEffect } from 'react'
 
 // @mui
-import Button from '@mui/material/Button';
-import Avatar from '@mui/material/Avatar';
-import Tooltip from '@mui/material/Tooltip';
-import MenuItem from '@mui/material/MenuItem';
-import TableRow from '@mui/material/TableRow';
-import Checkbox from '@mui/material/Checkbox';
-import TableCell from '@mui/material/TableCell';
-import IconButton from '@mui/material/IconButton';
-import ListItemText from '@mui/material/ListItemText';
+import Button from '@mui/material/Button'
+import Avatar from '@mui/material/Avatar'
+import Tooltip from '@mui/material/Tooltip'
+import MenuItem from '@mui/material/MenuItem'
+import TableRow from '@mui/material/TableRow'
+import Checkbox from '@mui/material/Checkbox'
+import TableCell from '@mui/material/TableCell'
+import IconButton from '@mui/material/IconButton'
+import ListItemText from '@mui/material/ListItemText'
 // hooks
-import { useBoolean } from 'src/hooks/use-boolean';
+import { useBoolean } from 'src/hooks/use-boolean'
 // components
-import Label from 'src/components/label';
-import Iconify from 'src/components/iconify';
-import CustomPopover, { usePopover } from 'src/components/custom-popover';
-import { ConfirmDialog } from 'src/components/custom-dialog';
+import Label from 'src/components/label'
+import Iconify from 'src/components/iconify'
+import CustomPopover, { usePopover } from 'src/components/custom-popover'
+import { ConfirmDialog } from 'src/components/custom-dialog'
 //
-import UserQuickEditForm from './user-quick-edit-form';
+import UserQuickEditForm from './user-quick-edit-form'
 
 // ----------------------------------------------------------------------
 
 // eslint-disable-next-line react/prop-types
-export default function UserTableRow({ row, selected, onEditRow, onSelectRow, onDeleteRow}) {
-  const {user_group_name,user_group_description,status} = row;
+export default function UserTableRow({ row, selected, onEditRow, onSelectRow, onDeleteRow }) {
+  const { user_group_name, user_group_description, status } = row
 
-  const confirm = useBoolean();
+  const confirm = useBoolean()
 
-  const quickEdit = useBoolean();
+  const quickEdit = useBoolean()
 
-  const popover = usePopover();
+  const popover = usePopover()
   // useEffect(() => {
   //   async function fetchData() {
   //     try {
   //       // const response = await axios.get('api/user/usergroups');
   //       // // const data = await response.json();
-       
+
   //     console.log(row);
-   
-      
+
+
   //     } catch (error) {
   //       console.error('Error fetching API data:', error);
   //     }
   //   }
-  
+
   //   fetchData();
   // });
 
@@ -218,7 +218,7 @@ export default function UserTableRow({ row, selected, onEditRow, onSelectRow, on
           <Checkbox checked={selected} onClick={onSelectRow} />
         </TableCell>
 
-       {/* } <TableCell sx={{ display: 'flex', alignItems: 'center' }}>
+        {/* } <TableCell sx={{ display: 'flex', alignItems: 'center' }}>
           <Avatar alt={name} src={avatarUrl} sx={{ mr: 2 }} />
 
           <ListItemText
@@ -236,7 +236,10 @@ export default function UserTableRow({ row, selected, onEditRow, onSelectRow, on
 
         <TableCell sx={{ whiteSpace: 'nowrap' }}>{user_group_description}</TableCell>
 
-        
+        <TableCell sx={{ whiteSpace: 'nowrap' }}>{user_group_name}</TableCell>
+
+
+
 
         <TableCell>
           <Label
@@ -247,20 +250,20 @@ export default function UserTableRow({ row, selected, onEditRow, onSelectRow, on
               'default'
             }
           >
-            {status===1?'Active':'InActive'}
+            {status === 1 ? 'Active' : 'InActive'}
           </Label>
         </TableCell>
 
-         <TableCell align="right" sx={{ px: 1, whiteSpace: 'nowrap' }}>
-           <IconButton color={popover.open ? 'inherit' : 'default'} onClick={popover.onOpen}>
-             <Iconify icon="eva:more-vertical-fill" />
-           </IconButton>
-         </TableCell>
-      
+        <TableCell align="right" sx={{ px: 1, whiteSpace: 'nowrap' }}>
+          <IconButton color={popover.open ? 'inherit' : 'default'} onClick={popover.onOpen}>
+            <Iconify icon="eva:more-vertical-fill" />
+          </IconButton>
+        </TableCell>
+
       </TableRow>
 
 
-      
+
 
       <CustomPopover
         open={popover.open}
@@ -270,8 +273,8 @@ export default function UserTableRow({ row, selected, onEditRow, onSelectRow, on
       >
         <MenuItem
           onClick={() => {
-            confirm.onTrue();
-            popover.onClose();
+            confirm.onTrue()
+            popover.onClose()
           }}
           sx={{ color: 'error.main' }}
         >
@@ -281,12 +284,23 @@ export default function UserTableRow({ row, selected, onEditRow, onSelectRow, on
 
         <MenuItem
           onClick={() => {
-            onEditRow();
-            popover.onClose();
+            onEditRow()
+            popover.onClose()
           }}
         >
           <Iconify icon="solar:pen-bold" />
           Edit
+        </MenuItem>
+
+        <MenuItem
+          onClick={() => {
+            onEditRow()
+            popover.onClose()
+          }}
+
+        >
+          <Iconify icon="solar:eye-bold" />
+          AuditTrailView
         </MenuItem>
       </CustomPopover>
 
@@ -302,7 +316,7 @@ export default function UserTableRow({ row, selected, onEditRow, onSelectRow, on
         }
       />
     </>
-  );
+  )
 }
 
 UserTableRow.propTypes = {
@@ -311,4 +325,4 @@ UserTableRow.propTypes = {
   onSelectRow: PropTypes.func,
   row: PropTypes.object,
   selected: PropTypes.bool,
-};
+}
