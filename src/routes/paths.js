@@ -114,9 +114,10 @@ export const paths = {
       cards: `${ROOTS.DASHBOARD}/user/cards`,
       profile: `${ROOTS.DASHBOARD}/user/list`,
       account: `${ROOTS.DASHBOARD}/user/account`,
-      groupcreate:`${ROOTS.DASHBOARD}/user/groupcreate`,
-      management:`${ROOTS.DASHBOARD}/user/management`,
-      edit: (id) => `${ROOTS.DASHBOARD}/user/${id}/edit`,
+      groupcreate: `${ROOTS.DASHBOARD}/user/groupcreate`,
+      management: `${ROOTS.DASHBOARD}/user/management`,
+      group: `${ROOTS.DASHBOARD}/user/group`,
+      edit: (id) => `${ROOTS.DASHBOARD}/user/group/${id}/edit`,
       demo: {
         edit: `${ROOTS.DASHBOARD}/user/${MOCK_ID}/edit`,
       },
