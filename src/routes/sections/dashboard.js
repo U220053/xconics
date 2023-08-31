@@ -38,6 +38,10 @@ const UserCreatePage = lazy(() => import('src/pages/dashboard/user/new'));
 const UserEditPage = lazy(() => import('src/pages/dashboard/user/edit'));
 const UserManagementPage = lazy(() => import('src/pages/dashboard/user/management'));
 const GroupCreatePage = lazy(() => import('src/pages/dashboard/user/creategroup'));
+//CUSTOMER
+const CustomerListPage = lazy(() => import('src/pages/dashboard/customer/list'));
+const CustomerPage = lazy(() => import('src/pages/dashboard/customer/edit'));
+const CustomerCreatePage = lazy(() => import('src/pages/dashboard/customer/new'));
 // BLOG
 const BlogPostsPage = lazy(() => import('src/pages/dashboard/post/list'));
 const BlogPostPage = lazy(() => import('src/pages/dashboard/post/details'));
@@ -98,6 +102,16 @@ export const dashboardRoutes = [
           { path: 'account', element: <UserAccountPage /> },
           { path: 'group', element: <UserManagementPage /> },
           { path: 'groupcreate', element: <GroupCreatePage /> },
+        ],
+      },
+      {
+        path: 'customer',
+        children: [
+          { element: <CustomerListPage />, index: true },
+          { path: 'list', element: <CustomerListPage /> },
+
+          { path: 'new', element: <CustomerCreatePage /> },
+          { path: ':id/edit', element: <CustomerPage /> },
         ],
       },
       {
