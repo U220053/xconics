@@ -94,10 +94,12 @@ export const dashboardRoutes = [
           { path: 'cards', element: <UserCardsPage /> },
           { path: 'list', element: <UserListPage /> },
           { path: 'new', element: <UserCreatePage /> },
+          { path: 'new', element: <UserCreatePage /> },
           { path: ':id/edit', element: <UserEditPage /> },
           { path: 'account', element: <UserAccountPage /> },
           { path: 'management', element: <UserManagementPage /> },
-          { path: 'groupcreate', element: <GroupCreatePage /> }
+          { path: 'groupcreate', element: <GroupCreatePage /> },
+
         ],
       },
       {

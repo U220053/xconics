@@ -198,7 +198,7 @@ function UserListView() {
               variant="contained"
               startIcon={<Iconify icon="mingcute:add-line" />}
             >
-              New User Master
+              New User
             </Button>
           }
           sx={{

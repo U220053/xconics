@@ -314,6 +314,7 @@ import { countries } from 'src/assets/data'
 import Label from 'src/components/label'
 import Iconify from 'src/components/iconify'
 import { useSnackbar } from 'src/components/snackbar'
+
 import FormProvider, {
   RHFSwitch,
   RHFTextField,
@@ -321,16 +322,13 @@ import FormProvider, {
   RHFAutocomplete,
 } from 'src/components/hook-form'
 import axios from 'src/utils/axios'
+
 // ----------------------------------------------------------------------
 
 export default function UserNewEditForm({ currentUser }) {
   const router = useRouter()
 
   const { enqueueSnackbar } = useSnackbar()
-
-  const [showPassword, setShowPassword] = useState(false)
-  const handleClickShowPassword = () => setShowPassword(!showPassword)
-  const handleMouseDownPassword = () => setShowPassword(!showPassword)
 
   const NewUserSchema = Yup.object().shape({
     email: Yup.string().required('User Email is required'),
@@ -341,9 +339,9 @@ export default function UserNewEditForm({ currentUser }) {
 
   const defaultValues = useMemo(
     () => ({
-      name: currentUser?.user_group_name || '',
-
-      description: currentUser?.user_group_description || '',
+      email: currentUser?.user_email || '',
+      mobile: currentUser?.user_mobile || '',
+      password: currentUser?.password || '',
       status: currentUser?.status === 1 ? 'Active' : 'InActive' || '',
     }),
     [currentUser]
@@ -367,10 +365,11 @@ export default function UserNewEditForm({ currentUser }) {
   useEffect(() => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     console.log(currentUser?._id)
-    if (currentUser?.user_group_name) setUser(true)
+    if (currentUser?.user_email) setUser(true)
     else setUser(false)
-    setValue('name', currentUser?.user_group_name || '')
-    setValue('description', currentUser?.user_group_description || '')
+    setValue('email', currentUser?.user_email|| '')
+    setValue('mobile', currentUser?.user_mobile|| '')
+    setValue('password', currentUser?.password|| '')
     setValue('status', currentUser?.status === 1 ? 'Active' : 'InActive' || '')
   }, [currentUser, setValue])
   const values = watch()
@@ -378,25 +377,37 @@ export default function UserNewEditForm({ currentUser }) {
   const onSubmit = handleSubmit(async (data) => {
     try {
       const newData = {
-        user_group_name: data.name,
-        user_group_description: data.description,
+        user_email: data.email,
+        user_mobile: data.mobile,
+        password: data.password,
         status: data.status === 'Active' ? 1 : 0
       }
 
-      if (!user) {
-        await axios.post('/api/user/create/usergroup', newData)
-      } else {
-        await axios.post(`/api/user/update/usergroup/${currentUser._id}`, newData)
-      }
-      await new Promise((resolve) => setTimeout(resolve, 500))
-      reset()
-      enqueueSnackbar(currentUser ? 'Update success!' : 'Create success!')
-      router.push(paths.dashboard.user.management)
-      console.info('DATA', data)
-    } catch (error) {
-      console.error(error)
-    }
-  })
+    //   if (!user) {
+    //     await axios.post('/api/user/create', newData);
+    //   } else {
+    //     await axios.post(`/api/user/update/${user-id}`, newData)
+    //   }
+    //   await new Promise((resolve) => setTimeout(resolve, 500))
+    //   reset()
+    //   enqueueSnackbar(currentUser ? 'Update success!' : 'Create success!')
+    //   router.push(paths.dashboard.user.list)
+    //   console.info('DATA', data)
+    // } catch (error) {
+    //   console.error(error)
+    // }
+
+    await axios.post('/api/user/create', newData); // Calling the API endpoint
+
+    await new Promise((resolve) => setTimeout(resolve, 500));
+    reset();
+    enqueueSnackbar('Create success!');
+    router.push(paths.dashboard.user.list);
+    console.info('DATA', data);
+  } catch (error) {
+    console.error(error);
+  }
+  });
   const statuses = [{ label: 'Active', value: 'Active' }
     , { label: "Inactive", value: "InActive" }]
   return (
@@ -417,26 +428,6 @@ export default function UserNewEditForm({ currentUser }) {
             <RHFTextField name="email" label="User Email" type="email" />
             <RHFTextField name="mobile" label="User Mobile" type="number" />
             <RHFTextField name="password" label="Password" />
-
-            {/* <TextField
-              label='Some label'
-              variant="outlined"
-              type={showPassword ? "text" : "password"} // <-- This is where the magic happens
-              onChange={someChangeHandler}
-              InputProps={{ // <-- This is where the toggle button is added.
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      onClick={handleClickShowPassword}
-                      onMouseDown={handleMouseDownPassword}
-                    >
-                      {showPassword ? <Visibility /> : <VisibilityOff />}
-                    </IconButton>
-                  </InputAdornment>
-                )
-              }}
-            /> */}
 
             <RHFAutocomplete
               name="status"
@@ -467,7 +458,7 @@ export default function UserNewEditForm({ currentUser }) {
 
           <Stack alignItems="flex-end" sx={{ mt: 3 }}>
             <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
-              {!currentUser ? 'Create Master' : 'Save Changes'}
+              {!currentUser ? 'Create New User' : 'Save Changes'}
             </LoadingButton>
           </Stack>
         </Card>
@@ -480,3 +471,8 @@ export default function UserNewEditForm({ currentUser }) {
 UserNewEditForm.propTypes = {
   currentUser: PropTypes.object,
 }
+
+
+
+
+
