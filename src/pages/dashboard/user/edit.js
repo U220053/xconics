@@ -1,8 +1,9 @@
-import { Helmet } from 'react-helmet-async';
+// import { Helmet } from 'react-helmet-async';
 // routes
 import { useParams } from 'src/routes/hooks';
 // sections
-import { UserEditView } from 'src/sections/user/view';
+import { UserEditView } from 'src/sections/userMaster/view';
+
 
 // ----------------------------------------------------------------------
 
@@ -13,9 +14,9 @@ export default function UserEditPage() {
 
   return (
     <>
-      <Helmet>
+      {/* <Helmet> */}
         <title> Dashboard: User Edit</title>
-      </Helmet>
+      {/* </Helmet> */}
 
       <UserEditView id={`${id}`} />
     </>

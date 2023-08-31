@@ -51,16 +51,16 @@ import { useSettingsContext } from 'src/components/settings';
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
 //
 // eslint-disable-next-line no-unused-vars
-import UserNewEditForm from '../user-new-edit-form';
+import UserNewEditForm from '../userMaster-new-edit-form';
 
-function GroupCreateView() {
+function UserCreateView() {
 
     const settings = useSettingsContext();
 
     return (
       <Container maxWidth={settings.themeStretch ? false : 'lg'}>
         <CustomBreadcrumbs
-          heading="Create a new user "
+          heading="Create a new user"
           links={[
             {
               name: 'Dashboard',
@@ -70,7 +70,7 @@ function GroupCreateView() {
               name: 'User',
               href: paths.dashboard.user.root,
             },
-            { name: 'New user' },
+            { name: 'New Master' },
           ]}
           sx={{
             mb: { xs: 3, md: 5 },
@@ -82,4 +82,4 @@ function GroupCreateView() {
     );
 }
 
-export default GroupCreateView;
+export default UserCreateView;

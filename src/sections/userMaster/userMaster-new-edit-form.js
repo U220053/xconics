@@ -401,8 +401,8 @@ export default function UserNewEditForm({ currentUser }) {
 
     await new Promise((resolve) => setTimeout(resolve, 500));
     reset();
-    enqueueSnackbar(currentUser ? 'Update success!' : 'Create success!')
-    router.push(paths.dashboard.user.new);
+    enqueueSnackbar('Create success!');
+    router.push(paths.dashboard.user.management);
     console.info('DATA', data);
   } catch (error) {
     console.error(error);

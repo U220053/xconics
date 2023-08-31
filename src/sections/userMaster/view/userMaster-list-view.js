@@ -438,9 +438,9 @@ import {
 //
 
 import axios from 'src/utils/axios'
-import UserTableRow from '../user-table-row'
-import UserTableToolbar from '../user-table-toolbar'
-import UserTableFiltersResult from '../user-table-filters-result'
+import UserTableRow from '../userMaster-table-row'
+import UserTableToolbar from '../userMaster-table-toolbar'
+import UserTableFiltersResult from '../userMaster-table-filters-result'
 
 // ----------------------------------------------------------------------
 
@@ -524,23 +524,19 @@ export default function UserListView() {
   //   await axios.post(`api/user/delete/deletegroup/${id}`);
   // }
 
-  // const handleDeleteRow = useCallback(
-  //   (id) => {
-  //     const deleteRow = tableData.filter((row) => row.id !== id)
-  //     setTableData(deleteRow)
+  const handleDeleteRow = useCallback(
+    (id) => {
+      const deleteRow = tableData.filter((row) => row.id !== id)
+      setTableData(deleteRow)
 
-  //     table.onUpdatePageDeleteRow(dataInPage.length)
-  //   },
-  //   [dataInPage.length, table, tableData]
-  // )
+      table.onUpdatePageDeleteRow(dataInPage.length)
+    },
+    [dataInPage.length, table, tableData]
+  )
 
-  // async function deletegroup(id) {
-  //   await axios.post(`api/user/update/${id}`)
-  // }
-  // //  have to call API
-
+  
   // const deleteSelectedGroups = async (selectedIds) => {
-
+  
   //   const deletePromises = selectedIds.map((id) => deletegroup(id));
 
   //   try {
@@ -551,40 +547,6 @@ export default function UserListView() {
   //     console.error('Error deleting selected groups:', error);
   //   }
   // };
-
-    async function deletegroup(id) {
-    await axios.post(`api/user/update/${id}`)
-  }
-  //  have to call API
-  const handleDeleteRow = useCallback(
-    (id) => {
-      const deleteRow = tableData.filter((row) => row._id !== id)
-      try {
-        deletegroup(id)
-      }
-      catch (err) {
-        console.error('Error fetching API data:', err)
-      }
-      setTableData(deleteRow)
-
-      table.onUpdatePageDeleteRow(dataInPage.length)
-    },
-    [dataInPage.length, table, tableData]
-  )
-
-
-  const deleteSelectedGroups = async (selectedIds) => {
-
-    const deletePromises = selectedIds.map((id) => deletegroup(id))
-
-    try {
-      await Promise.all(deletePromises)
-      // Optionally, you can perform additional actions after deleting all groups
-      console.log('Selected groups deleted successfully')
-    } catch (error) {
-      console.error('Error deleting selected groups:', error)
-    }
-  }
 
   const handleDeleteRows = useCallback(() => {
     const deleteRows = tableData.filter((row) => !table.selected.includes(row.id))
