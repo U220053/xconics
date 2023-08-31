@@ -1,7 +1,7 @@
 // import { Helmet } from 'react-helmet-async';
 // sections
 // import { UserCreateView } from 'src/sections/user/view';
-import { UserCreateView } from 'src/sections/userMaster/view';
+import { UserCreateView } from 'src/sections/user/view';
 
 // ----------------------------------------------------------------------
 

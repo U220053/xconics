@@ -53,7 +53,7 @@ import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
 // eslint-disable-next-line no-unused-vars
 import UserNewEditForm from '../user-new-edit-form';
 
-function GroupCreateView() {
+function UserCreateView() {
 
     const settings = useSettingsContext();
 
@@ -82,4 +82,4 @@ function GroupCreateView() {
     );
 }
 
-export default GroupCreateView;
+export default UserCreateView;
