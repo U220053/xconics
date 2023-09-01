@@ -1,4 +1,5 @@
 
+
 import PropTypes from 'prop-types'
 import * as Yup from 'yup'
 // eslint-disable-next-line import/no-duplicates
@@ -9,6 +10,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { useEffect } from 'react'
 
 // @mui
+
 import LoadingButton from '@mui/lab/LoadingButton'
 import Box from '@mui/material/Box'
 import Card from '@mui/material/Card'
@@ -19,12 +21,14 @@ import Grid from '@mui/material/Unstable_Grid2'
 import Typography from '@mui/material/Typography'
 import FormControlLabel from '@mui/material/FormControlLabel'
 // utils
+import MenuItem from '@mui/material/MenuItem';
 import { fData } from 'src/utils/format-number'
 // routes
 import { paths } from 'src/routes/paths'
 import { useRouter } from 'src/routes/hooks'
 // assets
 import { countries } from 'src/assets/data'
+import { Option } from '@mui/base/Option';
 // components
 import Label from 'src/components/label'
 import Iconify from 'src/components/iconify'
@@ -33,16 +37,20 @@ import { useSnackbar } from 'src/components/snackbar'
 import FormProvider, {
   RHFSwitch,
   RHFTextField,
+  RHFSelect,
   RHFUploadAvatar,
   RHFAutocomplete,
 } from 'src/components/hook-form'
 import axios from 'src/utils/axios'
+import { Select } from '@mui/base'
 
 // ----------------------------------------------------------------------
 
-export default function UserNewEditForm({ currentUser }) {
+// eslint-disable-next-line react/prop-types
+export default function UserNewEditForm({ currentUser, userGroup }) {
+  console.log(`userGroup`, userGroup)
   const router = useRouter()
-
+  const [formData, setFormData] = useState({});
   const { enqueueSnackbar } = useSnackbar()
 
   const NewUserSchema = Yup.object().shape({
@@ -50,6 +58,7 @@ export default function UserNewEditForm({ currentUser }) {
     mobile: Yup.string().required('User Mobile is required'),
     password: Yup.string().required('Password is required'),
     status: Yup.string().required('Status is required'),
+    groupref: Yup.string(),
   })
 
   const defaultValues = useMemo(
@@ -57,7 +66,8 @@ export default function UserNewEditForm({ currentUser }) {
       email: currentUser?.user_email || '',
       mobile: currentUser?.user_mobile || '',
       password: currentUser?.password || '',
-      status: currentUser?.status === 1 ? 'Active' : 'InActive' || '',
+      groupref: currentUser?.user_group_ref || '',
+      status: currentUser?.status === 1 ? 'Active' : 'Inactive' || '',
     }),
     [currentUser]
   )
@@ -77,17 +87,28 @@ export default function UserNewEditForm({ currentUser }) {
   } = methods
 
   const [user, setUser] = useState(false)
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    console.log(currentUser?._id)
-    if (currentUser?.user_email) setUser(true)
-    else setUser(false)
-    setValue('email', currentUser?.user_email || '')
-    setValue('mobile', currentUser?.user_mobile || '')
-    setValue('password', currentUser?.password || '')
-    setValue('status', currentUser?.status === 1 ? 'Active' : 'InActive' || '')
-  }, [currentUser, setValue])
+  const [dropdownData, setdropdownData] = useState([]);
+
+
   const values = watch()
+
+  useEffect(() => {
+  
+      setValue('email', currentUser?.user_email || '')
+      setValue('mobile', currentUser?.user_mobile || '')
+      setValue('password', currentUser?.password || '')
+      setValue('groupref', currentUser?.groupref || '')
+      setValue('status', currentUser?.status === 1 ? 'Active' : 'Inactive' || '')
+   
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+
+
+  const onFormChange = (data) => {
+    setFormData(data);
+  };
 
   const onSubmit = handleSubmit(async (data) => {
     try {
@@ -95,31 +116,58 @@ export default function UserNewEditForm({ currentUser }) {
         user_email: data.email,
         user_mobile: data.mobile,
         password: data.password,
+        user_group_ref: data.groupref,
         status: data.status === 'Active' ? 1 : 0
       }
 
-
+ console.log(newData);
       console.log("response");
-      const response1 = await axios.post('/api/user/create', newData); // Calling the API endpoint
-
+       const respones=await axios.post('/api/user/create', newData); // Calling the API endpoint
+ console.log(respones);
       await new Promise((resolve) => setTimeout(resolve, 500));
       reset();
-      enqueueSnackbar(currentUser ? 'Update success!' : 'Create success!')
-      await new Promise((resolve) => setTimeout(resolve, 500));
+      // enqueueSnackbar(currentUser ? 'Update success!' : 'Create success!')
+      // await new Promise((resolve) => setTimeout(resolve, 500));
 
-      router.push(paths.dashboard.user.new);
-      console.log("success");
+      router.push(paths.dashboard.user.list);
+  
 
     } catch (error) {
       await new Promise((resolve) => setTimeout(resolve, 500));
       enqueueSnackbar(error.error);
 
       console.error(error);
-      router.push(paths.dashboard.user.new);
+
     }
+
+    //   if (!user) {
+    //     await axios.post('/api/user/create', newData);
+    //   } else {
+    //     await axios.post(`/api/user/update/${currentUser._id}`, newData);
+    //   }
+    //   await new Promise((resolve) => setTimeout(resolve, 500));
+    //   reset();
+    //   enqueueSnackbar(currentUser ? 'Update success!' : 'Create success!');
+    //   router.push(paths.dashboard.user.list);
+    //   console.info('DATA', data);
+    // } catch (error) {
+    //   // console.error(error);
+    // }
+    onFormChange(data);
   });
+
+
   const statuses = [{ label: 'Active', value: 'Active' }
-    , { label: "Inactive", value: "InActive" }]
+    , { label: "Inactive", value: "Inactive" }]
+
+
+  const handleLogData = () => {
+    console.log('Form Data:', formData);
+  };
+
+
+
+
   return (
     <FormProvider methods={methods} onSubmit={onSubmit}>
 
@@ -138,6 +186,49 @@ export default function UserNewEditForm({ currentUser }) {
             <RHFTextField name="email" label="User Email" type="email" />
             <RHFTextField name="mobile" label="User Mobile" type="number" />
             <RHFTextField name="password" label="Password" />
+
+            {/* <RHFAutocomplete
+                name="groupref"
+                label="Group Ref"
+                options={Array.isArray(dropdownData) ? dropdownData.map(item => item.user_group_ref) : []}
+                getOptionLabel={option => option}
+                isOptionEqualToValue={(option, value) => option === value}
+                renderOption={(props, option) => (
+                  <MenuItem {...props} key={option}>
+                    {option}
+                  </MenuItem>
+                )}
+              /> */}
+
+            {/* <RHFSelect
+              name="groupref"
+      
+              label="Select Permission Group"
+              InputLabelProps={{  }}
+             
+
+              {...userGroup.map((item) => (
+                <MenuItem
+                  
+                >
+                  // {item}
+                </MenuItem>
+              ))}
+            /> */}
+
+            <RHFSelect
+              fullWidth
+              name="groupref"
+              label="Status"
+              InputLabelProps={{ shrink: true }}
+              PaperPropsSx={{ textTransform: 'capitalize' }}
+            >
+              {
+                userGroup.map((option) => <MenuItem key={option.id} value={option.id}>{option.group_name}</MenuItem>)
+              }
+            </RHFSelect>
+
+         
 
             <RHFAutocomplete
               name="status"
@@ -168,7 +259,7 @@ export default function UserNewEditForm({ currentUser }) {
 
           <Stack alignItems="flex-end" sx={{ mt: 3 }}>
             <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
-              {!currentUser ? 'Create New User2' : 'Save Changes'}
+              {!currentUser ? 'Create New User' : 'Save Changes'}
             </LoadingButton>
           </Stack>
         </Card>
@@ -180,6 +271,7 @@ export default function UserNewEditForm({ currentUser }) {
 
 UserNewEditForm.propTypes = {
   currentUser: PropTypes.object,
+  userGroup: PropTypes.object
 }
 
 

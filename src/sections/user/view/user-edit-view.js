@@ -18,7 +18,7 @@ export default function UserEditView({ id }) {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await axios.get(`api/user/usergroup/${id}`);
+        const response = await axios.get(`api/user/create/${id}`);
         // const data = await response.json();
        
       setDataUser(response.data.data);

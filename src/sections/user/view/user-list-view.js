@@ -474,16 +474,17 @@ export default function UserListView() {
   const [tableData, setTableData] = useState(_userList)
   const [isSuccess, setisSuccess] = useState()
   const [filters, setFilters] = useState(defaultFilters)
+  const [userGroup,setUserGroup] = useState([])
 
   useEffect(() => {
     async function fetchData() {
       try {
         const response = await axios.get('api/user/create')
-        // const data = await response.json();
+        const groupresponse = await axios.get('api/user/usergroups')
 
         setisSuccess(response.data.success)
         setTableData(response.data.data)
-
+        setUserGroup( groupresponse.data.data)
 
       } catch (error) {
         console.error('Error fetching API data:', error)
@@ -520,26 +521,34 @@ export default function UserListView() {
     },
     [table]
   )
-  // async function deletegroup(id) {
-  //   await axios.post(`api/user/delete/deletegroup/${id}`);
-  // }
+  async function deletegroup(id) {
+    await axios.post(`api//user/delete/${id}`);
+  }
 
-  // const handleDeleteRow = useCallback(
-  //   (id) => {
-  //     const deleteRow = tableData.filter((row) => row.id !== id)
-  //     setTableData(deleteRow)
+/// have to call API
+  const handleDeleteRow = useCallback(
+    (id) => {
+      const deleteRow = tableData.filter((row) => row._id !== id);
+       try{
+        deletegroup(id);
+       }
+       catch(err){
+        console.error('Error fetching API data:', err);
+       }
+      setTableData(deleteRow);
 
-  //     table.onUpdatePageDeleteRow(dataInPage.length)
-  //   },
-  //   [dataInPage.length, table, tableData]
-  // )
+      table.onUpdatePageDeleteRow(dataInPage.length);
+    },
+    [dataInPage.length, table, tableData]
+  );
+
 
   // async function deletegroup(id) {
   //   await axios.post(`api/user/update/${id}`)
   // }
-  // //  have to call API
+  //  have to call API
 
-  // const deleteSelectedGroups = async (selectedIds) => {
+  // const deleteSelected = async (selectedIds) => {
 
   //   const deletePromises = selectedIds.map((id) => deletegroup(id));
 
@@ -552,51 +561,61 @@ export default function UserListView() {
   //   }
   // };
 
-    async function deletegroup(id) {
-    await axios.post(`api/user/update/${id}`)
-  }
+  //   async function deletegroup(id) {
+  //   await axios.post(`api/user/update/${id}`)
+  // }
   //  have to call API
-  const handleDeleteRow = useCallback(
-    (id) => {
-      const deleteRow = tableData.filter((row) => row._id !== id)
-      try {
-        deletegroup(id)
-      }
-      catch (err) {
-        console.error('Error fetching API data:', err)
-      }
-      setTableData(deleteRow)
+  
+  // const handleDeleteRow = useCallback(
+  //   (id) => {
+  //     const deleteRow = tableData.filter((row) => row._id !== id)
+  //     try {
+  //       deletegroup(id)
+  //     }
+  //     catch (err) {
+  //       console.error('Error fetching API data:', err)
+  //     }
+  //     setTableData(deleteRow)
 
-      table.onUpdatePageDeleteRow(dataInPage.length)
-    },
-    [dataInPage.length, table, tableData]
-  )
+  //     table.onUpdatePageDeleteRow(dataInPage.length)
+  //   },
+  //   [dataInPage.length, table, tableData]
+  // )
 
 
-  const deleteSelectedGroups = async (selectedIds) => {
-
-    const deletePromises = selectedIds.map((id) => deletegroup(id))
-
-    try {
-      await Promise.all(deletePromises)
-      // Optionally, you can perform additional actions after deleting all groups
-      console.log('Selected groups deleted successfully')
-    } catch (error) {
-      console.error('Error deleting selected groups:', error)
-    }
-  }
+  // const deleteSelectedGroups = async (selectedIds) => {
 
   const handleDeleteRows = useCallback(() => {
-    const deleteRows = tableData.filter((row) => !table.selected.includes(row.id))
-    setTableData(deleteRows)
-
+    const selectedIds = table.selected;
+    const deleteRows = tableData.filter((row) => !table.selected.includes(row.id));
+  
+    const deleteSelectedGroups = async () => {
+      const deletePromises = selectedIds.map((id) => deletegroup(id));
+  
+      try {
+        await Promise.all(deletePromises);
+        console.log('Selected groups deleted successfully');
+      } catch (error) {
+        console.error('Error deleting selected groups:', error);
+      }
+    };
+  
+    try {
+      deleteSelectedGroups(selectedIds);
+      console.log('Selected groups deleted successfully');
+    } catch (error) {
+      console.error('Error deleting selected groups:', error);
+    }
+  
+    setTableData(deleteRows);
+  
     table.onUpdatePageDeleteRows({
       totalRows: tableData.length,
       totalRowsInPage: dataInPage.length,
       totalRowsFiltered: dataFiltered.length,
-    })
-  }, [dataFiltered.length, dataInPage.length, table, tableData])
-
+    });
+  }, [dataFiltered.length, dataInPage.length, table, tableData]);
+  
   const handleEditRow = useCallback(
     (id) => {
       router.push(paths.dashboard.user.edit(id))
@@ -632,7 +651,7 @@ export default function UserListView() {
               variant="contained"
               startIcon={<Iconify icon="mingcute:add-line" />}
             >
-              New User Master
+              New User
             </Button>
           }
           sx={{
@@ -760,14 +779,12 @@ export default function UserListView() {
               </Table>
             </Scrollbar>
           </TableContainer>
-
-          <TablePaginationCustom
+        <TablePaginationCustom
             count={dataFiltered.length}
             page={table.page}
             rowsPerPage={table.rowsPerPage}
             onPageChange={table.onChangePage}
             onRowsPerPageChange={table.onChangeRowsPerPage}
-            //
             dense={table.dense}
             onChangeDense={table.onChangeDense}
           />
