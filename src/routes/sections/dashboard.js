@@ -33,9 +33,12 @@ const InvoiceEditPage = lazy(() => import('src/pages/dashboard/invoice/edit'));
 const UserProfilePage = lazy(() => import('src/pages/dashboard/user/profile'));
 const UserCardsPage = lazy(() => import('src/pages/dashboard/user/cards'));
 const UserListPage = lazy(() => import('src/pages/dashboard/user/list'));
+const PermissionListPage = lazy(() => import('src/pages/dashboard/user/permission'))
 const UserAccountPage = lazy(() => import('src/pages/dashboard/user/account'));
 const UserCreatePage = lazy(() => import('src/pages/dashboard/user/new'));
+const PermissionCreatePage = lazy(() => import('src/pages/dashboard/user/permissionnew'));
 const UserEditPage = lazy(() => import('src/pages/dashboard/user/edit'));
+const PermissionEditPage = lazy(() => import('src/pages/dashboard/user/permissionedit'));
 const UserManagementPage = lazy(() => import('src/pages/dashboard/user/management'));
 const GroupCreatePage = lazy(() => import('src/pages/dashboard/user/creategroup'));
 // BLOG
@@ -83,9 +86,6 @@ export const dashboardRoutes = [
       { element: <IndexPage />, index: true },
       { path: 'ecommerce', element: <OverviewEcommercePage /> },
       { path: 'analytics', element: <OverviewAnalyticsPage /> },
-      { path: 'banking', element: <OverviewBankingPage /> },
-      { path: 'booking', element: <OverviewBookingPage /> },
-      { path: 'file', element: <OverviewFilePage /> },
       {
         path: 'user',
         children: [
@@ -93,6 +93,9 @@ export const dashboardRoutes = [
           { path: 'profile', element: <UserProfilePage /> },
           { path: 'cards', element: <UserCardsPage /> },
           { path: 'list', element: <UserListPage /> },
+          { path: 'permission', element: <PermissionListPage /> },
+          { path: 'permission/:id/edit', element: <PermissionEditPage /> },
+          { path: 'permission/new', element: <PermissionCreatePage/> },
           { path: 'new', element: <UserCreatePage /> },
           { path: 'group/:id/edit', element: <UserEditPage /> },
           { path: 'account', element: <UserAccountPage /> },
