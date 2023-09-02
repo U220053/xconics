@@ -11,7 +11,7 @@ import { RouterLink } from 'src/routes/components';
 import { useSettingsContext } from 'src/components/settings';
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
 //
-import UserCardList from '../user-card-list';
+import UserCardList from './user-card-list';
 
 // ----------------------------------------------------------------------
 

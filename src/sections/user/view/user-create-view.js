@@ -1,46 +1,3 @@
-// // @mui
-// import Container from '@mui/material/Container';
-// // routes
-// import { paths } from 'src/routes/paths';
-// // components
-// import { useSettingsContext } from 'src/components/settings';
-// import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
-// //
-// import UserNewEditForm from '../user-new-edit-form';
-
-// // ----------------------------------------------------------------------
-
-// export default function UserCreateView() {
-//   const settings = useSettingsContext();
-
-//   return (
-//     <Container maxWidth={settings.themeStretch ? false : 'lg'}>
-//       <CustomBreadcrumbs
-//         heading="Create a new user"
-//         links={[
-//           {
-//             name: 'Dashboard',
-//             href: paths.dashboard.root,
-//           },
-//           {
-//             name: 'User',
-//             href: paths.dashboard.user.root,
-//           },
-//           { name: 'New user' },
-//         ]}
-//         sx={{
-//           mb: { xs: 3, md: 5 },
-//         }}
-//       />
-
-//       <UserNewEditForm />
-//     </Container>
-//   );
-// }
-
-
-
-
 // eslint-disable-next-line import/no-duplicates
 import React from 'react'
 // eslint-disable-next-line import/no-duplicates
@@ -64,18 +21,18 @@ function UserCreateView() {
 
   useEffect(() => {
 
-    const fetchData = async() => {
+    const fetchData = async () => {
       const groupresponse = await axios.get('api/user/usergroups')
-     
-      console.log("IN view",groupresponse.data.data);
-     const newdata=JSON.parse(JSON.stringify(groupresponse.data.data))
-     
-      const newGroupData=newdata.map((item)=>{
-        return {id:item._id,group_name:item.user_group_name}
+
+      console.log("IN view", groupresponse.data.data);
+      const newdata = JSON.parse(JSON.stringify(groupresponse.data.data))
+
+      const newGroupData = newdata.map((item) => {
+        return { id: item._id, group_name: item.user_group_name }
       })
       setUserGroup(newGroupData);
-      
-      console.log("SECOND DATA",newGroupData);
+
+      console.log("SECOND DATA", newGroupData);
     }
 
     fetchData()

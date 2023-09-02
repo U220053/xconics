@@ -48,7 +48,7 @@ import { Select } from '@mui/base'
 
 // eslint-disable-next-line react/prop-types
 export default function UserNewEditForm({ currentUser, userGroup }) {
-  console.log(`userGroup`, userGroup)
+
   const router = useRouter()
   const [formData, setFormData] = useState({});
   const { enqueueSnackbar } = useSnackbar()
@@ -57,7 +57,7 @@ export default function UserNewEditForm({ currentUser, userGroup }) {
     email: Yup.string().required('User Email is required'),
     mobile: Yup.string().required('User Mobile is required'),
     password: Yup.string().required('Password is required'),
-    status: Yup.string().required('Status is required'),
+    status: Yup.number().required('Status is required'),
     groupref: Yup.string(),
   })
 
@@ -67,7 +67,7 @@ export default function UserNewEditForm({ currentUser, userGroup }) {
       mobile: currentUser?.user_mobile || '',
       password: currentUser?.password || '',
       groupref: currentUser?.user_group_ref || '',
-      status: currentUser?.status === 1 ? 'Active' : 'Inactive' || '',
+      status: currentUser?.status||1  ,
     }),
     [currentUser]
   )
@@ -93,14 +93,10 @@ export default function UserNewEditForm({ currentUser, userGroup }) {
   const values = watch()
 
   useEffect(() => {
-  
-      setValue('email', currentUser?.user_email || '')
-      setValue('mobile', currentUser?.user_mobile || '')
-      setValue('password', currentUser?.password || '')
-      setValue('groupref', currentUser?.groupref || '')
-      setValue('status', currentUser?.status === 1 ? 'Active' : 'Inactive' || '')
-   
+    if (currentUser?.user_email) setUser(true);
+    else setUser(false);
 
+    console.log(currentUser);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -117,48 +113,35 @@ export default function UserNewEditForm({ currentUser, userGroup }) {
         user_mobile: data.mobile,
         password: data.password,
         user_group_ref: data.groupref,
-        status: data.status === 'Active' ? 1 : 0
+        status: data.status
       }
-
- console.log(newData);
-      console.log("response");
-       const respones=await axios.post('/api/user/create', newData); // Calling the API endpoint
- console.log(respones);
+      console.log(data);
+let response;
+      if (!user) {
+       response= await axios.post('/api/user/create', newData);
+      } else {
+       response= await axios.post(`/api/user/update/${currentUser._id}`, newData);
+      }
       await new Promise((resolve) => setTimeout(resolve, 500));
       reset();
-      // enqueueSnackbar(currentUser ? 'Update success!' : 'Create success!')
-      // await new Promise((resolve) => setTimeout(resolve, 500));
-
+      enqueueSnackbar(currentUser ? 'Update success!' : 'Create success!')
+      await new Promise((resolve) => setTimeout(resolve, 500));
+ console.log(response);
       router.push(paths.dashboard.user.list);
-  
+
 
     } catch (error) {
-      await new Promise((resolve) => setTimeout(resolve, 500));
-      enqueueSnackbar(error.error);
+  
 
       console.error(error);
 
     }
-
-    //   if (!user) {
-    //     await axios.post('/api/user/create', newData);
-    //   } else {
-    //     await axios.post(`/api/user/update/${currentUser._id}`, newData);
-    //   }
-    //   await new Promise((resolve) => setTimeout(resolve, 500));
-    //   reset();
-    //   enqueueSnackbar(currentUser ? 'Update success!' : 'Create success!');
-    //   router.push(paths.dashboard.user.list);
-    //   console.info('DATA', data);
-    // } catch (error) {
-    //   // console.error(error);
-    // }
     onFormChange(data);
   });
 
 
-  const statuses = [{ label: 'Active', value: 'Active' }
-    , { label: "Inactive", value: "Inactive" }]
+  const statuses = [{ label: 'Active', value: 1 }
+    , { label: "Inactive", value: 0 }]
 
 
   const handleLogData = () => {
@@ -217,42 +200,37 @@ export default function UserNewEditForm({ currentUser, userGroup }) {
             /> */}
 
             <RHFSelect
+              // helperText= "Select Group"
               fullWidth
               name="groupref"
-              label="Status"
-              InputLabelProps={{ shrink: true }}
+              label="Group"
+              // InputLabelProps={{ shrink: true }}
               PaperPropsSx={{ textTransform: 'capitalize' }}
+              defaultValue={currentUser?.user_group_ref||""}
             >
               {
                 userGroup.map((option) => <MenuItem key={option.id} value={option.id}>{option.group_name}</MenuItem>)
               }
             </RHFSelect>
 
-         
 
-            <RHFAutocomplete
+            <RHFSelect
+              fullWidth
               name="status"
               label="Status"
-              options={statuses.map((status) => status.label)}
-              getOptionLabel={(option) => option}
-              isOptionEqualToValue={(option, value) => option === value}
-              renderOption={(props, option) => {
-                const { label } = statuses.filter(
-                  (status) => status.label === option
-                )[0]
+              PaperPropsSx={{ textTransform: 'capitalize' }}
+              defaultValue={currentUser?.status||1} // Set the value based on your condition
+            >
+              {statuses.map((option) => (
+                <MenuItem key={option.value} value={option.value}>
+                  {option.label}
+                </MenuItem>
+              ))}
+            </RHFSelect>
 
-                if (!label) {
-                  return null
-                }
 
-                return (
-                  <li {...props} key={label === "Active" ? 1 : 0}>
 
-                    {label}
-                  </li>
-                )
-              }}
-            />
+
 
 
           </Box>
