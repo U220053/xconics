@@ -15,20 +15,21 @@ import CustomerNewEditForm from '../customer-new-edit-form';
 
 export default function CustomerEditView({ id }) {
   const settings = useSettingsContext();
-  const [dataUser, setDataUser] = useState(null);
+  const [dataCustomer, setDataCustomer] = useState(null);
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await axios.get(`api/user/usergroup/${id}`);
+        const response = await axios.get(`api/customer/get/${id}`);
         // const data = await response.json();
 
-        setDataUser(response.data.data);
+        setDataCustomer(response.data.data);
       } catch (error) {
         console.error('Error fetching API data:', error);
       }
     }
 
     fetchData();
+    // console.log({ dataCustomer });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   // const currentUser = _userList.find((user) => user.id === id);
@@ -46,14 +47,14 @@ export default function CustomerEditView({ id }) {
             name: 'Customer',
             href: paths.dashboard.customer.root,
           },
-          { name: dataUser?.name },
+          { name: dataCustomer?.name },
         ]}
         sx={{
           mb: { xs: 3, md: 5 },
         }}
       />
 
-      <CustomerNewEditForm currentUser={dataUser} />
+      <CustomerNewEditForm currentCustomer={dataCustomer} />
     </Container>
   );
 }

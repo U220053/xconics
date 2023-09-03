@@ -284,172 +284,6 @@
 //   currentUser: PropTypes.object,
 // };
 
-// import PropTypes from 'prop-types';
-// import * as Yup from 'yup';
-// // eslint-disable-next-line import/no-duplicates
-// import { useCallback, useMemo, useState } from 'react';
-// import { useForm, Controller } from 'react-hook-form';
-// import { yupResolver } from '@hookform/resolvers/yup';
-// // eslint-disable-next-line import/no-duplicates
-// import { useEffect } from 'react';
-
-// // @mui
-// import LoadingButton from '@mui/lab/LoadingButton';
-// import Box from '@mui/material/Box';
-// import Card from '@mui/material/Card';
-// import Stack from '@mui/material/Stack';
-// import Button from '@mui/material/Button';
-// import Switch from '@mui/material/Switch';
-// import Grid from '@mui/material/Unstable_Grid2';
-// import Typography from '@mui/material/Typography';
-// import FormControlLabel from '@mui/material/FormControlLabel';
-// // utils
-// import { fData } from 'src/utils/format-number';
-// // routes
-// import { paths } from 'src/routes/paths';
-// import { useRouter } from 'src/routes/hooks';
-// // assets
-// import { countries } from 'src/assets/data';
-// // components
-// import Label from 'src/components/label';
-// import Iconify from 'src/components/iconify';
-// import { useSnackbar } from 'src/components/snackbar';
-// import FormProvider, {
-//   RHFSwitch,
-//   RHFTextField,
-//   RHFUploadAvatar,
-//   RHFAutocomplete,
-// } from 'src/components/hook-form';
-// import axios from 'src/utils/axios';
-// // ----------------------------------------------------------------------
-
-// export default function CustomerNewEditForm({ currentUser }) {
-//   const router = useRouter();
-
-//   const { enqueueSnackbar } = useSnackbar();
-
-//   const NewUserSchema = Yup.object().shape({
-//     name: Yup.string().required('Name is required'),
-//     description: Yup.string().required('Description is required'),
-//     status: Yup.string().required('Status is required'),
-//   });
-
-//   const defaultValues = useMemo(
-//     () => ({
-//       name: currentUser?.user_group_name || '',
-
-//       description: currentUser?.user_group_description || '',
-//       status: currentUser?.status === 1 ? 'Active' : 'InActive' || '',
-//     }),
-//     [currentUser]
-//   );
-
-//   const methods = useForm({
-//     resolver: yupResolver(NewUserSchema),
-//     defaultValues,
-//   });
-
-//   const {
-//     reset,
-//     watch,
-//     control,
-//     setValue,
-//     handleSubmit,
-//     formState: { isSubmitting },
-//   } = methods;
-
-//   const [user, setUser] = useState(false);
-//   useEffect(() => {
-//     // eslint-disable-next-line react-hooks/exhaustive-deps
-//     console.log(currentUser?._id);
-//     if (currentUser?.user_group_name) setUser(true);
-//     else setUser(false);
-//     setValue('name', currentUser?.user_group_name || '');
-//     setValue('description', currentUser?.user_group_description || '');
-//     setValue('status', currentUser?.status === 1 ? 'Active' : 'InActive' || '');
-//   }, [currentUser, setValue]);
-//   const values = watch();
-
-//   const onSubmit = handleSubmit(async (data) => {
-//     try {
-//       const newData = {
-//         user_group_name: data.name,
-//         user_group_description: data.description,
-//         status: data.status === 'Active' ? 1 : 0,
-//       };
-
-//       if (!user) {
-//         await axios.post('/api/user/create/usergroup', newData);
-//       } else {
-//         await axios.post(`/api/user/update/usergroup/${currentUser._id}`, newData);
-//       }
-//       await new Promise((resolve) => setTimeout(resolve, 500));
-//       reset();
-//       enqueueSnackbar(currentUser ? 'Update success!' : 'Create success!');
-//       router.push(paths.dashboard.customer.list);
-//       console.info('DATA', data);
-//     } catch (error) {
-//       console.error(error);
-//     }
-//   });
-//   const statuses = [
-//     { label: 'Active', value: 'Active' },
-//     { label: 'Inactive', value: 'InActive' },
-//   ];
-//   return (
-//     <FormProvider methods={methods} onSubmit={onSubmit}>
-//       <Grid xs={12} md={8}>
-//         <Card sx={{ p: 3 }}>
-//           <Box
-//             rowGap={3}
-//             columnGap={2}
-//             display="grid"
-//             gridTemplateColumns={{
-//               xs: 'repeat(1, 1fr)',
-//               sm: 'repeat(2, 1fr)',
-//             }}
-//           >
-//             <RHFTextField name="name" label="Customer Name" />
-//             <RHFTextField name="description" label="Customer Description" />
-
-//             <RHFAutocomplete
-//               name="status"
-//               label="Status"
-//               options={statuses.map((status) => status.label)}
-//               getOptionLabel={(option) => option}
-//               isOptionEqualToValue={(option, value) => option === value}
-//               renderOption={(props, option) => {
-//                 const { label } = statuses.filter((status) => status.label === option)[0];
-
-//                 if (!label) {
-//                   return null;
-//                 }
-
-//                 return (
-//                   <li {...props} key={label === 'Active' ? 0 : 1}>
-//                     {label}
-//                   </li>
-//                 );
-//               }}
-//             />
-//           </Box>
-
-//           <Stack alignItems="flex-end" sx={{ mt: 3 }}>
-//             <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
-//               {!currentUser ? 'Create Customer' : 'Save Changes'}
-//             </LoadingButton>
-//           </Stack>
-//         </Card>
-//       </Grid>
-//     </FormProvider>
-//   );
-// }
-
-// CustomerNewEditForm.propTypes = {
-//   currentUser: PropTypes.object,
-// };
-
-//**************************************************************** 287*/
 import PropTypes from 'prop-types';
 import * as Yup from 'yup';
 // eslint-disable-next-line import/no-duplicates
@@ -494,14 +328,13 @@ import FormProvider, {
   RHFTextField,
   RHFUploadAvatar,
   RHFAutocomplete,
-  RHFSelect,
 } from 'src/components/hook-form';
 
 import axios from 'src/utils/axios';
 
 // ----------------------------------------------------------------------
 
-export default function CustomerNewEditForm({ currentCustomer }) {
+export default function UserNewEditForm({ currentUser }) {
   const router = useRouter();
   const [formData, setFormData] = useState({});
   const { enqueueSnackbar } = useSnackbar();
@@ -509,44 +342,30 @@ export default function CustomerNewEditForm({ currentCustomer }) {
   const NewUserSchema = Yup.object().shape({
     name: Yup.string().required('Name is required'),
     PersonName: Yup.string().required('Contact Person Name is required'),
-    PhoneNo: Yup.number().required('Contact Phone No is required'),
-    ContactEmail: Yup.string().email().required('Contact Email is required'),
+    PhoneNo: Yup.string().required('Contact Phone No is required'),
+    ContactEmail: Yup.string().required('Contact Email is required'),
     address: Yup.string().required('Address is required'),
     City: Yup.string().required('City is required'),
     State: Yup.string().required('State is required'),
-    Pin: Yup.number().min(6).required('Pin is required'),
-    AdminEmail: Yup.string().email().required('Admin Email is required'),
-    AdminPhone: Yup.number().required(' Admin Phone No. is required'),
-    // AdminPassword: Yup.string().required('Admin Password is required'),
+    Pin: Yup.string().required('Pin is required'),
+    AdminEmail: Yup.string().required('Admin Email is required'),
+    AdminPhone: Yup.string().required(' Admin Phone No. is required'),
+    AdminPassword: Yup.string().required('Admin Password is required'),
     ActivationDate: Yup.string().required('Activation Date is required'),
     TermExpDate: Yup.string().required('Term Exp. Date is required'),
     ClientManagerName: Yup.string().required('Client Manager Name is required'),
     ClientManagerAttachDate: Yup.string().required('Client Manager Attach Date is required'),
-    SelectGroup: Yup.string().required('Select Group is required'),
+    // SelectGroup: Yup.string().required('Select Group is required'),
     status: Yup.string().required('Status is required'),
   });
 
   const defaultValues = useMemo(
     () => ({
-      name: currentCustomer?.customer_group_name || '',
-      PersonName: currentCustomer?.customer_person_name || '',
-      PhoneNo: currentCustomer?.customer_phone || '',
-      ContactEmail: currentCustomer?.customer_contact_email || '',
-      address: currentCustomer?.customer_address || '',
-      City: currentCustomer?.customer_city || '',
-      State: currentCustomer?.customer_state || '',
-      Pin: currentCustomer?.customer_pin || '',
-      AdminEmail: currentCustomer?.customer_admin_email || '',
-      AdminPhone: currentCustomer?.customer_admin_phone || '',
-      ActivationDate: currentCustomer?.customer_activation_date || '',
-      TermExpDate: currentCustomer?.customer_term_exp_date || '',
-      ClientManagerName: currentCustomer?.customer_client_ || '',
-      ClientManagerAttachDate: currentCustomer?.customer_client_date || '',
-      SelectGroup: currentCustomer?.customer_select_group || '',
-      // description: currentCustomer?.user_group_description || '',
-      status: currentCustomer?.status === 1 ? 'Active' : 'Inactive' || '',
+      name: currentUser?.user_group_name || '',
+      description: currentUser?.user_group_description || '',
+      status: currentUser?.status === 1 ? 'Active' : 'InActive' || '',
     }),
-    [currentCustomer]
+    [currentUser]
   );
 
   const methods = useForm({
@@ -563,83 +382,38 @@ export default function CustomerNewEditForm({ currentCustomer }) {
     formState: { isSubmitting },
   } = methods;
 
-  const [customer, setCustomer] = useState(false);
-  useEffect(async () => {
+  const [user, setUser] = useState(false);
+  useEffect(() => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    getGroupData();
-    console.log(currentCustomer?._id);
-    if (currentCustomer?.customer_group_name) setCustomer(true);
-    else setCustomer(false);
-    setValue('name', currentCustomer?.customer_group_name || '');
-    // setValue('description', currentCustomer?.user_group_description || '');
-    setValue('PersonName', currentCustomer?.customer_person_name || '');
-    setValue('PhoneNo', currentCustomer?.customer_phone || '');
-    setValue('ContactEmail', currentCustomer?.customer_contact_email || '');
-    setValue('address', currentCustomer?.customer_address || '');
-    setValue('City', currentCustomer?.customer_city || '');
-    setValue('State', currentCustomer?.customer_state || '');
-    setValue('Pin', currentCustomer?.customer_pin || '');
-    setValue('AdminEmail', currentCustomer?.customer_admin_email || '');
-    setValue('AdminPhone', currentCustomer?.customer_admin_phone || '');
-    setValue('ActivationDate', currentCustomer?.customer_activation_date || '');
-    setValue('TermExpDate', currentCustomer?.customer_term_exp_date || '');
-    setValue('ClientManagerName', currentCustomer?.customer_client_ || '');
-    setValue('ClientManagerAttachDate', currentCustomer?.customer_client_date || '');
-    setValue('SelectGroup', currentCustomer?.customer_select_group || '');
-    setValue('status', currentCustomer?.status === 1 ? 'Active' : 'Inactive' || '');
-    console.log('select group', currentCustomer);
-  }, [currentCustomer, setValue]);
+    console.log(currentUser?._id);
+    if (currentUser?.user_group_name) setUser(true);
+    else setUser(false);
+    setValue('name', currentUser?.user_group_name || '');
+    setValue('description', currentUser?.user_group_description || '');
+    setValue('status', currentUser?.status === 1 ? 'Active' : 'InActive' || '');
+  }, [currentUser, setValue]);
   const values = watch();
-
-  const getGroupData = async () => {
-    axios
-      .get('/api/user/usergroups') // Replace with your API endpoint
-      .then((response) => {
-        console.log(response.data.data);
-        setGroupData(response.data.data);
-      })
-      .catch((error) => {
-        console.error('Error fetching dropdown data:', error);
-      });
-  };
 
   const onFormChange = (data) => {
     setFormData(data);
   };
   const onSubmit = handleSubmit(async (data) => {
     try {
-      console.log('clicked 1');
       const newData = {
-        customer_group_name: data.name,
-        // user_group_description: data.description,
-        customer_person_name: data.PersonName,
-        customer_phone: data.PhoneNo,
-        customer_contact_email: data.ContactEmail,
-        customer_address: data.address,
-        customer_city: data.City,
-        customer_state: data.State,
-        customer_pin: data.Pin,
-        customer_admin_email: data.AdminEmail,
-        customer_admin_phone: data.AdminPhone,
-        customer_activation_date: data.ActivationDate,
-        customer_term_exp_date: data.TermExpDate,
-        customer_client_: data.ClientManagerName,
-        customer_client_date: data.ClientManagerAttachDate,
-        customer_select_group: data.SelectGroup,
+        user_group_name: data.name,
+        user_group_description: data.description,
         status: data.status === 'Active' ? 1 : 0,
       };
-      console.log({ newData });
-      if (!customer) {
-        await axios.post('/api/customer/create', newData);
+
+      if (!user) {
+        await axios.post('/api/user/create/usergroup', newData);
       } else {
-        await axios.post(`/api/customer/update/${currentCustomer._id}`, newData);
+        await axios.post(`/api/user/update/usergroup/${currentUser._id}`, newData);
       }
       await new Promise((resolve) => setTimeout(resolve, 500));
       reset();
-      enqueueSnackbar(currentCustomer ? 'Update success!' : 'Create success!');
-      console.log('clicked 2');
-      router.push(paths.dashboard.customer.list);
-      console.log('clicked 3');
+      enqueueSnackbar(currentUser ? 'Update success!' : 'Create success!');
+      router.push(paths.dashboard.user.management);
       console.info('DATA', data);
     } catch (error) {
       // console.error(error);
@@ -648,12 +422,9 @@ export default function CustomerNewEditForm({ currentCustomer }) {
   });
   const statuses = [
     { label: 'Active', value: 'Active' },
-    { label: 'Inactive', value: 'Inactive' },
+    { label: 'Inactive', value: 'InActive' },
   ];
-  const clientmanager = [
-    { label: 'Yes', value: 'yes' },
-    { label: 'No', value: 'no' },
-  ];
+
   // const obj ={}
   // document.querySelectorAll("RHFTextField".forEach(e) => {
   //   obj[e.name]= e.value
@@ -662,34 +433,19 @@ export default function CustomerNewEditForm({ currentCustomer }) {
   const handleLogData = () => {
     console.log('Form Data:', formData);
   };
-  // const [dropdownData, setDropdownData] = useState([]);
-  const [groupData, setGroupData] = useState([]);
-  const [selectedGroup, setSelectedGroup] = useState('');
-  // useEffect(() => {
-  //   // Make an API request to fetch the data
-  //   // Replace 'yourApiEndpoint' with your actual API endpoint
-  //   fetch('/api/user/usergroups')
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       // Assuming your API response contains an array of group objects
-  //       setGroupData(data.data);
-  //     })
-  //     .catch((error) => {
-  //       console.error('Error fetching data:', error);
-  //     });
-  // }, []);
+  const [dropdownData, setDropdownData] = useState([]);
 
-  // useEffect(() => {
-  //   axios
-  //     .get('/api/user/usergroups') // Replace with your API endpoint
-  //     .then((response) => {
-  //       console.log(response.data.data);
-  //       setGroupData(response.data.data);
-  //     })
-  //     .catch((error) => {
-  //       console.error('Error fetching dropdown data:', error);
-  //     });
-  // }, []);
+  useEffect(() => {
+    axios
+      .get('/api/user/usergroups') // Replace with your API endpoint
+      .then((response) => {
+        console.log(response.data.data);
+        setDropdownData(response.data.data);
+      })
+      .catch((error) => {
+        console.error('Error fetching dropdown data:', error);
+      });
+  }, []);
 
   const handleDrop = useCallback(
     (acceptedFiles) => {
@@ -700,7 +456,7 @@ export default function CustomerNewEditForm({ currentCustomer }) {
       });
 
       if (file) {
-        setValue('avatarUrl', newFile, { shouldValidate: 'true' });
+        setValue('avatarUrl', newFile, { shouldValidate: true });
       }
     },
     [setValue]
@@ -760,7 +516,8 @@ export default function CustomerNewEditForm({ currentCustomer }) {
               <RHFTextField name="Pin" label="Pin" />
               <RHFTextField name="AdminEmail" label="Admin Email" />
               <RHFTextField name="AdminPhone" label="Admin Phone" />
-
+              <RHFTextField name="AdminPassword" label="Admin Password" />
+              {/* <RHFTextField name="ActivationDate" label="Activation Date" /> */}
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DatePicker label="Activation Date" />
               </LocalizationProvider>
@@ -769,14 +526,17 @@ export default function CustomerNewEditForm({ currentCustomer }) {
                 <DatePicker label="Term Exp. Date" />
               </LocalizationProvider>
 
-              {/* <RHFAutocomplete
+              {/* <RHFTextField name="TermExpDate" label="Term Exp. Date" /> */}
+              <RHFTextField name="wallet" label="wallet" />
+              {/* <RHFTextField name="number2" label="Client Manager Ref" /> */}
+              <RHFAutocomplete
                 name="ClientManagerName"
                 label="Client Manager Name"
-                options={clientmanager.map((number2) => number2.label)}
+                options={statuses.map((number2) => number2.label)}
                 getOptionLabel={(option) => option}
                 isOptionEqualToValue={(option, value) => option === value}
                 renderOption={(props, option) => {
-                  const { label } = clientmanager.filter((status) => status.label === option)[0];
+                  const { label } = statuses.filter((status) => status.label === option)[0];
 
                   if (!label) {
                     return null;
@@ -788,42 +548,15 @@ export default function CustomerNewEditForm({ currentCustomer }) {
                     </li>
                   );
                 }}
-              /> */}
-              <RHFSelect
-                native
-                name="ClientManagerName"
-                label="Client Manager Name"
-                InputLabelProps={{ shrink: true }}
-              >
-                {clientmanager.map((number2) => (
-                  <option key={number2.label} value={number2.label}>
-                    {number2.label}
-                  </option>
-                ))}
-              </RHFSelect>
-
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DatePicker name="ClientManagerAttachDate" label="Client Manager Attach Date" />
-              </LocalizationProvider>
-
-              <RHFSelect
-                native
-                name="SelectGroup"
-                label="Select Group"
-                InputLabelProps={{ shrink: true }}
-              >
-                {groupData.map((group) => (
-                  <option key={group.user_group_name} value={group.user_group_name}>
-                    {group.user_group_name}
-                  </option>
-                ))}
-              </RHFSelect>
-
-              {/* <RHFAutocomplete
+              />
+              <RHFTextField name="ClientManagerAttachDate" label="Client Manager Attach Date" />
+              <RHFAutocomplete
                 name="SelectGroup"
                 label="Select Group"
                 options={
-                  Array.isArray(groupData) ? groupData.map((item) => item.user_group_name) : []
+                  Array.isArray(dropdownData)
+                    ? dropdownData.map((item) => item.user_group_name)
+                    : []
                 }
                 getOptionLabel={(option) => option}
                 isOptionEqualToValue={(option, value) => option === value}
@@ -832,20 +565,33 @@ export default function CustomerNewEditForm({ currentCustomer }) {
                     {option}
                   </MenuItem>
                 )}
-              /> */}
+              />
 
-              <RHFSelect native name="status" label="Status" InputLabelProps={{ shrink: true }}>
-                {statuses.map((status) => (
-                  <option key={status.label} value={status.label}>
-                    {status.label}
-                  </option>
-                ))}
-              </RHFSelect>
+              <RHFAutocomplete
+                name="status"
+                label="Status"
+                options={statuses.map((status) => status.label)}
+                getOptionLabel={(option) => option}
+                isOptionEqualToValue={(option, value) => option === value}
+                renderOption={(props, option) => {
+                  const { label } = statuses.filter((status) => status.label === option)[0];
+
+                  if (!label) {
+                    return null;
+                  }
+
+                  return (
+                    <li {...props} key={label === 'Active' ? 1 : 0}>
+                      {label}
+                    </li>
+                  );
+                }}
+              />
             </Box>
           </Box>
           <Stack alignItems="flex-end" sx={{ mt: 3 }}>
             <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
-              {!currentCustomer ? 'Create Customer' : 'Save Changes'}
+              {!currentUser ? 'Create Customer' : 'Save Changes'}
             </LoadingButton>
           </Stack>
         </Card>
@@ -854,7 +600,6 @@ export default function CustomerNewEditForm({ currentCustomer }) {
   );
 }
 
-CustomerNewEditForm.propTypes = {
-  currentCustomer: PropTypes.object,
-  userGroup: PropTypes.object,
+UserNewEditForm.propTypes = {
+  currentUser: PropTypes.object,
 };

@@ -47,10 +47,11 @@ import CustomerTableFiltersResult from '../customer-table-filters-result';
 const STATUS_OPTIONS = [{ value: 'all', label: 'All' }, ...USER_STATUS_OPTIONS];
 
 const TABLE_HEAD = [
-  { id: 'name', label: 'Name' },
+  { id: 'name', label: 'Name', width: 180 },
   { id: 'phoneNumber', label: 'Phone Number', width: 180 },
-  { id: 'company', label: 'Company', width: 220 },
-  { id: 'role', label: 'Role', width: 180 },
+  // { id: 'company', label: 'Company', width: 220 },
+  // { id: 'role', label: 'Role', width: 180 },
+  { id: 'ClientManagerName', label: 'Client Manager Name', width: 220 },
   { id: 'status', label: 'Status', width: 100 },
   { id: '', width: 88 },
 ];
@@ -73,6 +74,7 @@ export default function CustomerListView() {
   const confirm = useBoolean();
 
   const [tableData, setTableData] = useState(_userList);
+  const [isSuccess, setisSuccess] = useState();
 
   const [filters, setFilters] = useState(defaultFilters);
 
@@ -127,7 +129,7 @@ export default function CustomerListView() {
 
   const handleEditRow = useCallback(
     (id) => {
-      router.push(paths.dashboard.user.edit(id));
+      router.push(paths.dashboard.customer.edit(id));
     },
     [router]
   );
@@ -197,14 +199,14 @@ export default function CustomerListView() {
                   >
                     {tab.value === 'all' && _userList.length}
                     {tab.value === 'active' &&
-                      _userList.filter((user) => user.status === 'active').length}
+                      _userList.filter((customer) => customer.status === 'active').length}
 
                     {tab.value === 'pending' &&
-                      _userList.filter((user) => user.status === 'pending').length}
+                      _userList.filter((customer) => customer.status === 'pending').length}
                     {tab.value === 'banned' &&
-                      _userList.filter((user) => user.status === 'banned').length}
+                      _userList.filter((customer) => customer.status === 'banned').length}
                     {tab.value === 'rejected' &&
-                      _userList.filter((user) => user.status === 'rejected').length}
+                      _userList.filter((customer) => customer.status === 'rejected').length}
                   </Label>
                 }
               />
@@ -335,6 +337,9 @@ export default function CustomerListView() {
 }
 
 // ----------------------------------------------------------------------
+async function deletecustomer(id) {
+  await axios.post(`api/customer/delete/${id}`);
+}
 
 function applyFilter({ inputData, comparator, filters }) {
   const { name, status, role } = filters;
@@ -351,16 +356,16 @@ function applyFilter({ inputData, comparator, filters }) {
 
   if (name) {
     inputData = inputData.filter(
-      (user) => user.name.toLowerCase().indexOf(name.toLowerCase()) !== -1
+      (customer) => customer.name.toLowerCase().indexOf(name.toLowerCase()) !== -1
     );
   }
 
   if (status !== 'all') {
-    inputData = inputData.filter((user) => user.status === status);
+    inputData = inputData.filter((customer) => customer.status === status);
   }
 
   if (role.length) {
-    inputData = inputData.filter((user) => role.includes(user.role));
+    inputData = inputData.filter((customer) => role.includes(customer.role));
   }
 
   return inputData;

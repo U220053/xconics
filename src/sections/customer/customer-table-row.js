@@ -183,7 +183,24 @@ import { ConfirmDialog } from 'src/components/custom-dialog';
 
 // eslint-disable-next-line react/prop-types
 export default function CustomerTableRow({ row, selected, onEditRow, onSelectRow, onDeleteRow }) {
-  const { user_group_name, user_group_description, status } = row;
+  const {
+    customer_group_name,
+    customer_person_name,
+    customer_phone,
+    customer_contact_email,
+    customer_address,
+    customer_city,
+    customer_state,
+    customer_pin,
+    customer_admin_email,
+    customer_admin_phone,
+    customer_activation_date,
+    customer_term_exp_date,
+    customer_client_,
+    customer_client_date,
+    customer_select_group,
+    status,
+  } = row;
 
   const confirm = useBoolean();
 
@@ -193,7 +210,7 @@ export default function CustomerTableRow({ row, selected, onEditRow, onSelectRow
   // useEffect(() => {
   //   async function fetchData() {
   //     try {
-  //       // const response = await axios.get('api/user/usergroups');
+  //       // const response = await axios.get('api/customer/usergroups');
   //       // // const data = await response.json();
 
   //     console.log(row);
@@ -227,9 +244,9 @@ export default function CustomerTableRow({ row, selected, onEditRow, onSelectRow
           />
           </TableCell> */}
 
-        <TableCell sx={{ whiteSpace: 'nowrap' }}>{user_group_name}</TableCell>
+        <TableCell sx={{ whiteSpace: 'nowrap' }}>{customer_group_name}</TableCell>
 
-        <TableCell sx={{ whiteSpace: 'nowrap' }}>{user_group_description}</TableCell>
+        {/* <TableCell sx={{ whiteSpace: 'nowrap' }}>{user_group_description}</TableCell> */}
 
         <TableCell>
           <Label
