@@ -41,11 +41,8 @@ import {
 
 import axios from 'src/utils/axios';
 import PermissionTableRow from '../permission-table-row';
-import PermissionTableToolbar from '../permission-table-toolbar';
+// import PermissionTableToolbar from '../permission-table-toolbar';
 import PermissionTableFiltersResult from '../permission-table-filters-result';
-
-
-// ----------------------------------------------------------------------
 
 const STATUS_OPTIONS = [
   { value: 'all', label: 'All' },
@@ -61,42 +58,58 @@ const TABLE_HEAD = [
   { id: 'delete', label: 'Delete', width: 180 },
   { id: 'export', label: 'Export', width: 180 },
   { id: 'print', label: 'Print', width: 180 },
-  // { id: 'status', label: 'Status', width: 100 },
+  { id: 'enable', label: 'Enable', width: 180 },
+  { id: 'status', label: 'Status', width: 100 },
   { id: '', width: 88 },
 ];
-
 const defaultFilters = {
   name: '',
-  role: [],
+  // role: [],
   status: 'all',
-};
-
+}
 // ----------------------------------------------------------------------
 
-function PermissionListView() {
+export default function PermissionListView() {
   const table = useTable();
 
   const settings = useSettingsContext();
-
+  // const [updateTrigger, setUpdateTrigger] = useState(false);
   const router = useRouter();
 
   const confirm = useBoolean();
 
-  const [tableData, setTableData] = useState(_userList);
-
+  const [tableData, setTableData] = useState([]);
+  const [isSuccess, setisSuccess] = useState();
   const [filters, setFilters] = useState(defaultFilters);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await axios.get('api/user/permission');
+        // const data = await response.json();
+
+        setisSuccess(response.data.success);
+        setTableData(response.data.data);
+
+
+      } catch (error) {
+        console.error('Error fetching API data:', error);
+      }
+    }
+
+    fetchData();
+  }, []);
+
 
   const dataFiltered = applyFilter({
     inputData: tableData,
     comparator: getComparator(table.order, table.orderBy),
     filters,
   });
-
   const dataInPage = dataFiltered.slice(
     table.page * table.rowsPerPage,
     table.page * table.rowsPerPage + table.rowsPerPage
   );
-
   const denseHeight = table.dense ? 52 : 72;
 
   const canReset = !isEqual(defaultFilters, filters);
@@ -113,10 +126,8 @@ function PermissionListView() {
     },
     [table]
   );
-
   async function deletegroup(id) {
-    console.log(id);
-    await axios.post(`/user/permission/delete/${id}`);
+    await axios.post(`api/user/permission/delete/${id}`);
   }
   /// have to call API
   const handleDeleteRow = useCallback(
@@ -124,7 +135,8 @@ function PermissionListView() {
       const deleteRow = tableData.filter((row) => row._id !== id);
       try {
         deletegroup(id);
-      } catch (err) {
+      }
+      catch (err) {
         console.error('Error fetching API data:', err);
       }
       setTableData(deleteRow);
@@ -134,7 +146,9 @@ function PermissionListView() {
     [dataInPage.length, table, tableData]
   );
 
+
   const deleteSelectedGroups = async (selectedIds) => {
+
     const deletePromises = selectedIds.map((id) => deletegroup(id));
 
     try {
@@ -145,13 +159,12 @@ function PermissionListView() {
       console.error('Error deleting selected groups:', error);
     }
   };
-
-
   const handleDeleteRows = useCallback(() => {
     const selectedIds = table.selected;
     const deleteRows = tableData.filter((row) => !table.selected.includes(row._id));
     try {
       deleteSelectedGroups(selectedIds);
+
       console.log('Selected groups deleted successfully');
     } catch (error) {
       console.error('Error deleting selected groups:', error);
@@ -163,22 +176,19 @@ function PermissionListView() {
       totalRowsInPage: dataInPage.length,
       totalRowsFiltered: dataFiltered.length,
     });
-  }, [dataFiltered.length, dataInPage.length, table, tableData, deleteSelectedGroups]);
-
-const handleEditRow = useCallback(
-  (id) => {
-    router.push(paths.dashboard.user.edit(id));
-  },
-  [router]
-);
-
+  }, [dataFiltered.length, dataInPage.length, table, tableData]);
+  const handleEditRow = useCallback(
+    (id) => {
+      router.push(paths.dashboard.user.permissionedit(id));
+    },
+    [router]
+  );
   const handleFilterStatus = useCallback(
     (event, newValue) => {
       handleFilters('status', newValue);
     },
     [handleFilters]
   );
-
   const handleResetFilters = useCallback(() => {
     setFilters(defaultFilters);
   }, []);
@@ -187,7 +197,7 @@ const handleEditRow = useCallback(
     <>
       <Container maxWidth={settings.themeStretch ? false : 'lg'}>
         <CustomBreadcrumbs
-          heading="Permission-List"
+          heading="Permission List"
           links={[
             { name: 'Dashboard', href: paths.dashboard.root },
             { name: 'User', href: paths.dashboard.user.root },
@@ -196,11 +206,11 @@ const handleEditRow = useCallback(
           action={
             <Button
               component={RouterLink}
-              href={paths.dashboard.user.permissionNew}
+              href={paths.dashboard.user.permissionnew}
               variant="contained"
               startIcon={<Iconify icon="mingcute:add-line" />}
             >
-              ADD
+              New Group
             </Button>
           }
           sx={{
@@ -223,41 +233,33 @@ const handleEditRow = useCallback(
                 iconPosition="end"
                 value={tab.value}
                 label={tab.label}
-                icon={
-                  <Label
-                    variant={
-                      ((tab.value === 'all' || tab.value === filters.status) && 'filled') || 'soft'
-                    }
-                    color={
-                      (tab.value === 'active' && 'success') ||
-                      (tab.value === 'pending' && 'warning') ||
-                      // (tab.value === 'banned' && 'error') ||
-                      'default'
-                    }
-                  >
-                    {tab.value === 'all' && _userList.length}
-                    {tab.value === 'active' &&
-                      _userList.filter((user) => user.status === 'active').length}
+                icon={<Label
+                  variant={
+                    ((tab.value === 'all') && 'filled') || 'soft'
+                  }
+                  color={
+                    (tab.value === 'active' && 'success') ||
+                    (tab.value === 'inactive' && 'warning') ||
+                    'default'
+                  }
+                >
+                  {tab.value === 'all' && tableData.length}
+                  {tab.value === 'active' &&
+                    tableData.filter((user) => user.status === 1).length}
 
-                    {tab.value === 'pending' &&
-                      _userList.filter((user) => user.status === 'pending').length}
-                    {/* {tab.value === 'banned' &&
-                      _userList.filter((user) => user.status === 'banned').length}
-                    {tab.value === 'rejected' &&
-                      _userList.filter((user) => user.status === 'rejected').length} */}
-                  </Label>
+                  {tab.value === 'inactive' &&
+                    tableData.filter((user) => user.status === 0).length}
+                </Label>
                 }
               />
             ))}
           </Tabs>
-
-          <PermissionTableToolbar
+          {/* <UserTableToolbar
             filters={filters}
             onFilters={handleFilters}
             //
             roleOptions={_roles}
-          />
-
+          /> */}
           {canReset && (
             <PermissionTableFiltersResult
               filters={filters}
@@ -269,7 +271,6 @@ const handleEditRow = useCallback(
               sx={{ p: 2.5, pt: 0 }}
             />
           )}
-
           <TableContainer sx={{ position: 'relative', overflow: 'unset' }}>
             <TableSelectedAction
               dense={table.dense}
@@ -278,7 +279,7 @@ const handleEditRow = useCallback(
               onSelectAllRows={(checked) =>
                 table.onSelectAllRows(
                   checked,
-                  tableData.map((row) => row.id)
+                  tableData.map((row) => row._id)
                 )
               }
               action={
@@ -302,11 +303,10 @@ const handleEditRow = useCallback(
                   onSelectAllRows={(checked) =>
                     table.onSelectAllRows(
                       checked,
-                      tableData.map((row) => row.id)
+                      tableData.map((row) => row._id)
                     )
                   }
                 />
-
                 <TableBody>
                   {dataFiltered
                     .slice(
@@ -315,26 +315,24 @@ const handleEditRow = useCallback(
                     )
                     .map((row) => (
                       <PermissionTableRow
-                        key={row.id}
+                        key={row._id}
                         row={row}
-                        selected={table.selected.includes(row.id)}
-                        onSelectRow={() => table.onSelectRow(row.id)}
-                        onDeleteRow={() => handleDeleteRow(row.id)}
-                        onEditRow={() => handleEditRow(row.id)}
+                        selected={table.selected.includes(row._id)}
+                        onSelectRow={() => table.onSelectRow(row._id)}
+                        onDeleteRow={() => handleDeleteRow(row._id)}
+                        onEditRow={() => handleEditRow(row._id)}
+
                       />
                     ))}
-
                   <TableEmptyRows
                     height={denseHeight}
                     emptyRows={emptyRows(table.page, table.rowsPerPage, tableData.length)}
                   />
-
                   <TableNoData notFound={notFound} />
                 </TableBody>
               </Table>
             </Scrollbar>
           </TableContainer>
-
           <TablePaginationCustom
             count={dataFiltered.length}
             page={table.page}
@@ -347,7 +345,6 @@ const handleEditRow = useCallback(
           />
         </Card>
       </Container>
-
       <ConfirmDialog
         open={confirm.value}
         onClose={confirm.onFalse}
@@ -370,14 +367,15 @@ const handleEditRow = useCallback(
           </Button>
         }
       />
+
     </>
-  );
+  )
 }
 
 // ----------------------------------------------------------------------
 
 function applyFilter({ inputData, comparator, filters }) {
-  const { name, status, role } = filters;
+  const { name, status } = filters;
 
   const stabilizedThis = inputData.map((el, index) => [el, index]);
 
@@ -391,18 +389,17 @@ function applyFilter({ inputData, comparator, filters }) {
 
   if (name) {
     inputData = inputData.filter(
-      (user) => user.name.toLowerCase().indexOf(name.toLowerCase()) !== -1
+      (user) => user.user_group_name.toLowerCase().indexOf(name.toLowerCase()) !== -1
     );
   }
 
   if (status !== 'all') {
-    inputData = inputData.filter((user) => user.status === status);
-  }
-
-  if (role.length) {
-    inputData = inputData.filter((user) => role.includes(user.role));
+    if (status === 'active') {
+      inputData = inputData.filter((user) => user.status === 1);
+    } else {
+      inputData = inputData.filter((user) => user.status === 0);
+    }
   }
 
   return inputData;
 }
-export default PermissionListView;
