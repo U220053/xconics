@@ -1,18 +1,18 @@
 // utils
-import { paramCase } from 'src/utils/change-case'
-import { _id, _postTitles } from 'src/_mock/assets'
+import { paramCase } from 'src/utils/change-case';
+import { _id, _postTitles } from 'src/_mock/assets';
 
 // ----------------------------------------------------------------------
 
-const MOCK_ID = _id[1]
+const MOCK_ID = _id[1];
 
-const MOCK_TITLE = _postTitles[2]
+const MOCK_TITLE = _postTitles[2];
 
 const ROOTS = {
   AUTH: '/auth',
   AUTH_DEMO: '/auth-demo',
   DASHBOARD: '/dashboard',
-}
+};
 
 // ----------------------------------------------------------------------
 
@@ -111,13 +111,13 @@ export const paths = {
       root: `${ROOTS.DASHBOARD}/user`,
       new: `${ROOTS.DASHBOARD}/user/new`,
       list: `${ROOTS.DASHBOARD}/user/list`,
-      usercreate: `${ROOTS.DASHBOARD}/user/usercreate`,
       cards: `${ROOTS.DASHBOARD}/user/cards`,
       profile: `${ROOTS.DASHBOARD}/user/list`,
       account: `${ROOTS.DASHBOARD}/user/account`,
       groupcreate: `${ROOTS.DASHBOARD}/user/groupcreate`,
       management: `${ROOTS.DASHBOARD}/user/management`,
-      edit: (id) => `${ROOTS.DASHBOARD}/user/${id}/edit`,
+      group: `${ROOTS.DASHBOARD}/user/group`,
+      edit: (id) => `${ROOTS.DASHBOARD}/user/group/${id}/edit`,
       demo: {
         edit: `${ROOTS.DASHBOARD}/user/${MOCK_ID}/edit`,
       },
@@ -180,4 +180,4 @@ export const paths = {
       },
     },
   },
-}
+};

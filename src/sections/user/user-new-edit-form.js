@@ -67,7 +67,7 @@ export default function UserNewEditForm({ currentUser, userGroup }) {
       mobile: currentUser?.user_mobile || '',
       password: currentUser?.password || '',
       groupref: currentUser?.user_group_ref || '',
-      status: currentUser?.status||1  ,
+      status: currentUser?.status || 1,
     }),
     [currentUser]
   )
@@ -116,22 +116,22 @@ export default function UserNewEditForm({ currentUser, userGroup }) {
         status: data.status
       }
       console.log(data);
-let response;
+      let response;
       if (!user) {
-       response= await axios.post('/api/user/create', newData);
+        response = await axios.post('/api/user/create', newData);
       } else {
-       response= await axios.post(`/api/user/update/${currentUser._id}`, newData);
+        response = await axios.post(`/api/user/update/${currentUser._id}`, newData);
       }
       await new Promise((resolve) => setTimeout(resolve, 500));
       reset();
       enqueueSnackbar(currentUser ? 'Update success!' : 'Create success!')
       await new Promise((resolve) => setTimeout(resolve, 500));
- console.log(response);
+      console.log(response);
       router.push(paths.dashboard.user.list);
 
 
     } catch (error) {
-  
+
 
       console.error(error);
 
@@ -206,7 +206,7 @@ let response;
               label="Group"
               // InputLabelProps={{ shrink: true }}
               PaperPropsSx={{ textTransform: 'capitalize' }}
-              defaultValue={currentUser?.user_group_ref||""}
+              defaultValue={currentUser?.user_group_ref || ""}
             >
               {
                 userGroup.map((option) => <MenuItem key={option.id} value={option.id}>{option.group_name}</MenuItem>)
@@ -219,7 +219,7 @@ let response;
               name="status"
               label="Status"
               PaperPropsSx={{ textTransform: 'capitalize' }}
-              defaultValue={currentUser?.status||1} // Set the value based on your condition
+              defaultValue={currentUser?.status || 1} // Set the value based on your condition
             >
               {statuses.map((option) => (
                 <MenuItem key={option.value} value={option.value}>
@@ -251,7 +251,6 @@ UserNewEditForm.propTypes = {
   currentUser: PropTypes.object,
   userGroup: PropTypes.object
 }
-
 
 
 
