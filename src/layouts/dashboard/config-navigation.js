@@ -103,7 +103,7 @@ export function useNavData() {
             children: [
               { title: t('list'), path: paths.dashboard.user.list },
               { title: t('group'), path: paths.dashboard.user.group },
-              { title: t('permission'), path: paths.dashboard.user.new },
+              { title: t('permission'), path: paths.dashboard.user.permission},
             ],
           },
 

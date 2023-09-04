@@ -29,6 +29,12 @@ const InvoiceListPage = lazy(() => import('src/pages/dashboard/invoice/list'))
 const InvoiceDetailsPage = lazy(() => import('src/pages/dashboard/invoice/details'))
 const InvoiceCreatePage = lazy(() => import('src/pages/dashboard/invoice/new'))
 const InvoiceEditPage = lazy(() => import('src/pages/dashboard/invoice/edit'))
+
+// USER PERMISSION
+const PermissionListPage = lazy(() => import('src/pages/dashboard/user/permission'))
+const PermissionCreatePage = lazy(() => import('src/pages/dashboard/user/permissionnew'));
+const PermissionEditPage = lazy(() => import('src/pages/dashboard/user/permissionedit'));
+
 // USER
 const UserProfilePage = lazy(() => import('src/pages/dashboard/user/profile'))
 const UserCardsPage = lazy(() => import('src/pages/dashboard/user/cards'))
@@ -37,7 +43,11 @@ const UserAccountPage = lazy(() => import('src/pages/dashboard/user/account'))
 const UserCreatePage = lazy(() => import('src/pages/dashboard/user/new'))
 const UserEditPage = lazy(() => import('src/pages/dashboard/user/edit'))
 const UserManagementPage = lazy(() => import('src/pages/dashboard/user/management'))
-const GroupCreatePage = lazy(() => import('src/pages/dashboard/user/creategroup'))
+
+// USER GROUP
+const GroupCreatePage = lazy(() => import('src/pages/dashboard/user/creategroup'));
+
+
 // BLOG
 const BlogPostsPage = lazy(() => import('src/pages/dashboard/post/list'))
 const BlogPostPage = lazy(() => import('src/pages/dashboard/post/details'))
@@ -83,9 +93,6 @@ export const dashboardRoutes = [
       { element: <IndexPage />, index: true },
       { path: 'ecommerce', element: <OverviewEcommercePage /> },
       { path: 'analytics', element: <OverviewAnalyticsPage /> },
-      { path: 'banking', element: <OverviewBankingPage /> },
-      { path: 'booking', element: <OverviewBookingPage /> },
-      { path: 'file', element: <OverviewFilePage /> },
       {
         path: 'user',
         children: [
@@ -93,6 +100,9 @@ export const dashboardRoutes = [
           { path: 'profile', element: <UserProfilePage /> },
           { path: 'cards', element: <UserCardsPage /> },
           { path: 'list', element: <UserListPage /> },
+          { path: 'permission', element: <PermissionListPage /> },
+          { path: 'permission/:id/edit', element: <PermissionEditPage /> },
+          { path: 'permission/new', element: <PermissionCreatePage/> },
           { path: 'new', element: <UserCreatePage /> },
           { path: 'new', element: <UserCreatePage /> },
           { path: ':id/edit', element: <UserEditPage /> },
