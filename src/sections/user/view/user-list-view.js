@@ -1,32 +1,32 @@
-import isEqual from 'lodash/isEqual';
-import { useState, useCallback } from 'react';
+import isEqual from 'lodash/isEqual'
+import { useState, useCallback, useEffect } from 'react'
 // @mui
-import { alpha } from '@mui/material/styles';
-import Tab from '@mui/material/Tab';
-import Tabs from '@mui/material/Tabs';
-import Card from '@mui/material/Card';
-import Table from '@mui/material/Table';
-import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
-import Container from '@mui/material/Container';
-import TableBody from '@mui/material/TableBody';
-import IconButton from '@mui/material/IconButton';
-import TableContainer from '@mui/material/TableContainer';
+import { alpha } from '@mui/material/styles'
+import Tab from '@mui/material/Tab'
+import Tabs from '@mui/material/Tabs'
+import Card from '@mui/material/Card'
+import Table from '@mui/material/Table'
+import Button from '@mui/material/Button'
+import Tooltip from '@mui/material/Tooltip'
+import Container from '@mui/material/Container'
+import TableBody from '@mui/material/TableBody'
+import IconButton from '@mui/material/IconButton'
+import TableContainer from '@mui/material/TableContainer'
 // routes
-import { paths } from 'src/routes/paths';
-import { useRouter } from 'src/routes/hooks';
-import { RouterLink } from 'src/routes/components';
+import { paths } from 'src/routes/paths'
+import { useRouter } from 'src/routes/hooks'
+import { RouterLink } from 'src/routes/components'
 // _mock
-import { _userList, _roles, USER_STATUS_OPTIONS } from 'src/_mock';
+import { _userList, _roles, USER_STATUS_OPTIONS } from 'src/_mock'
 // hooks
-import { useBoolean } from 'src/hooks/use-boolean';
+import { useBoolean } from 'src/hooks/use-boolean'
 // components
-import Label from 'src/components/label';
-import Iconify from 'src/components/iconify';
-import Scrollbar from 'src/components/scrollbar';
-import { ConfirmDialog } from 'src/components/custom-dialog';
-import { useSettingsContext } from 'src/components/settings';
-import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
+import Label from 'src/components/label'
+import Iconify from 'src/components/iconify'
+import Scrollbar from 'src/components/scrollbar'
+import { ConfirmDialog } from 'src/components/custom-dialog'
+import { useSettingsContext } from 'src/components/settings'
+import CustomBreadcrumbs from 'src/components/custom-breadcrumbs'
 import {
   useTable,
   getComparator,
@@ -36,30 +36,32 @@ import {
   TableHeadCustom,
   TableSelectedAction,
   TablePaginationCustom,
-} from 'src/components/table';
+} from 'src/components/table'
+
 //
-import UserTableRow from '../user-table-row';
-import UserTableToolbar from '../user-table-toolbar';
-import UserTableFiltersResult from '../user-table-filters-result';
+
+import axios from 'src/utils/axios'
+import UserTableRow from '../user-table-row'
+import UserTableToolbar from '../user-table-toolbar'
+import UserTableFiltersResult from '../user-table-filters-result'
 
 // ----------------------------------------------------------------------
 
-const STATUS_OPTIONS = [{ value: 'all', label: 'All' }, ...USER_STATUS_OPTIONS];
-
+const STATUS_OPTIONS = [{ value: 'all', label: 'All' }, { value: 'active', label: 'Active' }, { value: 'inactive', label: 'InActive' },]
 const TABLE_HEAD = [
-  { id: 'name', label: 'Name' },
-  { id: 'phoneNumber', label: 'Phone Number', width: 180 },
-  { id: 'company', label: 'Company', width: 220 },
-  { id: 'role', label: 'Role', width: 180 },
+  { id: 'email', label: 'Email', width: 250 },
+  { id: 'phoneNumber', label: 'Mobile', width: 180, },
+  { id: 'GroupRef', label: 'Group Name', width: 220 },
+  //   // { id: 'role', label: 'Role', width: 180 },
   { id: 'status', label: 'Status', width: 100 },
   { id: '', width: 88 },
-];
+]
 
 const defaultFilters = {
   name: '',
   role: [],
   status: 'all',
-};
+}
 
 // ----------------------------------------------------------------------
 
@@ -67,26 +69,43 @@ export default function UserListView() {
   const table = useTable();
 
   const settings = useSettingsContext();
-
+  // const [updateTrigger, setUpdateTrigger] = useState(false);
   const router = useRouter();
 
   const confirm = useBoolean();
 
-  const [tableData, setTableData] = useState(_userList);
-
+  const [tableData, setTableData] = useState([]);
+  const [isSuccess, setisSuccess] = useState();
   const [filters, setFilters] = useState(defaultFilters);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await axios.get('api/user/getall');
+        // const data = await response.json();
+
+        setisSuccess(response.data.success);
+        setTableData(response.data.data);
+
+
+      } catch (error) {
+        console.error('Error fetching API data:', error);
+      }
+    }
+
+    fetchData();
+  }, []);
+
 
   const dataFiltered = applyFilter({
     inputData: tableData,
     comparator: getComparator(table.order, table.orderBy),
     filters,
   });
-
   const dataInPage = dataFiltered.slice(
     table.page * table.rowsPerPage,
     table.page * table.rowsPerPage + table.rowsPerPage
   );
-
   const denseHeight = table.dense ? 52 : 72;
 
   const canReset = !isEqual(defaultFilters, filters);
@@ -103,10 +122,19 @@ export default function UserListView() {
     },
     [table]
   );
-
+  async function deletegroup(id) {
+    await axios.post(`api/user/delete/${id}`);
+  }
+  /// have to call API
   const handleDeleteRow = useCallback(
     (id) => {
-      const deleteRow = tableData.filter((row) => row.id !== id);
+      const deleteRow = tableData.filter((row) => row._id !== id);
+      try {
+        deletegroup(id);
+      }
+      catch (err) {
+        console.error('Error fetching API data:', err);
+      }
       setTableData(deleteRow);
 
       table.onUpdatePageDeleteRow(dataInPage.length);
@@ -114,8 +142,29 @@ export default function UserListView() {
     [dataInPage.length, table, tableData]
   );
 
+
+  const deleteSelectedGroups = async (selectedIds) => {
+
+    const deletePromises = selectedIds.map((id) => deletegroup(id));
+
+    try {
+      await Promise.all(deletePromises);
+      // Optionally, you can perform additional actions after deleting all groups
+      console.log('Selected groups deleted successfully');
+    } catch (error) {
+      console.error('Error deleting selected groups:', error);
+    }
+  };
   const handleDeleteRows = useCallback(() => {
-    const deleteRows = tableData.filter((row) => !table.selected.includes(row.id));
+    const selectedIds = table.selected;
+    const deleteRows = tableData.filter((row) => !table.selected.includes(row._id));
+    try {
+      deleteSelectedGroups(selectedIds);
+
+      console.log('Selected groups deleted successfully');
+    } catch (error) {
+      console.error('Error deleting selected groups:', error);
+    }
     setTableData(deleteRows);
 
     table.onUpdatePageDeleteRows({
@@ -124,21 +173,18 @@ export default function UserListView() {
       totalRowsFiltered: dataFiltered.length,
     });
   }, [dataFiltered.length, dataInPage.length, table, tableData]);
-
   const handleEditRow = useCallback(
     (id) => {
       router.push(paths.dashboard.user.edit(id));
     },
     [router]
   );
-
   const handleFilterStatus = useCallback(
     (event, newValue) => {
       handleFilters('status', newValue);
     },
     [handleFilters]
   );
-
   const handleResetFilters = useCallback(() => {
     setFilters(defaultFilters);
   }, []);
@@ -183,41 +229,33 @@ export default function UserListView() {
                 iconPosition="end"
                 value={tab.value}
                 label={tab.label}
-                icon={
-                  <Label
-                    variant={
-                      ((tab.value === 'all' || tab.value === filters.status) && 'filled') || 'soft'
-                    }
-                    color={
-                      (tab.value === 'active' && 'success') ||
-                      (tab.value === 'pending' && 'warning') ||
-                      (tab.value === 'banned' && 'error') ||
-                      'default'
-                    }
-                  >
-                    {tab.value === 'all' && _userList.length}
-                    {tab.value === 'active' &&
-                      _userList.filter((user) => user.status === 'active').length}
+                icon={<Label
+                  variant={
+                    ((tab.value === 'all') && 'filled') || 'soft'
+                  }
+                  color={
+                    (tab.value === 'active' && 'success') ||
+                    (tab.value === 'inactive' && 'warning') ||
+                    'default'
+                  }
+                >
+                  {tab.value === 'all' && tableData.length}
+                  {tab.value === 'active' &&
+                    tableData.filter((user) => user.status === 1).length}
 
-                    {tab.value === 'pending' &&
-                      _userList.filter((user) => user.status === 'pending').length}
-                    {tab.value === 'banned' &&
-                      _userList.filter((user) => user.status === 'banned').length}
-                    {tab.value === 'rejected' &&
-                      _userList.filter((user) => user.status === 'rejected').length}
-                  </Label>
+                  {tab.value === 'inactive' &&
+                    tableData.filter((user) => user.status === 0).length}
+                </Label>
                 }
               />
             ))}
           </Tabs>
-
-          <UserTableToolbar
+          {/* <UserTableToolbar
             filters={filters}
             onFilters={handleFilters}
             //
             roleOptions={_roles}
-          />
-
+          /> */}
           {canReset && (
             <UserTableFiltersResult
               filters={filters}
@@ -229,7 +267,6 @@ export default function UserListView() {
               sx={{ p: 2.5, pt: 0 }}
             />
           )}
-
           <TableContainer sx={{ position: 'relative', overflow: 'unset' }}>
             <TableSelectedAction
               dense={table.dense}
@@ -238,7 +275,7 @@ export default function UserListView() {
               onSelectAllRows={(checked) =>
                 table.onSelectAllRows(
                   checked,
-                  tableData.map((row) => row.id)
+                  tableData.map((row) => row._id)
                 )
               }
               action={
@@ -262,11 +299,10 @@ export default function UserListView() {
                   onSelectAllRows={(checked) =>
                     table.onSelectAllRows(
                       checked,
-                      tableData.map((row) => row.id)
+                      tableData.map((row) => row._id)
                     )
                   }
                 />
-
                 <TableBody>
                   {dataFiltered
                     .slice(
@@ -275,26 +311,24 @@ export default function UserListView() {
                     )
                     .map((row) => (
                       <UserTableRow
-                        key={row.id}
+                        key={row._id}
                         row={row}
-                        selected={table.selected.includes(row.id)}
-                        onSelectRow={() => table.onSelectRow(row.id)}
-                        onDeleteRow={() => handleDeleteRow(row.id)}
-                        onEditRow={() => handleEditRow(row.id)}
+                        selected={table.selected.includes(row._id)}
+                        onSelectRow={() => table.onSelectRow(row._id)}
+                        onDeleteRow={() => handleDeleteRow(row._id)}
+                        onEditRow={() => handleEditRow(row._id)}
+
                       />
                     ))}
-
                   <TableEmptyRows
                     height={denseHeight}
                     emptyRows={emptyRows(table.page, table.rowsPerPage, tableData.length)}
                   />
-
                   <TableNoData notFound={notFound} />
                 </TableBody>
               </Table>
             </Scrollbar>
           </TableContainer>
-
           <TablePaginationCustom
             count={dataFiltered.length}
             page={table.page}
@@ -307,7 +341,6 @@ export default function UserListView() {
           />
         </Card>
       </Container>
-
       <ConfirmDialog
         open={confirm.value}
         onClose={confirm.onFalse}
@@ -330,14 +363,15 @@ export default function UserListView() {
           </Button>
         }
       />
+
     </>
-  );
+  )
 }
 
 // ----------------------------------------------------------------------
 
 function applyFilter({ inputData, comparator, filters }) {
-  const { name, status, role } = filters;
+  const { name, status } = filters;
 
   const stabilizedThis = inputData.map((el, index) => [el, index]);
 
@@ -351,16 +385,16 @@ function applyFilter({ inputData, comparator, filters }) {
 
   if (name) {
     inputData = inputData.filter(
-      (user) => user.name.toLowerCase().indexOf(name.toLowerCase()) !== -1
+      (user) => user.user_group_name.toLowerCase().indexOf(name.toLowerCase()) !== -1
     );
   }
 
   if (status !== 'all') {
-    inputData = inputData.filter((user) => user.status === status);
-  }
-
-  if (role.length) {
-    inputData = inputData.filter((user) => role.includes(user.role));
+    if (status === 'active') {
+      inputData = inputData.filter((user) => user.status === 1);
+    } else {
+      inputData = inputData.filter((user) => user.status === 0);
+    }
   }
 
   return inputData;

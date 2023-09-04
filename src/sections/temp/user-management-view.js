@@ -40,9 +40,9 @@ import {
 } from 'src/components/table';
 //
 import axios from 'src/utils/axios';
-import UserTableRow from '../user-table-row';
-import UserTableToolbar from '../user-table-toolbar';
-import UserTableFiltersResult from '../user-table-filters-result';
+import UserTableRow from '../user/user-table-row';
+import UserTableToolbar from '../user/user-table-toolbar';
+import UserTableFiltersResult from '../user/user-table-filters-result';
 
 const STATUS_OPTIONS = [
   { value: 'all', label: 'All' },

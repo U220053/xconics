@@ -15,11 +15,11 @@ import Iconify from 'src/components/iconify';
 import { useSettingsContext } from 'src/components/settings';
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
 //
-import ProfileHome from '../profile-home';
-import ProfileCover from '../profile-cover';
-import ProfileFriends from '../profile-friends';
-import ProfileGallery from '../profile-gallery';
-import ProfileFollowers from '../profile-followers';
+import ProfileHome from './profile-home';
+import ProfileCover from './profile-cover';
+import ProfileFriends from './profile-friends';
+import ProfileGallery from './profile-gallery';
+import ProfileFollowers from './profile-followers';
 
 // ----------------------------------------------------------------------
 

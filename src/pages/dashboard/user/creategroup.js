@@ -4,7 +4,7 @@ import { GroupCreateView} from 'src/sections/user/view';
 
 // ----------------------------------------------------------------------
 
-export default function UserCreatePage() {
+export default function CreatePage() {
   return (
     <>
       <Helmet>
