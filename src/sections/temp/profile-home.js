@@ -19,7 +19,7 @@ import { fNumber } from 'src/utils/format-number';
 // components
 import Iconify from 'src/components/iconify';
 //
-import ProfilePostItem from './profile-post-item';
+import ProfilePostItem from '../temp/profile-post-item';
 
 // ----------------------------------------------------------------------
 

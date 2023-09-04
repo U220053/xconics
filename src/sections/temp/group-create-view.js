@@ -1,0 +1,84 @@
+// import React from 'react'
+// // @mui
+// import Container from '@mui/material/Container';
+// // routes
+// import { paths } from 'src/routes/paths';
+// // components
+// import { useSettingsContext } from 'src/components/settings';
+// import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
+// //
+// // eslint-disable-next-line no-unused-vars
+// import UserNewEditForm from '../user-new-edit-form';
+
+// function GroupCreateView() {
+
+//     const settings = useSettingsContext();
+
+//     return (
+//       <Container maxWidth={settings.themeStretch ? false : 'lg'}>
+//         <CustomBreadcrumbs
+//           heading="Create a new user group"
+//           links={[
+//             {
+//               name: 'Dashboard',
+//               href: paths.dashboard.root,
+//             },
+//             {
+//               name: 'User',
+//               href: paths.dashboard.user.root,
+//             },
+//             { name: 'New Group' },
+//           ]}
+//           sx={{
+//             mb: { xs: 3, md: 5 },
+//           }}
+//         />
+  
+//         <UserNewEditForm />
+//       </Container>
+//     );
+// }
+
+// export default GroupCreateView;
+
+
+// @mui
+import Container from '@mui/material/Container';
+// routes
+import { paths } from 'src/routes/paths';
+// components
+import { useSettingsContext } from 'src/components/settings';
+import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
+//
+import UserNewEditForm from '../user/user-new-edit-form';
+
+// ----------------------------------------------------------------------
+
+export default function GrouprCreateView() {
+  const settings = useSettingsContext();
+
+  return (
+    <Container maxWidth={settings.themeStretch ? false : 'lg'}>
+      <CustomBreadcrumbs
+        heading="Create a new group"
+        links={[
+          {
+            name: 'Dashboard',
+            href: paths.dashboard.root,
+          },
+          {
+            name: 'Group',
+            href: paths.dashboard.user.root,
+          },
+          { name: 'New group' },
+        ]}
+        sx={{
+          mb: { xs: 3, md: 5 },
+        }}
+      />
+
+      <GroupNewEditForm />
+    </Container>
+  );
+}
+
