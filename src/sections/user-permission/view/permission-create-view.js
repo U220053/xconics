@@ -45,6 +45,7 @@ export default function PermissionCreateView() {
   if (isLoading) {
     return <div>Loading...</div>; // Display a loading indicator
   }
+  
   return (
     <Container maxWidth={settings.themeStretch ? false : 'lg'}>
       <CustomBreadcrumbs

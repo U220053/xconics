@@ -1,16 +1,12 @@
-
-
 import PropTypes from 'prop-types'
 import * as Yup from 'yup'
 // eslint-disable-next-line import/no-duplicates
-import { useCallback, useMemo, useState } from 'react'
-import { useForm, Controller } from 'react-hook-form'
+import { useMemo, useState } from 'react'
+import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 // eslint-disable-next-line import/no-duplicates
 import { useEffect } from 'react'
-
 // @mui
-
 import LoadingButton from '@mui/lab/LoadingButton'
 import Box from '@mui/material/Box'
 import Card from '@mui/material/Card'
@@ -128,14 +124,9 @@ export default function UserNewEditForm({ currentUser, userGroup }) {
       await new Promise((resolve) => setTimeout(resolve, 500));
       console.log(response);
       router.push(paths.dashboard.user.list);
-
-
     } catch (error) {
-
-
-      console.error(error);
-
-    }
+  console.error(error);
+  }
     onFormChange(data);
   });
 
@@ -170,35 +161,6 @@ export default function UserNewEditForm({ currentUser, userGroup }) {
             <RHFTextField name="mobile" label="User Mobile" type="number" />
             <RHFTextField name="password" label="Password" />
 
-            {/* <RHFAutocomplete
-                name="groupref"
-                label="Group Ref"
-                options={Array.isArray(dropdownData) ? dropdownData.map(item => item.user_group_ref) : []}
-                getOptionLabel={option => option}
-                isOptionEqualToValue={(option, value) => option === value}
-                renderOption={(props, option) => (
-                  <MenuItem {...props} key={option}>
-                    {option}
-                  </MenuItem>
-                )}
-              /> */}
-
-            {/* <RHFSelect
-              name="groupref"
-      
-              label="Select Permission Group"
-              InputLabelProps={{  }}
-             
-
-              {...userGroup.map((item) => (
-                <MenuItem
-                  
-                >
-                  // {item}
-                </MenuItem>
-              ))}
-            /> */}
-
             <RHFSelect
               // helperText= "Select Group"
               fullWidth
@@ -227,11 +189,6 @@ export default function UserNewEditForm({ currentUser, userGroup }) {
                 </MenuItem>
               ))}
             </RHFSelect>
-
-
-
-
-
 
           </Box>
 

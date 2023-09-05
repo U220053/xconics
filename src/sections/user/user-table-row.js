@@ -72,13 +72,8 @@ export default function UserTableRow({ row, selected, onEditRow, onSelectRow, on
           </TableCell> */}
 
         <TableCell sx={{ whiteSpace: 'nowrap' }}>{user_email}</TableCell>
-
         <TableCell sx={{ whiteSpace: 'nowrap' }}>{user_mobile}</TableCell>
-
         <TableCell sx={{ whiteSpace: 'nowrap' }}>{user_group_ref.user_group_name}</TableCell>
-
-
-
 
         <TableCell>
           <Label
@@ -98,11 +93,8 @@ export default function UserTableRow({ row, selected, onEditRow, onSelectRow, on
             <Iconify icon="eva:more-vertical-fill" />
           </IconButton>
         </TableCell>
-
+        
       </TableRow>
-
-
-
 
       <CustomPopover
         open={popover.open}

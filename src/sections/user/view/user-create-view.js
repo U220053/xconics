@@ -15,10 +15,9 @@ import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
 import UserNewEditForm from '../user-new-edit-form';
 
 function UserCreateView() {
-
   const settings = useSettingsContext();
   const [userGroup, setUserGroup] = useState([])
-
+  const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
 
     const fetchData = async () => {
@@ -26,18 +25,23 @@ function UserCreateView() {
 
       console.log("IN view", groupresponse.data.data);
       const newdata = JSON.parse(JSON.stringify(groupresponse.data.data))
-
+      setIsLoading(false);
       const newGroupData = newdata.map((item) => {
         return { id: item._id, group_name: item.user_group_name }
       })
       setUserGroup(newGroupData);
 
       console.log("SECOND DATA", newGroupData);
+      setIsLoading(false);
     }
-
+    
     fetchData()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  if (isLoading) {
+    return <div>Loading...</div>; // Display a loading indicator
+  }
   return (
     <Container maxWidth={settings.themeStretch ? false : 'lg'}>
       <CustomBreadcrumbs
