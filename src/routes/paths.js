@@ -109,18 +109,25 @@ export const paths = {
     },
     user: {
       root: `${ROOTS.DASHBOARD}/user`,
+
       new: `${ROOTS.DASHBOARD}/user/new`,
       list: `${ROOTS.DASHBOARD}/user/list`,
+      edit: (id) => `${ROOTS.DASHBOARD}/user/${id}/edit`,
+
       permission:`${ROOTS.DASHBOARD}/user/permission`,
       permissionnew:`${ROOTS.DASHBOARD}/user/permission/new`,
       permissionedit: (id)=>`${ROOTS.DASHBOARD}/user/permission/${id}/edit`,
+
+      group:`${ROOTS.DASHBOARD}/user/grouplist`,
+      groupnew:`${ROOTS.DASHBOARD}/user/group/new`,
+      groupedit: (id)=>`${ROOTS.DASHBOARD}/user/group/${id}/edit`,
+
       cards: `${ROOTS.DASHBOARD}/user/cards`,
       profile: `${ROOTS.DASHBOARD}/user/list`,
       account: `${ROOTS.DASHBOARD}/user/account`,
-      groupcreate: `${ROOTS.DASHBOARD}/user/groupcreate`,
-      management: `${ROOTS.DASHBOARD}/user/management`,
-      group: `${ROOTS.DASHBOARD}/user/group`,
-      edit: (id) => `${ROOTS.DASHBOARD}/user/group/${id}/edit`,
+      // groupcreate: `${ROOTS.DASHBOARD}/user/groupcreate`,
+      // management: `${ROOTS.DASHBOARD}/user/management`,
+      // group: `${ROOTS.DASHBOARD}/user/group`,
       demo: {
         edit: `${ROOTS.DASHBOARD}/user/${MOCK_ID}/edit`,
       },

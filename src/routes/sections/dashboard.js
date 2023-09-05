@@ -35,18 +35,21 @@ const PermissionListPage = lazy(() => import('src/pages/dashboard/user/permissio
 const PermissionCreatePage = lazy(() => import('src/pages/dashboard/user/permissionnew'));
 const PermissionEditPage = lazy(() => import('src/pages/dashboard/user/permissionedit'));
 
-// USER
+//
 const UserProfilePage = lazy(() => import('src/pages/dashboard/user/profile'))
 const UserCardsPage = lazy(() => import('src/pages/dashboard/user/cards'))
-const UserListPage = lazy(() => import('src/pages/dashboard/user/list'))
 const UserAccountPage = lazy(() => import('src/pages/dashboard/user/account'))
+
+//user
+const UserListPage = lazy(() => import('src/pages/dashboard/user/list'))
 const UserCreatePage = lazy(() => import('src/pages/dashboard/user/new'))
 const UserEditPage = lazy(() => import('src/pages/dashboard/user/edit'))
-const UserManagementPage = lazy(() => import('src/pages/dashboard/user/management'))
+// const UserManagementPage = lazy(() => import('src/pages/dashboard/user/management'))
 
 // USER GROUP
-const GroupCreatePage = lazy(() => import('src/pages/dashboard/user/creategroup'));
-
+const GroupListPage = lazy(() => import('src/pages/dashboard/user/grouplist'));
+const GroupCreatePage = lazy(() => import('src/pages/dashboard/user/groupnew'));
+const GroupEditPage = lazy(() => import('src/pages/dashboard/user/groupedit'));
 
 // BLOG
 const BlogPostsPage = lazy(() => import('src/pages/dashboard/post/list'))
@@ -99,17 +102,18 @@ export const dashboardRoutes = [
           { element: <UserProfilePage />, index: true },
           { path: 'profile', element: <UserProfilePage /> },
           { path: 'cards', element: <UserCardsPage /> },
-          { path: 'list', element: <UserListPage /> },
+         
           { path: 'permission', element: <PermissionListPage /> },
           { path: 'permission/:id/edit', element: <PermissionEditPage /> },
           { path: 'permission/new', element: <PermissionCreatePage/> },
-          { path: 'new', element: <UserCreatePage /> },
+          { path: 'list', element: <UserListPage /> },
           { path: 'new', element: <UserCreatePage /> },
           { path: ':id/edit', element: <UserEditPage /> },
           { path: 'account', element: <UserAccountPage /> },
-          { path: 'management', element: <UserManagementPage /> },
-          { path: 'groupcreate', element: <GroupCreatePage /> },
-
+          // { path: 'management', element: <UserManagementPage /> },
+          { path: 'grouplist', element: <GroupListPage /> },
+          { path: 'group/new', element: <GroupCreatePage/> },
+          { path: 'group/:id/edit', element: <GroupEditPage/> },
         ],
       },
       {

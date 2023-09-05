@@ -71,8 +71,6 @@ export default function UserEditView({ id }) {
     </Container>
   );
 }
-// ...
-
 
 UserEditView.propTypes = {
   id: PropTypes.string,

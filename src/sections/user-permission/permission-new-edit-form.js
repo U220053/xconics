@@ -60,7 +60,7 @@ export default function PermissionNewEditForm({ currentGroup, userPer }) {
     delete: Yup.boolean(),
     export: Yup.boolean(),
     print: Yup.boolean(),
-    enable:Yup.boolean(),
+    enable: Yup.boolean(),
     groupref: Yup.string(),
     status: Yup.number().required('Status is required'),
   })
@@ -123,7 +123,7 @@ export default function PermissionNewEditForm({ currentGroup, userPer }) {
         edit_permission: data.edit,
         export_permission: data.export,
         print_permission: data.print,
-        enable_permission:data.enable
+        enable_permission: data.enable
       }
       console.log("DATA", data);
       console.log("New Data", newData);
@@ -188,28 +188,30 @@ export default function PermissionNewEditForm({ currentGroup, userPer }) {
               }
             </RHFSelect>
 
+            <div style={{ display: "flex", flexDirection: "column"}}>
+              <RHFSelect
+                fullWidth
+                name="status"
+                label="Status"
+                PaperPropsSx={{ textTransform: 'capitalize' }}
+                defaultValue={currentGroup?.status || 1} // Set the value based on your condition
+              >
+                {statuses.map((option) => (
+                  <MenuItem key={option.value} value={option.value}>
+                    {option.label}
+                  </MenuItem>
+                ))}
+              </RHFSelect>
 
-            <RHFSelect
-              fullWidth
-              name="status"
-              label="Status"
-              PaperPropsSx={{ textTransform: 'capitalize' }}
-              defaultValue={currentGroup?.status || 1} // Set the value based on your condition
-            >
-              {statuses.map((option) => (
-                <MenuItem key={option.value} value={option.value}>
-                  {option.label}
-                </MenuItem>
-              ))}
-            </RHFSelect>
-
-
-            <RHFCheckbox name="add" label="Add Permission" />
-            <RHFCheckbox name="edit" label="Edit Permission" />
-            <RHFCheckbox name="delete" label="Delete Permission" />
-            <RHFCheckbox name="export" label="Export Permission" />
-            <RHFCheckbox name="print" label="Print Permission" />
-            <RHFCheckbox name="enable" label="Enable Permission" />
+              <div style={{paddingTop: "20px", paddingLeft: "20px"}}>
+                <RHFCheckbox name="add" label="Add Permission" />
+                <RHFCheckbox name="edit" label="Edit Permission" />
+                <RHFCheckbox name="delete" label="Delete Permission" />
+                <RHFCheckbox name="export" label="Export Permission" />
+                <RHFCheckbox name="print" label="Print Permission" />
+                <RHFCheckbox name="enable" label="Enable Permission" />
+              </div>
+            </div>
           </Box>
 
           <Stack alignItems="flex-end" sx={{ mt: 3 }}>
