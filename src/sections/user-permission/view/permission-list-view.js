@@ -2,6 +2,7 @@
 import isEqual from 'lodash/isEqual';
 import { useState, useCallback, useEffect } from 'react';
 // @mui
+import Stack from '@mui/material/Stack';
 import { alpha } from '@mui/material/styles';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
@@ -39,10 +40,13 @@ import {
   TablePaginationCustom,
 } from 'src/components/table';
 
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 import axios from 'src/utils/axios';
 import PermissionTableRow from '../permission-table-row';
 // import PermissionTableToolbar from '../permission-table-toolbar';
 import PermissionTableFiltersResult from '../permission-table-filters-result';
+import ExportToExcelButton from '../permission-export';
 
 const STATUS_OPTIONS = [
   { value: 'all', label: 'All' },
@@ -66,7 +70,7 @@ const defaultFilters = {
   name: '',
   // role: [],
   status: 'all',
-}
+};
 // ----------------------------------------------------------------------
 
 export default function PermissionListView() {
@@ -90,8 +94,6 @@ export default function PermissionListView() {
 
         setisSuccess(response.data.success);
         setTableData(response.data.data);
-
-
       } catch (error) {
         console.error('Error fetching API data:', error);
       }
@@ -99,7 +101,6 @@ export default function PermissionListView() {
 
     fetchData();
   }, []);
-
 
   const dataFiltered = applyFilter({
     inputData: tableData,
@@ -135,8 +136,7 @@ export default function PermissionListView() {
       const deleteRow = tableData.filter((row) => row._id !== id);
       try {
         deletegroup(id);
-      }
-      catch (err) {
+      } catch (err) {
         console.error('Error fetching API data:', err);
       }
       setTableData(deleteRow);
@@ -146,9 +146,7 @@ export default function PermissionListView() {
     [dataInPage.length, table, tableData]
   );
 
-
   const deleteSelectedGroups = async (selectedIds) => {
-
     const deletePromises = selectedIds.map((id) => deletegroup(id));
 
     try {
@@ -193,6 +191,49 @@ export default function PermissionListView() {
     setFilters(defaultFilters);
   }, []);
 
+  // starting of export to pdf
+  const [hovered, setHovered] = useState(false);
+
+  const divStyle = {
+    backgroundColor: hovered ? '#2980b9' : '#3498db',
+    color: '#fff',
+    padding: '10px 30px',
+    cursor: 'pointer',
+    fontSize: '15px',
+    margin: '10px',
+  };
+  const allRowsData = dataFiltered
+    .slice(table.page * table.rowsPerPage, table.page * table.rowsPerPage + table.rowsPerPage)
+    .map((row) => {
+      return {
+        user_group_ref: row.user_group_ref.user_group_name,
+        screen_name: row.screen_name,
+        add: row.add_permission,
+        edit: row.edit_permission,
+        delete: row.delete_permission,
+        export: row.export_permission,
+        print: row.print_permission,
+        enable: row.enable_permission,
+        status: row.status,
+      };
+    });
+  
+  const labels = TABLE_HEAD.map((item) => item.label);
+  const exportToPDF = () => {
+    const doc = new jsPDF();
+
+    const tableData = allRowsData.map((rowData) => {
+      return Object.values(rowData);
+    });
+    console.log(tableData);
+    doc.autoTable({
+      head: [labels],
+      body: tableData,
+    });
+    doc.save('table-permission.pdf');
+  };
+  // ending of export to pdf
+
   return (
     <>
       <Container maxWidth={settings.themeStretch ? false : 'lg'}>
@@ -217,7 +258,22 @@ export default function PermissionListView() {
             mb: { xs: 3, md: 5 },
           }}
         />
-
+        <div>
+          <ExportToExcelButton data={dataFiltered} filename="Permission_Data" />
+          <Button
+            onClick={exportToPDF}
+            style={divStyle}
+            onMouseEnter={() => setHovered(true)}
+            onMouseLeave={() => setHovered(false)}
+            variant="contained"
+            startIcon={<Iconify icon="solar:export-bold" />}
+          >
+            PDF
+          </Button>
+        </div>
+        {/* <div>
+          <button onClick={exportToPDF}>Export to PDF</button>
+        </div> */}
         <Card>
           <Tabs
             value={filters.status}
@@ -233,28 +289,26 @@ export default function PermissionListView() {
                 iconPosition="end"
                 value={tab.value}
                 label={tab.label}
-                icon={<Label
-                  variant={
-                    ((tab.value === 'all') && 'filled') || 'soft'
-                  }
-                  color={
-                    (tab.value === 'active' && 'success') ||
-                    (tab.value === 'inactive' && 'warning') ||
-                    'default'
-                  }
-                >
-                  {tab.value === 'all' && tableData.length}
-                  {tab.value === 'active' &&
-                    tableData.filter((user) => user.status === 1).length}
+                icon={
+                  <Label
+                    variant={(tab.value === 'all' && 'filled') || 'soft'}
+                    color={
+                      (tab.value === 'active' && 'success') ||
+                      (tab.value === 'inactive' && 'warning') ||
+                      'default'
+                    }
+                  >
+                    {tab.value === 'all' && tableData.length}
+                    {tab.value === 'active' && tableData.filter((user) => user.status === 1).length}
 
-                  {tab.value === 'inactive' &&
-                    tableData.filter((user) => user.status === 0).length}
-                </Label>
+                    {tab.value === 'inactive' &&
+                      tableData.filter((user) => user.status === 0).length}
+                  </Label>
                 }
               />
             ))}
           </Tabs>
-          {/* <UserTableToolbar
+          {/* <PermissionTableToolbar
             filters={filters}
             onFilters={handleFilters}
             //
@@ -321,7 +375,6 @@ export default function PermissionListView() {
                         onSelectRow={() => table.onSelectRow(row._id)}
                         onDeleteRow={() => handleDeleteRow(row._id)}
                         onEditRow={() => handleEditRow(row._id)}
-
                       />
                     ))}
                   <TableEmptyRows
@@ -367,9 +420,8 @@ export default function PermissionListView() {
           </Button>
         }
       />
-
     </>
-  )
+  );
 }
 
 // ----------------------------------------------------------------------

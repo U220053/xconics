@@ -1,5 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable react-hooks/exhaustive-deps */
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 import isEqual from 'lodash/isEqual';
 import { useState, useCallback, useEffect } from 'react';
 // @mui
@@ -27,6 +29,7 @@ import Scrollbar from 'src/components/scrollbar';
 import { ConfirmDialog } from 'src/components/custom-dialog';
 import { useSettingsContext } from 'src/components/settings';
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
+import { _userList, _roles, USER_STATUS_OPTIONS } from 'src/_mock';
 import {
   useTable,
   getComparator,
@@ -40,8 +43,9 @@ import {
 //
 import axios from 'src/utils/axios';
 import GroupTableRow from '../group-table-row';
-import GroupTableToolbar from '../group-table-toolbar';
+// import GroupTableToolbar from '../group-table-toolbar';
 import GroupTableFiltersResult from '../group-table-filters-result';
+import ExportToExcelgroup from '../group-export';
 
 const STATUS_OPTIONS = [
   { value: 'all', label: 'All' },
@@ -75,14 +79,8 @@ function GroupListView() {
       try {
         const response = await axios.get('api/user/usergroups');
         // const data = await response.json();
-
-
-
         setisSuccess(response.data.success);
         setTableData(response.data.data);
-     
-        console.log(response.data.data);
- 
       } catch (error) {
         console.error('Error fetching API data:', error);
       }
@@ -178,6 +176,43 @@ function GroupListView() {
   const handleResetFilters = useCallback(() => {
     setFilters(defaultFilters);
   }, []);
+
+  // starting of export to pdf
+  const [hovered, setHovered] = useState(false);
+
+  const divStyle = {
+    backgroundColor: hovered ? '#2980b9' : '#3498db',
+    color: '#fff',
+    padding: '10px 30px',
+    cursor: 'pointer',
+    fontSize: '15px',
+    margin: '10px',
+  };
+  const allRowsData = dataFiltered
+    .slice(table.page * table.rowsPerPage, table.page * table.rowsPerPage + table.rowsPerPage)
+    .map((row) => {
+      return {
+        name: row.user_group_name,
+        group_description: row.user_group_description,
+        status: row.status,
+      };
+    });
+  const labels = TABLE_HEAD.map((item) => item.label);
+  const exportToPDF = () => {
+    const doc = new jsPDF();
+
+    const tableData = allRowsData.map((rowData) => {
+      return Object.values(rowData);
+    });
+    console.log(tableData);
+    doc.autoTable({
+      head: [labels],
+      body: tableData,
+    });
+    doc.save('table-group.pdf');
+  };
+  // ending of export to pdf
+
   return (
     <>
       <Container maxWidth={settings.themeStretch ? false : 'lg'}>
@@ -202,6 +237,19 @@ function GroupListView() {
             mb: { xs: 3, md: 5 },
           }}
         />
+        <div>
+          <ExportToExcelgroup data={dataFiltered} filename="Group_Data" />
+          <Button
+            onClick={exportToPDF}
+            style={divStyle}
+            onMouseEnter={() => setHovered(true)}
+            onMouseLeave={() => setHovered(false)}
+            variant="contained"
+            startIcon={<Iconify icon="solar:export-bold" />}
+          >
+            PDF
+          </Button>
+        </div>
         <Card>
           <Tabs
             value={filters.status}
@@ -236,6 +284,12 @@ function GroupListView() {
               />
             ))}
           </Tabs>
+          {/* <GroupTableToolbar
+            filters={filters}
+            onFilters={handleFilters}
+            //
+            roleOptions={_roles}
+          /> */}
           {canReset && (
             <GroupTableFiltersResult
               filters={filters}
