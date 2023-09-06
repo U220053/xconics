@@ -201,10 +201,10 @@ export default function UserListView() {
 
                     {tab.value === 'pending' &&
                       _userList.filter((user) => user.status === 'pending').length}
-                    {tab.value === 'banned' &&
+                    {/* {tab.value === 'banned' &&
                       _userList.filter((user) => user.status === 'banned').length}
                     {tab.value === 'rejected' &&
-                      _userList.filter((user) => user.status === 'rejected').length}
+                      _userList.filter((user) => user.status === 'rejected').length} */}
                   </Label>
                 }
               />

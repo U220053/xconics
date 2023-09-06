@@ -15,24 +15,45 @@ import CustomerNewEditForm from '../customer-new-edit-form';
 
 export default function CustomerEditView({ id }) {
   const settings = useSettingsContext();
+  const [userGroup, setUserGroup] = useState([]);
+  const [client_manager_ref, setClient_manager_ref] = useState([]);
+  // const [dataUser, setDataUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
   const [dataCustomer, setDataCustomer] = useState(null);
+
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await axios.get(`api/customer/get/${id}`);
-        // const data = await response.json();
+        const client_manager_ref = await axios.get('api/client/manager');
 
+        const response = await axios.get(`api/client/customer/get/${id}`);
         setDataCustomer(response.data.data);
+
+        const groupresponse = await axios.get('api/user/usergroups');
+        const newdata = JSON.parse(JSON.stringify(groupresponse.data.data));
+        const newdata2 = JSON.parse(JSON.stringify(client_manager_ref.data.data));
+        const newGroupData = newdata.map((item) => {
+          return { id: item._id, group_name: item.user_group_name };
+        });
+        const client_manager = newdata2.map((item) => {
+          return { id: item._id, client_manager_ref: item.contact_person_name };
+        });
+        setUserGroup(newGroupData);
+        setClient_manager_ref(client_manager);
+        setIsLoading(false); // Set loading to false when data is fetched
       } catch (error) {
         console.error('Error fetching API data:', error);
+        setIsLoading(false); // Set loading to false on error
       }
     }
 
     fetchData();
-    // console.log({ dataCustomer });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-  // const currentUser = _userList.find((user) => user.id === id);
+  }, [id]);
+
+  if (isLoading) {
+    return <div>Loading...</div>; // Display a loading indicator
+  }
 
   return (
     <Container maxWidth={settings.themeStretch ? false : 'lg'}>
@@ -54,7 +75,11 @@ export default function CustomerEditView({ id }) {
         }}
       />
 
-      <CustomerNewEditForm currentCustomer={dataCustomer} />
+      <CustomerNewEditForm
+        currentCustomer={dataCustomer}
+        userGroup={userGroup}
+        client_manager_ref={client_manager_ref}
+      />
     </Container>
   );
 }

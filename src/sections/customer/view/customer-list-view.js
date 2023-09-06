@@ -1,5 +1,5 @@
 import isEqual from 'lodash/isEqual';
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 // @mui
 import { alpha } from '@mui/material/styles';
 import Tab from '@mui/material/Tab';
@@ -27,6 +27,7 @@ import Scrollbar from 'src/components/scrollbar';
 import { ConfirmDialog } from 'src/components/custom-dialog';
 import { useSettingsContext } from 'src/components/settings';
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
+import axios from 'src/utils/axios';
 import {
   useTable,
   getComparator,
@@ -44,14 +45,13 @@ import CustomerTableFiltersResult from '../customer-table-filters-result';
 
 // ----------------------------------------------------------------------
 
-const STATUS_OPTIONS = [{ value: 'all', label: 'All' }, ...USER_STATUS_OPTIONS];
+const STATUS_OPTIONS = [{ value: 'all', label: 'All' }, { value: 'active', label: 'Active' }, { value: 'inactive', label: 'InActive' },];
 
 const TABLE_HEAD = [
-  { id: 'name', label: 'Name', width: 180 },
-  { id: 'phoneNumber', label: 'Phone Number', width: 180 },
-  // { id: 'company', label: 'Company', width: 220 },
-  // { id: 'role', label: 'Role', width: 180 },
-  { id: 'ClientManagerName', label: 'Client Manager Name', width: 220 },
+  { id: 'company_name', label: 'Comapny Name', width: 180 },
+  { id: 'contact_person_name', label: 'Contact Person Name', width: 180 },
+
+  { id: 'client_manager_ref', label: 'Client Manager Name', width: 180 },
   { id: 'status', label: 'Status', width: 100 },
   { id: '', width: 88 },
 ];
@@ -83,7 +83,21 @@ export default function CustomerListView() {
     comparator: getComparator(table.order, table.orderBy),
     filters,
   });
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await axios.get('api/client/customer');
+        // const data = await response.json();
 
+        setisSuccess(response.data.success);
+        setTableData(response.data.data);
+      } catch (error) {
+        console.error('Error fetching API data:', error);
+      }
+    }
+
+    fetchData();
+  }, [tableData]);
   const dataInPage = dataFiltered.slice(
     table.page * table.rowsPerPage,
     table.page * table.rowsPerPage + table.rowsPerPage
@@ -105,19 +119,46 @@ export default function CustomerListView() {
     },
     [table]
   );
+  async function deletecustomer(id) {
+    await axios.post(`api/client/customer/delete/${id}`);
+  }
+  const deleteSelectedGroups = async (selectedIds) => {
+    const deletePromises = selectedIds.map((id) => deletecustomer(id));
+
+    try {
+      await Promise.all(deletePromises);
+      // Optionally, you can perform additional actions after deleting all groups
+      console.log('Selected groups deleted successfully');
+    } catch (error) {
+      console.error('Error deleting selected groups:', error);
+    }
+  };
 
   const handleDeleteRow = useCallback(
     (id) => {
       const deleteRow = tableData.filter((row) => row.id !== id);
+      try {
+        deletecustomer(id);
+      } catch (err) {
+        console.error('Error fetching API data:', err);
+      }
       setTableData(deleteRow);
 
       table.onUpdatePageDeleteRow(dataInPage.length);
     },
     [dataInPage.length, table, tableData]
   );
-
+ 
+  
+  
   const handleDeleteRows = useCallback(() => {
+    const selectedIds = table.selected;
     const deleteRows = tableData.filter((row) => !table.selected.includes(row.id));
+    try {
+      deleteSelectedGroups(selectedIds);
+    } catch (err) {
+      console.error('Error fetching API data:', err);
+    }
     setTableData(deleteRows);
 
     table.onUpdatePageDeleteRows({
@@ -126,7 +167,6 @@ export default function CustomerListView() {
       totalRowsFiltered: dataFiltered.length,
     });
   }, [dataFiltered.length, dataInPage.length, table, tableData]);
-
   const handleEditRow = useCallback(
     (id) => {
       router.push(paths.dashboard.customer.edit(id));
@@ -188,25 +228,25 @@ export default function CustomerListView() {
                 icon={
                   <Label
                     variant={
-                      ((tab.value === 'all' || tab.value === filters.status) && 'filled') || 'soft'
+                      ((tab.value === 'all' ) && 'filled') || 'soft'
                     }
                     color={
                       (tab.value === 'active' && 'success') ||
-                      (tab.value === 'pending' && 'warning') ||
-                      (tab.value === 'banned' && 'error') ||
+                      (tab.value === 'inactive' && 'warning') ||
+                      // (tab.value === 'banned' && 'error') ||
                       'default'
                     }
                   >
-                    {tab.value === 'all' && _userList.length}
+                    {tab.value === 'all' && tableData.length}
                     {tab.value === 'active' &&
-                      _userList.filter((customer) => customer.status === 'active').length}
+                      tableData.filter((customer) => customer.status === 1).length}
 
-                    {tab.value === 'pending' &&
-                      _userList.filter((customer) => customer.status === 'pending').length}
-                    {tab.value === 'banned' &&
+                    {tab.value === 'inactive' &&
+                      tableData.filter((customer) => customer.status ===0).length}
+                    {/* {tab.value === 'banned' &&
                       _userList.filter((customer) => customer.status === 'banned').length}
                     {tab.value === 'rejected' &&
-                      _userList.filter((customer) => customer.status === 'rejected').length}
+                      _userList.filter((customer) => customer.status === 'rejected').length} */}
                   </Label>
                 }
               />
@@ -277,12 +317,12 @@ export default function CustomerListView() {
                     )
                     .map((row) => (
                       <CustomerTableRow
-                        key={row.id}
+                        key={row._id}
                         row={row}
-                        selected={table.selected.includes(row.id)}
-                        onSelectRow={() => table.onSelectRow(row.id)}
-                        onDeleteRow={() => handleDeleteRow(row.id)}
-                        onEditRow={() => handleEditRow(row.id)}
+                        selected={table.selected.includes(row._id)}
+                        onSelectRow={() => table.onSelectRow(row._id)}
+                        onDeleteRow={() => handleDeleteRow(row._id)}
+                        onEditRow={() => handleEditRow(row._id)}
                       />
                     ))}
 
@@ -337,9 +377,7 @@ export default function CustomerListView() {
 }
 
 // ----------------------------------------------------------------------
-async function deletecustomer(id) {
-  await axios.post(`api/customer/delete/${id}`);
-}
+
 
 function applyFilter({ inputData, comparator, filters }) {
   const { name, status, role } = filters;
@@ -361,12 +399,19 @@ function applyFilter({ inputData, comparator, filters }) {
   }
 
   if (status !== 'all') {
-    inputData = inputData.filter((customer) => customer.status === status);
+    if (status === 'active') {
+      inputData = inputData.filter((customer) => customer.status === 1);
+    } else {
+      inputData = inputData.filter((customer) => customer.status === 0);
+    }
   }
+  // if (status !== 'all') {
+  //   inputData = inputData.filter((customer) => customer.status === status);
+  // }
 
-  if (role.length) {
-    inputData = inputData.filter((customer) => role.includes(customer.role));
-  }
+  // if (role.length) {
+  //   inputData = inputData.filter((customer) => role.includes(customer.role));
+  // }
 
   return inputData;
 }

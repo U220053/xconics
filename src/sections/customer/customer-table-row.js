@@ -184,22 +184,23 @@ import { ConfirmDialog } from 'src/components/custom-dialog';
 // eslint-disable-next-line react/prop-types
 export default function CustomerTableRow({ row, selected, onEditRow, onSelectRow, onDeleteRow }) {
   const {
-    customer_group_name,
-    customer_person_name,
-    customer_phone,
-    customer_contact_email,
-    customer_address,
-    customer_city,
-    customer_state,
-    customer_pin,
-    customer_admin_email,
-    customer_admin_phone,
-    customer_activation_date,
-    customer_term_exp_date,
-    customer_client_,
-    customer_client_date,
-    customer_select_group,
+    company_name,
+    contact_person_name,
+    customer_phone_no,
+    contact_email,
+    address,
+    city,
+    state,
+    pin,
+    admin_email,
+    admin_phone,
+    activation_date,
+    term_exp_date,
+    // customer_client_,
+    // customer_client_date,
+    // customer_select_group,
     status,
+    client_manager_ref,
   } = row;
 
   const confirm = useBoolean();
@@ -244,9 +245,10 @@ export default function CustomerTableRow({ row, selected, onEditRow, onSelectRow
           />
           </TableCell> */}
 
-        <TableCell sx={{ whiteSpace: 'nowrap' }}>{customer_group_name}</TableCell>
+        <TableCell sx={{ whiteSpace: 'nowrap' }}>{company_name}</TableCell>
 
-        {/* <TableCell sx={{ whiteSpace: 'nowrap' }}>{user_group_description}</TableCell> */}
+        <TableCell sx={{ whiteSpace: 'nowrap' }}>{contact_person_name}</TableCell>
+        <TableCell sx={{ whiteSpace: 'nowrap' }}>{client_manager_ref}</TableCell>
 
         <TableCell>
           <Label
