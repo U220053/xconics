@@ -27,6 +27,7 @@ import Scrollbar from 'src/components/scrollbar';
 import { ConfirmDialog } from 'src/components/custom-dialog';
 import { useSettingsContext } from 'src/components/settings';
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
+import axios from 'src/utils/axios';
 import {
   useTable,
   getComparator,
@@ -37,28 +38,20 @@ import {
   TableSelectedAction,
   TablePaginationCustom,
 } from 'src/components/table';
-
 //
-import jsPDF from 'jspdf';
-import 'jspdf-autotable';
-import axios from 'src/utils/axios';
-import UserTableRow from '../user-table-row';
-import UserTableToolbar from '../user-table-toolbar';
-import UserTableFiltersResult from '../user-table-filters-result';
-import ExportToExceluser from '../user-export-excel';
+import CustomerTableRow from '../customer-table-row';
+import CustomerTableToolbar from '../customer-table-toolbar';
+import CustomerTableFiltersResult from '../customer-table-filters-result';
 
 // ----------------------------------------------------------------------
 
-const STATUS_OPTIONS = [
-  { value: 'all', label: 'All' },
-  { value: 'active', label: 'Active' },
-  { value: 'inactive', label: 'InActive' },
-];
+const STATUS_OPTIONS = [{ value: 'all', label: 'All' }, { value: 'active', label: 'Active' }, { value: 'inactive', label: 'InActive' },];
+
 const TABLE_HEAD = [
-  { id: 'email', label: 'Email', width: 250 },
-  { id: 'phoneNumber', label: 'Mobile', width: 180 },
-  { id: 'GroupRef', label: 'Group Name', width: 220 },
-  // { id: 'role', label: 'Role', width: 180 },
+  { id: 'company_name', label: 'Comapny Name', width: 180 },
+  { id: 'contact_person_name', label: 'Contact Person Name', width: 180 },
+
+  { id: 'client_manager_ref', label: 'Client Manager Name', width: 180 },
   { id: 'status', label: 'Status', width: 100 },
   { id: '', width: 88 },
 ];
@@ -71,42 +64,45 @@ const defaultFilters = {
 
 // ----------------------------------------------------------------------
 
-export default function UserListView() {
+export default function CustomerListView() {
   const table = useTable();
 
   const settings = useSettingsContext();
-  // const [updateTrigger, setUpdateTrigger] = useState(false);
+
   const router = useRouter();
 
   const confirm = useBoolean();
 
-  const [tableData, setTableData] = useState([]);
+  const [tableData, setTableData] = useState(_userList);
   const [isSuccess, setisSuccess] = useState();
+
   const [filters, setFilters] = useState(defaultFilters);
-
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const response = await axios.get('api/user/getall');
-        setisSuccess(response.data.success);
-        setTableData(response.data.data);
-      } catch (error) {
-        console.warn('Error fetching API data:', error);
-      }
-    }
-
-    fetchData();
-  }, []);
 
   const dataFiltered = applyFilter({
     inputData: tableData,
     comparator: getComparator(table.order, table.orderBy),
     filters,
   });
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await axios.get('api/client/customer');
+        // const data = await response.json();
+
+        setisSuccess(response.data.success);
+        setTableData(response.data.data);
+      } catch (error) {
+        console.error('Error fetching API data:', error);
+      }
+    }
+
+    fetchData();
+  }, [tableData]);
   const dataInPage = dataFiltered.slice(
     table.page * table.rowsPerPage,
     table.page * table.rowsPerPage + table.rowsPerPage
   );
+
   const denseHeight = table.dense ? 52 : 72;
 
   const canReset = !isEqual(defaultFilters, filters);
@@ -123,39 +119,45 @@ export default function UserListView() {
     },
     [table]
   );
-  async function deletegroup(id) {
-    await axios.post(`api/user/delete/${id}`);
+  async function deletecustomer(id) {
+    await axios.post(`api/client/customer/delete/${id}`);
   }
-  /// have to call API
+  const deleteSelectedGroups = async (selectedIds) => {
+    const deletePromises = selectedIds.map((id) => deletecustomer(id));
+
+    try {
+      await Promise.all(deletePromises);
+      // Optionally, you can perform additional actions after deleting all groups
+      console.log('Selected groups deleted successfully');
+    } catch (error) {
+      console.error('Error deleting selected groups:', error);
+    }
+  };
+
   const handleDeleteRow = useCallback(
     (id) => {
-      const deleteRow = tableData.filter((row) => row._id !== id);
+      const deleteRow = tableData.filter((row) => row.id !== id);
       try {
-        deletegroup(id);
+        deletecustomer(id);
       } catch (err) {
-        console.warn('Error fetching API data:', err);
+        console.error('Error fetching API data:', err);
       }
       setTableData(deleteRow);
+
       table.onUpdatePageDeleteRow(dataInPage.length);
     },
     [dataInPage.length, table, tableData]
   );
-
-  const deleteSelectedGroups = async (selectedIds) => {
-    const deletePromises = selectedIds.map((id) => deletegroup(id));
-    try {
-      await Promise.all(deletePromises);
-    } catch (error) {
-      console.warn('Error deleting selected groups:', error);
-    }
-  };
+ 
+  
+  
   const handleDeleteRows = useCallback(() => {
     const selectedIds = table.selected;
-    const deleteRows = tableData.filter((row) => !table.selected.includes(row._id));
+    const deleteRows = tableData.filter((row) => !table.selected.includes(row.id));
     try {
       deleteSelectedGroups(selectedIds);
-    } catch (error) {
-      console.warn('Error deleting selected groups:', error);
+    } catch (err) {
+      console.error('Error fetching API data:', err);
     }
     setTableData(deleteRows);
 
@@ -167,56 +169,21 @@ export default function UserListView() {
   }, [dataFiltered.length, dataInPage.length, table, tableData]);
   const handleEditRow = useCallback(
     (id) => {
-      router.push(paths.dashboard.user.edit(id));
+      router.push(paths.dashboard.customer.edit(id));
     },
     [router]
   );
+
   const handleFilterStatus = useCallback(
     (event, newValue) => {
       handleFilters('status', newValue);
     },
     [handleFilters]
   );
+
   const handleResetFilters = useCallback(() => {
     setFilters(defaultFilters);
   }, []);
-
-  // starting of export to pdf
-  const [hovered, setHovered] = useState(false);
-
-  const divStyle = {
-    backgroundColor: hovered ? '#2980b9' : '#3498db',
-    color: '#fff',
-    padding: '10px 30px',
-    cursor: 'pointer',
-    fontSize: '15px',
-    margin: '10px',
-  };
-  const allRowsData = dataFiltered
-    .slice(table.page * table.rowsPerPage, table.page * table.rowsPerPage + table.rowsPerPage)
-    .map((row) => {
-      return {
-        email: row.user_email,
-        phoneNumber: row.user_mobile,
-        GroupRef: row.user_group_ref.user_group_name,
-        status: row.status,
-      };
-    });
-
-  const labels = TABLE_HEAD.map((item) => item.label);
-  const exportToPDF = () => {
-    const doc = new jsPDF();
-
-    const tableData = allRowsData.map((rowData) => {
-      return Object.values(rowData);
-    });
-    doc.autoTable({
-      head: [labels],
-      body: tableData,
-    });
-    doc.save('USER_LIST.pdf');
-  };
-  // ending of export to pdf
 
   return (
     <>
@@ -225,36 +192,24 @@ export default function UserListView() {
           heading="List"
           links={[
             { name: 'Dashboard', href: paths.dashboard.root },
-            { name: 'User', href: paths.dashboard.user.root },
+            { name: 'Customer', href: paths.dashboard.customer.root },
             { name: 'List' },
           ]}
           action={
             <Button
               component={RouterLink}
-              href={paths.dashboard.user.new}
+              href={paths.dashboard.customer.new}
               variant="contained"
               startIcon={<Iconify icon="mingcute:add-line" />}
             >
-              New User
+              New Customer
             </Button>
           }
           sx={{
             mb: { xs: 3, md: 5 },
           }}
         />
-        <div>
-          <ExportToExceluser data={dataFiltered} filename="Permission_Data" />
-          <Button
-            onClick={exportToPDF}
-            style={divStyle}
-            onMouseEnter={() => setHovered(true)}
-            onMouseLeave={() => setHovered(false)}
-            variant="contained"
-            startIcon={<Iconify icon="solar:export-bold" />}
-          >
-            PDF
-          </Button>
-        </div>
+
         <Card>
           <Tabs
             value={filters.status}
@@ -272,31 +227,41 @@ export default function UserListView() {
                 label={tab.label}
                 icon={
                   <Label
-                    variant={(tab.value === 'all' && 'filled') || 'soft'}
+                    variant={
+                      ((tab.value === 'all' ) && 'filled') || 'soft'
+                    }
                     color={
                       (tab.value === 'active' && 'success') ||
                       (tab.value === 'inactive' && 'warning') ||
+                      // (tab.value === 'banned' && 'error') ||
                       'default'
                     }
                   >
                     {tab.value === 'all' && tableData.length}
-                    {tab.value === 'active' && tableData.filter((user) => user.status === 1).length}
+                    {tab.value === 'active' &&
+                      tableData.filter((customer) => customer.status === 1).length}
 
                     {tab.value === 'inactive' &&
-                      tableData.filter((user) => user.status === 0).length}
+                      tableData.filter((customer) => customer.status ===0).length}
+                    {/* {tab.value === 'banned' &&
+                      _userList.filter((customer) => customer.status === 'banned').length}
+                    {tab.value === 'rejected' &&
+                      _userList.filter((customer) => customer.status === 'rejected').length} */}
                   </Label>
                 }
               />
             ))}
           </Tabs>
-          {/* <UserTableToolbar
+
+          <CustomerTableToolbar
             filters={filters}
             onFilters={handleFilters}
             //
             roleOptions={_roles}
-          /> */}
+          />
+
           {canReset && (
-            <UserTableFiltersResult
+            <CustomerTableFiltersResult
               filters={filters}
               onFilters={handleFilters}
               //
@@ -306,6 +271,7 @@ export default function UserListView() {
               sx={{ p: 2.5, pt: 0 }}
             />
           )}
+
           <TableContainer sx={{ position: 'relative', overflow: 'unset' }}>
             <TableSelectedAction
               dense={table.dense}
@@ -314,7 +280,7 @@ export default function UserListView() {
               onSelectAllRows={(checked) =>
                 table.onSelectAllRows(
                   checked,
-                  tableData.map((row) => row._id)
+                  tableData.map((row) => row.id)
                 )
               }
               action={
@@ -338,10 +304,11 @@ export default function UserListView() {
                   onSelectAllRows={(checked) =>
                     table.onSelectAllRows(
                       checked,
-                      tableData.map((row) => row._id)
+                      tableData.map((row) => row.id)
                     )
                   }
                 />
+
                 <TableBody>
                   {dataFiltered
                     .slice(
@@ -349,7 +316,7 @@ export default function UserListView() {
                       table.page * table.rowsPerPage + table.rowsPerPage
                     )
                     .map((row) => (
-                      <UserTableRow
+                      <CustomerTableRow
                         key={row._id}
                         row={row}
                         selected={table.selected.includes(row._id)}
@@ -358,15 +325,18 @@ export default function UserListView() {
                         onEditRow={() => handleEditRow(row._id)}
                       />
                     ))}
+
                   <TableEmptyRows
                     height={denseHeight}
                     emptyRows={emptyRows(table.page, table.rowsPerPage, tableData.length)}
                   />
+
                   <TableNoData notFound={notFound} />
                 </TableBody>
               </Table>
             </Scrollbar>
           </TableContainer>
+
           <TablePaginationCustom
             count={dataFiltered.length}
             page={table.page}
@@ -379,6 +349,7 @@ export default function UserListView() {
           />
         </Card>
       </Container>
+
       <ConfirmDialog
         open={confirm.value}
         onClose={confirm.onFalse}
@@ -407,8 +378,9 @@ export default function UserListView() {
 
 // ----------------------------------------------------------------------
 
+
 function applyFilter({ inputData, comparator, filters }) {
-  const { name, status } = filters;
+  const { name, status, role } = filters;
 
   const stabilizedThis = inputData.map((el, index) => [el, index]);
 
@@ -422,17 +394,24 @@ function applyFilter({ inputData, comparator, filters }) {
 
   if (name) {
     inputData = inputData.filter(
-      (user) => user.user_group_name.toLowerCase().indexOf(name.toLowerCase()) !== -1
+      (customer) => customer.name.toLowerCase().indexOf(name.toLowerCase()) !== -1
     );
   }
 
   if (status !== 'all') {
     if (status === 'active') {
-      inputData = inputData.filter((user) => user.status === 1);
+      inputData = inputData.filter((customer) => customer.status === 1);
     } else {
-      inputData = inputData.filter((user) => user.status === 0);
+      inputData = inputData.filter((customer) => customer.status === 0);
     }
   }
+  // if (status !== 'all') {
+  //   inputData = inputData.filter((customer) => customer.status === status);
+  // }
+
+  // if (role.length) {
+  //   inputData = inputData.filter((customer) => role.includes(customer.role));
+  // }
 
   return inputData;
 }
