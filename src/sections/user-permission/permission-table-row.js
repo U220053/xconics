@@ -71,7 +71,7 @@ export default function PermissionTableRow({ row, selected, onEditRow, onSelectR
             }}
           />
           </TableCell> */}
-        <TableCell sx={{ whiteSpace: 'nowrap' }}>{user_group_ref._id}</TableCell>
+        <TableCell sx={{ whiteSpace: 'nowrap' }}>{user_group_ref.user_group_name}</TableCell>
         <TableCell sx={{ whiteSpace: 'nowrap' }}>{screen_name}</TableCell>
         <TableCell sx={{ whiteSpace: 'nowrap' }}>{add_permission?"YES":"NO"}</TableCell>
         <TableCell sx={{ whiteSpace: 'nowrap' }}>{edit_permission?"YES":"NO"}</TableCell>
@@ -102,10 +102,6 @@ export default function PermissionTableRow({ row, selected, onEditRow, onSelectR
         </TableCell>
 
       </TableRow>
-
-
-
-
       <CustomPopover
         open={popover.open}
         onClose={popover.onClose}
