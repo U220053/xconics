@@ -25,26 +25,28 @@ const ProductEditPage = lazy(() => import('src/pages/dashboard/product/edit'))
 const OrderListPage = lazy(() => import('src/pages/dashboard/order/list'))
 const OrderDetailsPage = lazy(() => import('src/pages/dashboard/order/details'))
 // INVOICE
-const InvoiceListPage = lazy(() => import('src/pages/dashboard/invoice/list'))
-const InvoiceDetailsPage = lazy(() => import('src/pages/dashboard/invoice/details'))
-const InvoiceCreatePage = lazy(() => import('src/pages/dashboard/invoice/new'))
-const InvoiceEditPage = lazy(() => import('src/pages/dashboard/invoice/edit'))
+const InvoiceListPage = lazy(() => import('src/pages/dashboard/invoice/list'));
+const InvoiceDetailsPage = lazy(() => import('src/pages/dashboard/invoice/details'));
+const InvoiceCreatePage = lazy(() => import('src/pages/dashboard/invoice/new'));
+const InvoiceEditPage = lazy(() => import('src/pages/dashboard/invoice/edit'));
+// USER
+const UserProfilePage = lazy(() => import('src/pages/dashboard/user/profile'));
+const UserCardsPage = lazy(() => import('src/pages/dashboard/user/cards'));
+const UserListPage = lazy(() => import('src/pages/dashboard/user/list'));
+const UserAccountPage = lazy(() => import('src/pages/dashboard/user/account'));
+const UserCreatePage = lazy(() => import('src/pages/dashboard/user/new'));
+const UserEditPage = lazy(() => import('src/pages/dashboard/user/edit'));
+
+//CUSTOMER
+const CustomerListPage = lazy(() => import('src/pages/dashboard/customer/list'));
+const CustomerPage = lazy(() => import('src/pages/dashboard/customer/edit'));
+const CustomerCreatePage = lazy(() => import('src/pages/dashboard/customer/new'));
 
 // USER PERMISSION
 const PermissionListPage = lazy(() => import('src/pages/dashboard/user/permission'))
 const PermissionCreatePage = lazy(() => import('src/pages/dashboard/user/permissionnew'));
 const PermissionEditPage = lazy(() => import('src/pages/dashboard/user/permissionedit'));
 
-//
-const UserProfilePage = lazy(() => import('src/pages/dashboard/user/profile'))
-const UserCardsPage = lazy(() => import('src/pages/dashboard/user/cards'))
-const UserAccountPage = lazy(() => import('src/pages/dashboard/user/account'))
-
-//user
-const UserListPage = lazy(() => import('src/pages/dashboard/user/list'))
-const UserCreatePage = lazy(() => import('src/pages/dashboard/user/new'))
-const UserEditPage = lazy(() => import('src/pages/dashboard/user/edit'))
-// const UserManagementPage = lazy(() => import('src/pages/dashboard/user/management'))
 
 // USER GROUP
 const GroupListPage = lazy(() => import('src/pages/dashboard/user/grouplist'));
@@ -114,6 +116,16 @@ export const dashboardRoutes = [
           { path: 'grouplist', element: <GroupListPage /> },
           { path: 'group/new', element: <GroupCreatePage/> },
           { path: 'group/:id/edit', element: <GroupEditPage/> },
+        ],
+      },
+      {
+        path: 'customer',
+        children: [
+          { element: <CustomerListPage />, index: true },
+          { path: 'list', element: <CustomerListPage /> },
+
+          { path: 'new', element: <CustomerCreatePage /> },
+          { path: ':id/edit', element: <CustomerPage /> },
         ],
       },
       {
