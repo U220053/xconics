@@ -1,17 +1,17 @@
-import { Helmet } from 'react-helmet-async';
-import React from 'react'
-import { UserManagementView} from 'src/sections/user/view';
+// import { Helmet } from 'react-helmet-async';
+// import React from 'react'
+// import { UserManagementView} from 'src/sections/user/view';
 
-function management() {
-  return (
-    <>
-    <Helmet>
-      <title> Dashboard: User List</title>
-    </Helmet>
+// function management() {
+//   return (
+//     <>
+//     <Helmet>
+//       <title> Dashboard: User List</title>
+//     </Helmet>
 
-    <UserManagementView />
-  </>
-  )
-}
+//     <UserManagementView />
+//   </>
+//   )
+// }
 
-export default management
+// export default management

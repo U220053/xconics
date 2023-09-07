@@ -1,12 +1,16 @@
+/* eslint-disable import/order */
+/* eslint-disable no-unused-vars */
 import PropTypes from 'prop-types'
 import * as Yup from 'yup'
 // eslint-disable-next-line import/no-duplicates
-import { useMemo, useState } from 'react'
-import { useForm } from 'react-hook-form'
+import { useCallback, useMemo, useState } from 'react'
+import { useForm, Controller } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 // eslint-disable-next-line import/no-duplicates
 import { useEffect } from 'react'
+
 // @mui
+
 import LoadingButton from '@mui/lab/LoadingButton'
 import Box from '@mui/material/Box'
 import Card from '@mui/material/Card'
@@ -36,36 +40,44 @@ import FormProvider, {
   RHFSelect,
   RHFUploadAvatar,
   RHFAutocomplete,
+  RHFCheckbox
 } from 'src/components/hook-form'
 import axios from 'src/utils/axios'
 import { Select } from '@mui/base'
 
 // ----------------------------------------------------------------------
 
-// eslint-disable-next-line react/prop-types
-export default function UserNewEditForm({ currentUser, userGroup }) {
+export default function PermissionNewEditForm({ currentGroup, userPer }) {
 
   const router = useRouter()
   const [formData, setFormData] = useState({});
   const { enqueueSnackbar } = useSnackbar()
 
   const NewUserSchema = Yup.object().shape({
-    email: Yup.string().required('User Email is required'),
-    mobile: Yup.string().required('User Mobile is required'),
-    password: Yup.string().required('Password is required'),
-    status: Yup.number().required('Status is required'),
+    name: Yup.string().required('Group name is required'),
+    add: Yup.boolean(),
+    edit: Yup.boolean(),
+    delete: Yup.boolean(),
+    export: Yup.boolean(),
+    print: Yup.boolean(),
+    enable: Yup.boolean(),
     groupref: Yup.string(),
+    status: Yup.number().required('Status is required'),
   })
 
   const defaultValues = useMemo(
     () => ({
-      email: currentUser?.user_email || '',
-      mobile: currentUser?.user_mobile || '',
-      password: currentUser?.password || '',
-      groupref: currentUser?.user_group_ref || '',
-      status: currentUser?.status || 1,
+      name: currentGroup?.screen_name || '',
+      groupref: currentGroup?.user_group_ref || "",
+      status: currentGroup?.status || 1,
+      add: currentGroup?.add_permission || false,
+      delete: currentGroup?.delete_permission || false,
+      edit: currentGroup?.edit_permission || false,
+      export: currentGroup?.export_permission || false,
+      print: currentGroup?.print_permission || false,
+      enable: currentGroup?.enable_permission || false,
     }),
-    [currentUser]
+    [currentGroup]
   )
 
   const methods = useForm({
@@ -82,21 +94,19 @@ export default function UserNewEditForm({ currentUser, userGroup }) {
     formState: { isSubmitting },
   } = methods
 
-  const [user, setUser] = useState(false)
+  const [group, setuserPer] = useState(false)
   const [dropdownData, setdropdownData] = useState([]);
 
 
   const values = watch()
 
   useEffect(() => {
-    if (currentUser?.user_email) setUser(true);
-    else setUser(false);
+    if (currentGroup?.screen_name) setuserPer(true);
+    else setuserPer(false);
 
-    console.log(currentUser);
+    console.log(currentGroup);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-
 
   const onFormChange = (data) => {
     setFormData(data);
@@ -105,28 +115,34 @@ export default function UserNewEditForm({ currentUser, userGroup }) {
   const onSubmit = handleSubmit(async (data) => {
     try {
       const newData = {
-        user_email: data.email,
-        user_mobile: data.mobile,
-        password: data.password,
+        screen_name: data.name,
         user_group_ref: data.groupref,
-        status: data.status
+        status: data.status,
+        add_permission: data.add,
+        delete_permission: data.delete,
+        edit_permission: data.edit,
+        export_permission: data.export,
+        print_permission: data.print,
+        enable_permission: data.enable
       }
-      console.log(data);
+      console.log("DATA", data);
+      console.log("New Data", newData);
       let response;
-      if (!user) {
-        response = await axios.post('/api/user/create', newData);
+      if (!group) {
+        response = await axios.post('/api/user/permission/create', newData);
       } else {
-        response = await axios.post(`/api/user/update/${currentUser._id}`, newData);
+        response = await axios.post(`/api/user/permission/update/${currentGroup._id}`, newData);
       }
       await new Promise((resolve) => setTimeout(resolve, 500));
       reset();
-      enqueueSnackbar(currentUser ? 'Update success!' : 'Create success!')
+      enqueueSnackbar(currentGroup ? 'Update success!' : 'Create success!')
       await new Promise((resolve) => setTimeout(resolve, 500));
       console.log(response);
-      router.push(paths.dashboard.user.list);
+      router.push(paths.dashboard.user.permission);
     } catch (error) {
-  console.error(error);
-  }
+
+      console.error(error);
+    }
     onFormChange(data);
   });
 
@@ -138,9 +154,6 @@ export default function UserNewEditForm({ currentUser, userGroup }) {
   const handleLogData = () => {
     console.log('Form Data:', formData);
   };
-
-
-
 
   return (
     <FormProvider methods={methods} onSubmit={onSubmit}>
@@ -157,44 +170,53 @@ export default function UserNewEditForm({ currentUser, userGroup }) {
               sm: 'repeat(2, 1fr)',
             }}
           >
-            <RHFTextField name="email" label="User Email" type="email" />
-            <RHFTextField name="mobile" label="User Mobile" type="number" />
-            <RHFTextField name="password" label="Password" />
+            <RHFTextField name="name" label="Screen Name" />
+
 
             <RHFSelect
               // helperText= "Select Group"
-              fullWidth
+              // fullWidth
               name="groupref"
-              label="Group"
+              label="Select Group"
+
               // InputLabelProps={{ shrink: true }}
               PaperPropsSx={{ textTransform: 'capitalize' }}
-              defaultValue={currentUser?.user_group_ref || ""}
+              defaultValue={currentGroup?.user_group_ref || ""}
             >
               {
-                userGroup.map((option) => <MenuItem key={option.id} value={option.id}>{option.group_name}</MenuItem>)
+                userPer.map((option) => <MenuItem key={option.id} value={option.id}>{option.group_name}</MenuItem>)
               }
             </RHFSelect>
 
+            <div style={{ display: "flex", flexDirection: "column"}}>
+              <RHFSelect
+                fullWidth
+                name="status"
+                label="Status"
+                PaperPropsSx={{ textTransform: 'capitalize' }}
+                defaultValue={currentGroup?.status || 1} // Set the value based on your condition
+              >
+                {statuses.map((option) => (
+                  <MenuItem key={option.value} value={option.value}>
+                    {option.label}
+                  </MenuItem>
+                ))}
+              </RHFSelect>
 
-            <RHFSelect
-              fullWidth
-              name="status"
-              label="Status"
-              PaperPropsSx={{ textTransform: 'capitalize' }}
-              defaultValue={currentUser?.status || 1} // Set the value based on your condition
-            >
-              {statuses.map((option) => (
-                <MenuItem key={option.value} value={option.value}>
-                  {option.label}
-                </MenuItem>
-              ))}
-            </RHFSelect>
-
+              <div style={{paddingTop: "20px", paddingLeft: "20px"}}>
+                <RHFCheckbox name="add" label="Add Permission" />
+                <RHFCheckbox name="edit" label="Edit Permission" />
+                <RHFCheckbox name="delete" label="Delete Permission" />
+                <RHFCheckbox name="export" label="Export Permission" />
+                <RHFCheckbox name="print" label="Print Permission" />
+                <RHFCheckbox name="enable" label="Enable Permission" />
+              </div>
+            </div>
           </Box>
 
           <Stack alignItems="flex-end" sx={{ mt: 3 }}>
             <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
-              {!currentUser ? 'Create New User' : 'Save Changes'}
+              {!currentGroup ? 'Create New Permission' : 'Save Changes'}
             </LoadingButton>
           </Stack>
         </Card>
@@ -204,11 +226,7 @@ export default function UserNewEditForm({ currentUser, userGroup }) {
   )
 }
 
-UserNewEditForm.propTypes = {
-  currentUser: PropTypes.object,
-  userGroup: PropTypes.object
+PermissionNewEditForm.propTypes = {
+  currentGroup: PropTypes.object,
+  userPer: PropTypes.object
 }
-
-
-
-

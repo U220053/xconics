@@ -1,3 +1,4 @@
+/* eslint-disable arrow-body-style */
 // eslint-disable-next-line import/no-duplicates
 import React from 'react'
 // eslint-disable-next-line import/no-duplicates
@@ -11,13 +12,15 @@ import axios from 'src/utils/axios'
 import { useSettingsContext } from 'src/components/settings';
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
 //
-// eslint-disable-next-line no-unused-vars
-import UserNewEditForm from '../user-new-edit-form';
+//
+import PermissionNewEditForm from '../permission-new-edit-form';
 
-function UserCreateView() {
+// ----------------------------------------------------------------------
+
+export default function PermissionCreateView() {
   const settings = useSettingsContext();
-  const [userGroup, setUserGroup] = useState([])
-  const [isLoading, setIsLoading] = useState(true);
+  const [userPer, setUserPer] = useState([])
+  const [isLoading, setIsLoading] = useState(true); // Add a loading state
   useEffect(() => {
 
     const fetchData = async () => {
@@ -29,12 +32,12 @@ function UserCreateView() {
       const newGroupData = newdata.map((item) => {
         return { id: item._id, group_name: item.user_group_name }
       })
-      setUserGroup(newGroupData);
+      setUserPer(newGroupData);
 
       console.log("SECOND DATA", newGroupData);
       setIsLoading(false);
     }
-    
+
     fetchData()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -42,10 +45,11 @@ function UserCreateView() {
   if (isLoading) {
     return <div>Loading...</div>; // Display a loading indicator
   }
+  
   return (
     <Container maxWidth={settings.themeStretch ? false : 'lg'}>
       <CustomBreadcrumbs
-        heading="Create a new user "
+        heading="Create new permission"
         links={[
           {
             name: 'Dashboard',
@@ -55,16 +59,14 @@ function UserCreateView() {
             name: 'User',
             href: paths.dashboard.user.root,
           },
-          { name: 'New user' },
+          { name: 'New permission' },
         ]}
         sx={{
           mb: { xs: 3, md: 5 },
         }}
       />
 
-      <UserNewEditForm userGroup={userGroup} />
+      <PermissionNewEditForm userPer={userPer} />
     </Container>
   );
 }
-
-export default UserCreateView;

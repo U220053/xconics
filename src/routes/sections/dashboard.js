@@ -1,29 +1,29 @@
-import { lazy, Suspense } from 'react';
-import { Outlet } from 'react-router-dom';
+import { lazy, Suspense } from 'react'
+import { Outlet } from 'react-router-dom'
 // auth
-import { AuthGuard } from 'src/auth/guard';
+import { AuthGuard } from 'src/auth/guard'
 // layouts
-import DashboardLayout from 'src/layouts/dashboard';
+import DashboardLayout from 'src/layouts/dashboard'
 // components
-import { LoadingScreen } from 'src/components/loading-screen';
+import { LoadingScreen } from 'src/components/loading-screen'
 
 // ----------------------------------------------------------------------
 
 // OVERVIEW
-const IndexPage = lazy(() => import('src/pages/dashboard/app'));
-const OverviewEcommercePage = lazy(() => import('src/pages/dashboard/ecommerce'));
-const OverviewAnalyticsPage = lazy(() => import('src/pages/dashboard/analytics'));
-const OverviewBankingPage = lazy(() => import('src/pages/dashboard/banking'));
-const OverviewBookingPage = lazy(() => import('src/pages/dashboard/booking'));
-const OverviewFilePage = lazy(() => import('src/pages/dashboard/file'));
+const IndexPage = lazy(() => import('src/pages/dashboard/app'))
+const OverviewEcommercePage = lazy(() => import('src/pages/dashboard/ecommerce'))
+const OverviewAnalyticsPage = lazy(() => import('src/pages/dashboard/analytics'))
+const OverviewBankingPage = lazy(() => import('src/pages/dashboard/banking'))
+const OverviewBookingPage = lazy(() => import('src/pages/dashboard/booking'))
+const OverviewFilePage = lazy(() => import('src/pages/dashboard/file'))
 // PRODUCT
-const ProductDetailsPage = lazy(() => import('src/pages/dashboard/product/details'));
-const ProductListPage = lazy(() => import('src/pages/dashboard/product/list'));
-const ProductCreatePage = lazy(() => import('src/pages/dashboard/product/new'));
-const ProductEditPage = lazy(() => import('src/pages/dashboard/product/edit'));
+const ProductDetailsPage = lazy(() => import('src/pages/dashboard/product/details'))
+const ProductListPage = lazy(() => import('src/pages/dashboard/product/list'))
+const ProductCreatePage = lazy(() => import('src/pages/dashboard/product/new'))
+const ProductEditPage = lazy(() => import('src/pages/dashboard/product/edit'))
 // ORDER
-const OrderListPage = lazy(() => import('src/pages/dashboard/order/list'));
-const OrderDetailsPage = lazy(() => import('src/pages/dashboard/order/details'));
+const OrderListPage = lazy(() => import('src/pages/dashboard/order/list'))
+const OrderDetailsPage = lazy(() => import('src/pages/dashboard/order/details'))
 // INVOICE
 const InvoiceListPage = lazy(() => import('src/pages/dashboard/invoice/list'));
 const InvoiceDetailsPage = lazy(() => import('src/pages/dashboard/invoice/details'));
@@ -36,38 +36,49 @@ const UserListPage = lazy(() => import('src/pages/dashboard/user/list'));
 const UserAccountPage = lazy(() => import('src/pages/dashboard/user/account'));
 const UserCreatePage = lazy(() => import('src/pages/dashboard/user/new'));
 const UserEditPage = lazy(() => import('src/pages/dashboard/user/edit'));
-const UserManagementPage = lazy(() => import('src/pages/dashboard/user/management'));
-const GroupCreatePage = lazy(() => import('src/pages/dashboard/user/creategroup'));
+
 //CUSTOMER
 const CustomerListPage = lazy(() => import('src/pages/dashboard/customer/list'));
 const CustomerPage = lazy(() => import('src/pages/dashboard/customer/edit'));
 const CustomerCreatePage = lazy(() => import('src/pages/dashboard/customer/new'));
+
+// USER PERMISSION
+const PermissionListPage = lazy(() => import('src/pages/dashboard/user/permission'))
+const PermissionCreatePage = lazy(() => import('src/pages/dashboard/user/permissionnew'));
+const PermissionEditPage = lazy(() => import('src/pages/dashboard/user/permissionedit'));
+
+
+// USER GROUP
+const GroupListPage = lazy(() => import('src/pages/dashboard/user/grouplist'));
+const GroupCreatePage = lazy(() => import('src/pages/dashboard/user/groupnew'));
+const GroupEditPage = lazy(() => import('src/pages/dashboard/user/groupedit'));
+
 // BLOG
-const BlogPostsPage = lazy(() => import('src/pages/dashboard/post/list'));
-const BlogPostPage = lazy(() => import('src/pages/dashboard/post/details'));
-const BlogNewPostPage = lazy(() => import('src/pages/dashboard/post/new'));
-const BlogEditPostPage = lazy(() => import('src/pages/dashboard/post/edit'));
+const BlogPostsPage = lazy(() => import('src/pages/dashboard/post/list'))
+const BlogPostPage = lazy(() => import('src/pages/dashboard/post/details'))
+const BlogNewPostPage = lazy(() => import('src/pages/dashboard/post/new'))
+const BlogEditPostPage = lazy(() => import('src/pages/dashboard/post/edit'))
 // JOB
-const JobDetailsPage = lazy(() => import('src/pages/dashboard/job/details'));
-const JobListPage = lazy(() => import('src/pages/dashboard/job/list'));
-const JobCreatePage = lazy(() => import('src/pages/dashboard/job/new'));
-const JobEditPage = lazy(() => import('src/pages/dashboard/job/edit'));
+const JobDetailsPage = lazy(() => import('src/pages/dashboard/job/details'))
+const JobListPage = lazy(() => import('src/pages/dashboard/job/list'))
+const JobCreatePage = lazy(() => import('src/pages/dashboard/job/new'))
+const JobEditPage = lazy(() => import('src/pages/dashboard/job/edit'))
 // TOUR
-const TourDetailsPage = lazy(() => import('src/pages/dashboard/tour/details'));
-const TourListPage = lazy(() => import('src/pages/dashboard/tour/list'));
-const TourCreatePage = lazy(() => import('src/pages/dashboard/tour/new'));
-const TourEditPage = lazy(() => import('src/pages/dashboard/tour/edit'));
+const TourDetailsPage = lazy(() => import('src/pages/dashboard/tour/details'))
+const TourListPage = lazy(() => import('src/pages/dashboard/tour/list'))
+const TourCreatePage = lazy(() => import('src/pages/dashboard/tour/new'))
+const TourEditPage = lazy(() => import('src/pages/dashboard/tour/edit'))
 // FILE MANAGER
-const FileManagerPage = lazy(() => import('src/pages/dashboard/file-manager'));
+const FileManagerPage = lazy(() => import('src/pages/dashboard/file-manager'))
 // APP
-const ChatPage = lazy(() => import('src/pages/dashboard/chat'));
-const MailPage = lazy(() => import('src/pages/dashboard/mail'));
-const CalendarPage = lazy(() => import('src/pages/dashboard/calendar'));
-const KanbanPage = lazy(() => import('src/pages/dashboard/kanban'));
+const ChatPage = lazy(() => import('src/pages/dashboard/chat'))
+const MailPage = lazy(() => import('src/pages/dashboard/mail'))
+const CalendarPage = lazy(() => import('src/pages/dashboard/calendar'))
+const KanbanPage = lazy(() => import('src/pages/dashboard/kanban'))
 // TEST RENDER PAGE BY ROLE
-const PermissionDeniedPage = lazy(() => import('src/pages/dashboard/permission'));
+const PermissionDeniedPage = lazy(() => import('src/pages/dashboard/permission'))
 // BLANK PAGE
-const BlankPage = lazy(() => import('src/pages/dashboard/blank'));
+const BlankPage = lazy(() => import('src/pages/dashboard/blank'))
 
 // ----------------------------------------------------------------------
 
@@ -87,21 +98,24 @@ export const dashboardRoutes = [
       { element: <IndexPage />, index: true },
       { path: 'ecommerce', element: <OverviewEcommercePage /> },
       { path: 'analytics', element: <OverviewAnalyticsPage /> },
-      { path: 'banking', element: <OverviewBankingPage /> },
-      { path: 'booking', element: <OverviewBookingPage /> },
-      { path: 'file', element: <OverviewFilePage /> },
       {
         path: 'user',
         children: [
           { element: <UserProfilePage />, index: true },
           { path: 'profile', element: <UserProfilePage /> },
           { path: 'cards', element: <UserCardsPage /> },
+         
+          { path: 'permission', element: <PermissionListPage /> },
+          { path: 'permission/:id/edit', element: <PermissionEditPage /> },
+          { path: 'permission/new', element: <PermissionCreatePage/> },
           { path: 'list', element: <UserListPage /> },
           { path: 'new', element: <UserCreatePage /> },
-          { path: 'group/:id/edit', element: <UserEditPage /> },
+          { path: ':id/edit', element: <UserEditPage /> },
           { path: 'account', element: <UserAccountPage /> },
-          { path: 'group', element: <UserManagementPage /> },
-          { path: 'groupcreate', element: <GroupCreatePage /> },
+          // { path: 'management', element: <UserManagementPage /> },
+          { path: 'grouplist', element: <GroupListPage /> },
+          { path: 'group/new', element: <GroupCreatePage/> },
+          { path: 'group/:id/edit', element: <GroupEditPage/> },
         ],
       },
       {
@@ -181,4 +195,4 @@ export const dashboardRoutes = [
       { path: 'blank', element: <BlankPage /> },
     ],
   },
-];
+]

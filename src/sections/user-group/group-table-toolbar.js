@@ -1,46 +1,43 @@
-import PropTypes from 'prop-types'
-import { useCallback } from 'react'
+import PropTypes from 'prop-types';
+import { useCallback } from 'react';
 // @mui
-import Stack from '@mui/material/Stack'
-import MenuItem from '@mui/material/MenuItem'
-import Checkbox from '@mui/material/Checkbox'
-import TextField from '@mui/material/TextField'
-import InputLabel from '@mui/material/InputLabel'
-import IconButton from '@mui/material/IconButton'
-import FormControl from '@mui/material/FormControl'
-import OutlinedInput from '@mui/material/OutlinedInput'
-import InputAdornment from '@mui/material/InputAdornment'
-import Select from '@mui/material/Select'
+import Stack from '@mui/material/Stack';
+import MenuItem from '@mui/material/MenuItem';
+import Checkbox from '@mui/material/Checkbox';
+import TextField from '@mui/material/TextField';
+import InputLabel from '@mui/material/InputLabel';
+import IconButton from '@mui/material/IconButton';
+import FormControl from '@mui/material/FormControl';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import InputAdornment from '@mui/material/InputAdornment';
+import Select from '@mui/material/Select';
 // components
-import Iconify from 'src/components/iconify'
-import CustomPopover, { usePopover } from 'src/components/custom-popover'
+import Iconify from 'src/components/iconify';
+import CustomPopover, { usePopover } from 'src/components/custom-popover';
 
-// ----------------------------------------------------------------------
-
-export default function UserTableToolbar({
+export default function GroupTableToolbar({
   filters,
   onFilters,
-  //
   roleOptions,
 }) {
-  const popover = usePopover()
+  const popover = usePopover();
 
   const handleFilterName = useCallback(
     (event) => {
-      onFilters('name', event.target.value)
+      onFilters('name', event.target.value);
     },
     [onFilters]
-  )
+  );
 
   const handleFilterRole = useCallback(
     (event) => {
       onFilters(
         'role',
         typeof event.target.value === 'string' ? event.target.value.split(',') : event.target.value
-      )
+      );
     },
     [onFilters]
-  )
+  );
 
   return (
     <>
@@ -62,7 +59,7 @@ export default function UserTableToolbar({
             width: { xs: 1, md: 200 },
           }}
         >
-          <InputLabel>Group Ref </InputLabel>
+          <InputLabel>Role</InputLabel>
 
           <Select
             multiple
@@ -114,7 +111,7 @@ export default function UserTableToolbar({
       >
         <MenuItem
           onClick={() => {
-            popover.onClose()
+            popover.onClose();
           }}
         >
           <Iconify icon="solar:printer-minimalistic-bold" />
@@ -123,7 +120,7 @@ export default function UserTableToolbar({
 
         <MenuItem
           onClick={() => {
-            popover.onClose()
+            popover.onClose();
           }}
         >
           <Iconify icon="solar:import-bold" />
@@ -132,7 +129,7 @@ export default function UserTableToolbar({
 
         <MenuItem
           onClick={() => {
-            popover.onClose()
+            popover.onClose();
           }}
         >
           <Iconify icon="solar:export-bold" />
@@ -140,11 +137,11 @@ export default function UserTableToolbar({
         </MenuItem>
       </CustomPopover>
     </>
-  )
+  );
 }
 
-UserTableToolbar.propTypes = {
+GroupTableToolbar.propTypes = {
   filters: PropTypes.object,
   onFilters: PropTypes.func,
   roleOptions: PropTypes.array,
-}
+};

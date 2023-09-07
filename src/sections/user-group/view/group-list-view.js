@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable react-hooks/exhaustive-deps */
 import isEqual from 'lodash/isEqual';
 import { useState, useCallback, useEffect } from 'react';
@@ -17,8 +18,6 @@ import TableContainer from '@mui/material/TableContainer';
 import { paths } from 'src/routes/paths';
 import { useRouter } from 'src/routes/hooks';
 import { RouterLink } from 'src/routes/components';
-// _mock
-import { _userList, _roles, USER_STATUS_OPTIONS } from 'src/_mock';
 // hooks
 import { useBoolean } from 'src/hooks/use-boolean';
 // components
@@ -40,9 +39,9 @@ import {
 } from 'src/components/table';
 //
 import axios from 'src/utils/axios';
-import UserTableRow from '../user-table-row';
-import UserTableToolbar from '../user-table-toolbar';
-import UserTableFiltersResult from '../user-table-filters-result';
+import GroupTableRow from '../group-table-row';
+import GroupTableToolbar from '../group-table-toolbar';
+import GroupTableFiltersResult from '../group-table-filters-result';
 
 const STATUS_OPTIONS = [
   { value: 'all', label: 'All' },
@@ -60,18 +59,16 @@ const defaultFilters = {
   status: 'all',
 };
 
-function UserManagementView() {
+function GroupListView() {
   const table = useTable();
-
   const settings = useSettingsContext();
   // const [updateTrigger, setUpdateTrigger] = useState(false);
   const router = useRouter();
-
   const confirm = useBoolean();
-
   const [tableData, setTableData] = useState([]);
   const [isSuccess, setisSuccess] = useState();
   const [filters, setFilters] = useState(defaultFilters);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     async function fetchData() {
@@ -79,8 +76,13 @@ function UserManagementView() {
         const response = await axios.get('api/user/usergroups');
         // const data = await response.json();
 
+
+
         setisSuccess(response.data.success);
         setTableData(response.data.data);
+     
+        console.log(response.data.data);
+ 
       } catch (error) {
         console.error('Error fetching API data:', error);
       }
@@ -88,7 +90,6 @@ function UserManagementView() {
 
     fetchData();
   }, []);
-
   const dataFiltered = applyFilter({
     inputData: tableData,
     comparator: getComparator(table.order, table.orderBy),
@@ -164,7 +165,7 @@ function UserManagementView() {
   }, [dataFiltered.length, dataInPage.length, table, tableData]);
   const handleEditRow = useCallback(
     (id) => {
-      router.push(paths.dashboard.user.edit(id));
+      router.push(paths.dashboard.user.groupedit(id));
     },
     [router]
   );
@@ -190,7 +191,7 @@ function UserManagementView() {
           action={
             <Button
               component={RouterLink}
-              href={paths.dashboard.user.groupcreate}
+              href={paths.dashboard.user.groupnew}
               variant="contained"
               startIcon={<Iconify icon="mingcute:add-line" />}
             >
@@ -236,7 +237,7 @@ function UserManagementView() {
             ))}
           </Tabs>
           {canReset && (
-            <UserTableFiltersResult
+            <GroupTableFiltersResult
               filters={filters}
               onFilters={handleFilters}
               //
@@ -289,7 +290,7 @@ function UserManagementView() {
                       table.page * table.rowsPerPage + table.rowsPerPage
                     )
                     .map((row) => (
-                      <UserTableRow
+                      <GroupTableRow
                         key={row._id}
                         row={row}
                         selected={table.selected.includes(row._id)}
@@ -313,7 +314,6 @@ function UserManagementView() {
             rowsPerPage={table.rowsPerPage}
             onPageChange={table.onChangePage}
             onRowsPerPageChange={table.onChangeRowsPerPage}
-            //
             dense={table.dense}
             onChangeDense={table.onChangeDense}
           />
@@ -375,4 +375,4 @@ function applyFilter({ inputData, comparator, filters }) {
 
   return inputData;
 }
-export default UserManagementView;
+export default GroupListView;

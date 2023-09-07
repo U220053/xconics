@@ -1,32 +1,33 @@
-import isEqual from 'lodash/isEqual'
-import { useState, useCallback, useEffect } from 'react'
+/* eslint-disable react-hooks/exhaustive-deps */
+import isEqual from 'lodash/isEqual';
+import { useState, useCallback, useEffect } from 'react';
 // @mui
-import { alpha } from '@mui/material/styles'
-import Tab from '@mui/material/Tab'
-import Tabs from '@mui/material/Tabs'
-import Card from '@mui/material/Card'
-import Table from '@mui/material/Table'
-import Button from '@mui/material/Button'
-import Tooltip from '@mui/material/Tooltip'
-import Container from '@mui/material/Container'
-import TableBody from '@mui/material/TableBody'
-import IconButton from '@mui/material/IconButton'
-import TableContainer from '@mui/material/TableContainer'
+import { alpha } from '@mui/material/styles';
+import Tab from '@mui/material/Tab';
+import Tabs from '@mui/material/Tabs';
+import Card from '@mui/material/Card';
+import Table from '@mui/material/Table';
+import Button from '@mui/material/Button';
+import Tooltip from '@mui/material/Tooltip';
+import Container from '@mui/material/Container';
+import TableBody from '@mui/material/TableBody';
+import IconButton from '@mui/material/IconButton';
+import TableContainer from '@mui/material/TableContainer';
 // routes
-import { paths } from 'src/routes/paths'
-import { useRouter } from 'src/routes/hooks'
-import { RouterLink } from 'src/routes/components'
+import { paths } from 'src/routes/paths';
+import { useRouter } from 'src/routes/hooks';
+import { RouterLink } from 'src/routes/components';
 // _mock
-import { _userList, _roles, USER_STATUS_OPTIONS } from 'src/_mock'
+import { _userList, _roles, USER_STATUS_OPTIONS } from 'src/_mock';
 // hooks
-import { useBoolean } from 'src/hooks/use-boolean'
+import { useBoolean } from 'src/hooks/use-boolean';
 // components
-import Label from 'src/components/label'
-import Iconify from 'src/components/iconify'
-import Scrollbar from 'src/components/scrollbar'
-import { ConfirmDialog } from 'src/components/custom-dialog'
-import { useSettingsContext } from 'src/components/settings'
-import CustomBreadcrumbs from 'src/components/custom-breadcrumbs'
+import Label from 'src/components/label';
+import Iconify from 'src/components/iconify';
+import Scrollbar from 'src/components/scrollbar';
+import { ConfirmDialog } from 'src/components/custom-dialog';
+import { useSettingsContext } from 'src/components/settings';
+import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
 import {
   useTable,
   getComparator,
@@ -36,36 +37,39 @@ import {
   TableHeadCustom,
   TableSelectedAction,
   TablePaginationCustom,
-} from 'src/components/table'
+} from 'src/components/table';
 
-//
+import axios from 'src/utils/axios';
+import PermissionTableRow from '../permission-table-row';
+// import PermissionTableToolbar from '../permission-table-toolbar';
+import PermissionTableFiltersResult from '../permission-table-filters-result';
 
-import axios from 'src/utils/axios'
-import UserTableRow from '../user-table-row'
-import UserTableToolbar from '../user-table-toolbar'
-import UserTableFiltersResult from '../user-table-filters-result'
+const STATUS_OPTIONS = [
+  { value: 'all', label: 'All' },
+  { value: 'active', label: 'Active' },
+  { value: 'inactive', label: 'InActive' },
+];
 
-// ----------------------------------------------------------------------
-
-const STATUS_OPTIONS = [{ value: 'all', label: 'All' }, { value: 'active', label: 'Active' }, { value: 'inactive', label: 'InActive' },]
 const TABLE_HEAD = [
-  { id: 'email', label: 'Email', width: 250 },
-  { id: 'phoneNumber', label: 'Mobile', width: 180, },
-  { id: 'GroupRef', label: 'Group Name', width: 220 },
-  //   // { id: 'role', label: 'Role', width: 180 },
+  { id: 'user_group_ref', label: 'Group Name' },
+  { id: 'screen_name', label: 'Screen Name', width: 180 },
+  { id: 'add', label: 'Add', width: 220 },
+  { id: 'edit', label: 'Edit', width: 180 },
+  { id: 'delete', label: 'Delete', width: 180 },
+  { id: 'export', label: 'Export', width: 180 },
+  { id: 'print', label: 'Print', width: 180 },
+  { id: 'enable', label: 'Enable', width: 180 },
   { id: 'status', label: 'Status', width: 100 },
   { id: '', width: 88 },
-]
-
+];
 const defaultFilters = {
   name: '',
-  role: [],
+  // role: [],
   status: 'all',
 }
-
 // ----------------------------------------------------------------------
 
-export default function UserListView() {
+export default function PermissionListView() {
   const table = useTable();
 
   const settings = useSettingsContext();
@@ -81,7 +85,7 @@ export default function UserListView() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await axios.get('api/user/getall');
+        const response = await axios.get('api/user/permission');
         // const data = await response.json();
 
         setisSuccess(response.data.success);
@@ -123,7 +127,7 @@ export default function UserListView() {
     [table]
   );
   async function deletegroup(id) {
-    await axios.post(`api/user/delete/${id}`);
+    await axios.post(`api/user/permission/delete/${id}`);
   }
   /// have to call API
   const handleDeleteRow = useCallback(
@@ -175,7 +179,7 @@ export default function UserListView() {
   }, [dataFiltered.length, dataInPage.length, table, tableData]);
   const handleEditRow = useCallback(
     (id) => {
-      router.push(paths.dashboard.user.edit(id));
+      router.push(paths.dashboard.user.permissionedit(id));
     },
     [router]
   );
@@ -193,20 +197,20 @@ export default function UserListView() {
     <>
       <Container maxWidth={settings.themeStretch ? false : 'lg'}>
         <CustomBreadcrumbs
-          heading="List"
+          heading="Permission List"
           links={[
             { name: 'Dashboard', href: paths.dashboard.root },
             { name: 'User', href: paths.dashboard.user.root },
-            { name: 'List' },
+            { name: 'Permission' },
           ]}
           action={
             <Button
               component={RouterLink}
-              href={paths.dashboard.user.new}
+              href={paths.dashboard.user.permissionnew}
               variant="contained"
               startIcon={<Iconify icon="mingcute:add-line" />}
             >
-              New User
+              New Group
             </Button>
           }
           sx={{
@@ -257,7 +261,7 @@ export default function UserListView() {
             roleOptions={_roles}
           /> */}
           {canReset && (
-            <UserTableFiltersResult
+            <PermissionTableFiltersResult
               filters={filters}
               onFilters={handleFilters}
               //
@@ -310,7 +314,7 @@ export default function UserListView() {
                       table.page * table.rowsPerPage + table.rowsPerPage
                     )
                     .map((row) => (
-                      <UserTableRow
+                      <PermissionTableRow
                         key={row._id}
                         row={row}
                         selected={table.selected.includes(row._id)}
