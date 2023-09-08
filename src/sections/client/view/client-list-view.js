@@ -45,7 +45,11 @@ import ClientTableFiltersResult from '../client-table-filters-result';
 
 // ----------------------------------------------------------------------
 
-const STATUS_OPTIONS = [{ value: 'all', label: 'All' }, { value: 'active', label: 'Active' }, { value: 'inactive', label: 'InActive' },];
+const STATUS_OPTIONS = [
+  { value: 'all', label: 'All' },
+  { value: 'active', label: 'Active' },
+  { value: 'inactive', label: 'InActive' },
+];
 
 const TABLE_HEAD = [
   { id: 'company_name', label: 'Company Name', width: 180 },
@@ -87,8 +91,6 @@ export default function ClientListView() {
     async function fetchData() {
       try {
         const response = await axios.get('api/client/manager');
-        // const data = await response.json();
-
         setisSuccess(response.data.success);
         setTableData(response.data.data);
       } catch (error) {
@@ -97,6 +99,7 @@ export default function ClientListView() {
     }
 
     fetchData();
+    // }, [tableData]);
   }, [tableData]);
   const dataInPage = dataFiltered.slice(
     table.page * table.rowsPerPage,
@@ -128,7 +131,7 @@ export default function ClientListView() {
     try {
       await Promise.all(deletePromises);
       // Optionally, you can perform additional actions after deleting all groups
-      console.log('Selected groups deleted successfully');
+      // console.log('Selected groups deleted successfully');
     } catch (error) {
       console.error('Error deleting selected groups:', error);
     }
@@ -148,9 +151,7 @@ export default function ClientListView() {
     },
     [dataInPage.length, table, tableData]
   );
- 
-  
-  
+
   const handleDeleteRows = useCallback(() => {
     const selectedIds = table.selected;
     const deleteRows = tableData.filter((row) => !table.selected.includes(row.id));
@@ -227,9 +228,7 @@ export default function ClientListView() {
                 label={tab.label}
                 icon={
                   <Label
-                    variant={
-                      ((tab.value === 'all' ) && 'filled') || 'soft'
-                    }
+                    variant={(tab.value === 'all' && 'filled') || 'soft'}
                     color={
                       (tab.value === 'active' && 'success') ||
                       (tab.value === 'inactive' && 'warning') ||
@@ -242,8 +241,7 @@ export default function ClientListView() {
                       tableData.filter((client) => client.status === 1).length}
 
                     {tab.value === 'inactive' &&
-                      tableData.filter((client) => client.status ===0).length}
-                    
+                      tableData.filter((client) => client.status === 0).length}
                   </Label>
                 }
               />
@@ -375,7 +373,6 @@ export default function ClientListView() {
 
 // ----------------------------------------------------------------------
 
-
 function applyFilter({ inputData, comparator, filters }) {
   const { name, status, role } = filters;
 
@@ -402,9 +399,6 @@ function applyFilter({ inputData, comparator, filters }) {
       inputData = inputData.filter((client) => client.status === 0);
     }
   }
-  
-
- 
 
   return inputData;
 }

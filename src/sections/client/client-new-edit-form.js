@@ -45,7 +45,7 @@ import PickerDate from 'src/sections/_examples/mui/picker-view/picker-date.js';
 // ----------------------------------------------------------------------
 
 export default function ClientNewEditForm({ currentClient, userGroup, client_manager_ref }) {
-
+  console.log({ currentClient });
   const router = useRouter();
   const [formData, setFormData] = useState({});
   const [active, setActive] = useState(new Date());
@@ -75,17 +75,17 @@ export default function ClientNewEditForm({ currentClient, userGroup, client_man
     name: Yup.string(),
     PersonName: Yup.string(),
     PhoneNo: Yup.number(),
-    ContactEmail: Yup.string(),
+    ContactEmail: Yup.string().email(),
     address: Yup.string(),
     City: Yup.string(),
     State: Yup.string(),
-    Pin: Yup.number(),
-    AdminEmail: Yup.string(),
+    Pin: Yup.number().min(6),
+    AdminEmail: Yup.string().email(),
     AdminPhone: Yup.number(),
-    
+
     ActivationDate: Yup.mixed().nullable(),
     TermExpDate: Yup.string(),
-  
+
     status: Yup.number(),
   });
 
@@ -101,10 +101,9 @@ export default function ClientNewEditForm({ currentClient, userGroup, client_man
       Pin: currentClient?.pin || '',
       AdminEmail: currentClient?.admin_email || '',
       AdminPhone: currentClient?.admin_phone || '',
-    //   ActivationDate: currentClient?.activation_date || '',
-    //   TermExpDate: currentClient?.term_exp_date || '',
-    //  Status:currentClient?.status||'',
-     
+      //   ActivationDate: currentClient?.activation_date || '',
+      //   TermExpDate: currentClient?.term_exp_date || '',
+      //  Status:currentClient?.status||'',
     }),
     [currentClient]
   );
@@ -126,7 +125,6 @@ export default function ClientNewEditForm({ currentClient, userGroup, client_man
   const [client, setClient] = useState(false);
   const [dropdownData, setdropdownData] = useState([]);
   useEffect(() => {
-    
     if (currentClient?.company_name) setClient(true);
     else setClient(false);
   }, []);
@@ -137,10 +135,9 @@ export default function ClientNewEditForm({ currentClient, userGroup, client_man
 
   const onSubmit = handleSubmit(async (data) => {
     try {
-    
       const newData = {
         company_name: data.name,
-       
+
         contact_person_name: data.PersonName,
         contact_phone_number: data.PhoneNo,
         contact_email: data.ContactEmail,
@@ -150,10 +147,9 @@ export default function ClientNewEditForm({ currentClient, userGroup, client_man
         pin: data.Pin,
         admin_email: data.AdminEmail,
         admin_phone: data.AdminPhone,
-        
-        
+
         // status: data.status,
-        
+
         data,
         // activation_date: active,
         // term_exp_date: active1,
@@ -163,7 +159,7 @@ export default function ClientNewEditForm({ currentClient, userGroup, client_man
       if (!client) {
         await axios.post('/api/client/manager/create', newData);
       } else {
-        await axios.post(`/api/client/manager/edit/${currentClient._id}`, newData);
+        await axios.post(`/api/client/manager/update/${currentClient._id}`, newData);
       }
       await new Promise((resolve) => setTimeout(resolve, 500));
       reset();
@@ -186,9 +182,7 @@ export default function ClientNewEditForm({ currentClient, userGroup, client_man
   const handleLogData = () => {
     console.log('Form Data:', formData);
   };
- 
- 
-  
+
   return (
     <FormProvider methods={methods} onSubmit={onSubmit}>
       <Grid xs={12} md={8}>
@@ -260,9 +254,7 @@ export default function ClientNewEditForm({ currentClient, userGroup, client_man
           }}
         /> */}
               <DatePicker
-            
                 label="Activation Date"
-              
                 onChange={(newValue) => {
                   setActive(newValue);
                 }}
@@ -274,9 +266,7 @@ export default function ClientNewEditForm({ currentClient, userGroup, client_man
                 }}
               />
               <DatePicker
-                
                 label="Term Exp Date"
-                
                 onChange={(newValue) => {
                   setActive1(newValue);
                 }}
@@ -287,9 +277,6 @@ export default function ClientNewEditForm({ currentClient, userGroup, client_man
                   },
                 }}
               />
-
-
-             
 
               <RHFSelect
                 fullWidth
@@ -319,5 +306,4 @@ export default function ClientNewEditForm({ currentClient, userGroup, client_man
 
 ClientNewEditForm.propTypes = {
   currentClient: PropTypes.object,
- 
 };
