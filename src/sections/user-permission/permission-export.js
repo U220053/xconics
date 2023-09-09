@@ -8,7 +8,6 @@ const ExportToExcelButton = ({ data, filename }) => {
   const handleExportToExcel = () => {
     const excludedColumns = ['user_group_ref', 'del_flag', '__v'];
     // Add the keys of the columns to be excluded
-
     // Filter the data array to include only the columns you want to export
     const filteredData = data.map((item) => {
       const filteredItem = { ...item };
@@ -40,9 +39,9 @@ const ExportToExcelButton = ({ data, filename }) => {
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       variant="contained"
-      startIcon={<Iconify icon="solar:export-bold" />}
+      startIcon={<Iconify icon="mdi:microsoft-excel" />}
     >
-     Excel
+     Export to Excel
     </Button>
   );
 };

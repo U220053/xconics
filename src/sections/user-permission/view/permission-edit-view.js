@@ -1,16 +1,12 @@
 import PropTypes from 'prop-types';
 // @mui
 import Container from '@mui/material/Container';
-// routes
 import { useState, useEffect } from 'react';
 import { paths } from 'src/routes/paths';
-// components
 import { useSettingsContext } from 'src/components/settings';
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
-//
 import axios from 'src/utils/axios';
 import PermissionNewEditForm from '../permission-new-edit-form';
-// ----------------------------------------------------------------------
 
 export default function PermissionEditView({ id }) {
   const settings = useSettingsContext();
@@ -24,7 +20,6 @@ export default function PermissionEditView({ id }) {
         const response = await axios.get(`api/user/permission/get/${id}`);
         setDataUser(response.data.data);
         setIsLoading(false); // Set loading to false when data is fetched
-
         const groupresponse = await axios.get('api/user/usergroups');
         const newdata = JSON.parse(JSON.stringify(groupresponse.data.data));
         // eslint-disable-next-line arrow-body-style
@@ -37,7 +32,6 @@ export default function PermissionEditView({ id }) {
         setIsLoading(false); // Set loading to false on error
       }
     }
-
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
@@ -65,8 +59,7 @@ export default function PermissionEditView({ id }) {
           mb: { xs: 3, md: 5 },
         }}
       />
-
-<PermissionNewEditForm currentGroup={dataUser} userPer={userPer} />
+    <PermissionNewEditForm currentGroup={dataUser} userPer={userPer} />
     </Container>
   );
 }

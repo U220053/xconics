@@ -125,8 +125,6 @@ export default function PermissionNewEditForm({ currentGroup, userPer }) {
         print_permission: data.print,
         enable_permission: data.enable
       }
-      console.log("DATA", data);
-      console.log("New Data", newData);
       let response;
       if (!group) {
         response = await axios.post('/api/user/permission/create', newData);
@@ -140,16 +138,13 @@ export default function PermissionNewEditForm({ currentGroup, userPer }) {
       console.log(response);
       router.push(paths.dashboard.user.permission);
     } catch (error) {
-
-      console.error(error);
+      console.warn(error);
     }
     onFormChange(data);
   });
 
-
   const statuses = [{ label: 'Active', value: 1 }
     , { label: "Inactive", value: 0 }]
-
 
   const handleLogData = () => {
     console.log('Form Data:', formData);
@@ -157,8 +152,6 @@ export default function PermissionNewEditForm({ currentGroup, userPer }) {
 
   return (
     <FormProvider methods={methods} onSubmit={onSubmit}>
-
-
       <Grid xs={12} md={8}>
         <Card sx={{ p: 3 }}>
           <Box
@@ -172,13 +165,11 @@ export default function PermissionNewEditForm({ currentGroup, userPer }) {
           >
             <RHFTextField name="name" label="Screen Name" />
 
-
             <RHFSelect
               // helperText= "Select Group"
               // fullWidth
               name="groupref"
               label="Select Group"
-
               // InputLabelProps={{ shrink: true }}
               PaperPropsSx={{ textTransform: 'capitalize' }}
               defaultValue={currentGroup?.user_group_ref || ""}
@@ -221,7 +212,6 @@ export default function PermissionNewEditForm({ currentGroup, userPer }) {
           </Stack>
         </Card>
       </Grid>
-
     </FormProvider>
   )
 }
