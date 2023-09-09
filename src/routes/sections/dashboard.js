@@ -42,6 +42,11 @@ const CustomerListPage = lazy(() => import('src/pages/dashboard/customer/list'))
 const CustomerPage = lazy(() => import('src/pages/dashboard/customer/edit'));
 const CustomerCreatePage = lazy(() => import('src/pages/dashboard/customer/new'));
 
+//CLIENT
+const ClientListPage = lazy(() => import('src/pages/dashboard/client/list'));
+const ClientPage = lazy(() => import('src/pages/dashboard/client/edit'));
+const ClientCreatePage = lazy(() => import('src/pages/dashboard/client/new'));
+
 // USER PERMISSION
 const PermissionListPage = lazy(() => import('src/pages/dashboard/user/permission'))
 const PermissionCreatePage = lazy(() => import('src/pages/dashboard/user/permissionnew'));
@@ -128,6 +133,16 @@ export const dashboardRoutes = [
           { path: ':id/edit', element: <CustomerPage /> },
         ],
       },
+      {
+      path: 'client',
+      children: [
+        { element: <ClientListPage />, index: true },
+        { path: 'list', element: <ClientListPage /> },
+
+        { path: 'new', element: <ClientCreatePage /> },
+        { path: ':id/edit', element: <ClientPage /> },
+      ],
+    },
       {
         path: 'product',
         children: [

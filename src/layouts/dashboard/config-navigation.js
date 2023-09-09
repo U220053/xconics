@@ -114,10 +114,19 @@ export function useNavData() {
             icon: ICONS.user,
             children: [
               { title: t('list'), path: paths.dashboard.customer.list },
-              { title: t('clients'), path: paths.dashboard.customer.new },
+             
             ],
           },
-
+          // CLIENT
+          {
+            title: t('Client'),
+            path: paths.dashboard.user.root,
+            icon: ICONS.user,
+            children: [
+              { title: t('list'), path: paths.dashboard.client.list },
+             
+            ],
+          },
           // PRODUCT
           {
             title: t('product'),
