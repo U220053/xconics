@@ -252,7 +252,7 @@ export default function UserListView() {
             variant="contained"
             startIcon={<Iconify icon="fa6-solid:file-pdf" />}
           >
-            PDF
+            Export to PDF
           </Button>
         </div>
         <Card>

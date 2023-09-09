@@ -42,7 +42,7 @@ const ExportToExcelgroup = ({ data, filename }) => {
       variant="contained"
       startIcon={<Iconify icon="mdi:microsoft-excel" />}
     >
-     Excel
+     Export to Excel
     </Button>
   );
 };
