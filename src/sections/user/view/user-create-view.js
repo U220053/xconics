@@ -52,7 +52,7 @@ function UserCreateView() {
             href: paths.dashboard.root,
           },
           {
-            name: 'User',
+            name: 'List',
             href: paths.dashboard.user.root,
           },
           { name: 'New user' },

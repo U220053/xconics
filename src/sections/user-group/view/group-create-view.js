@@ -21,7 +21,7 @@ export default function GrouprCreateView() {
           },
           {
             name: 'Group',
-            href: paths.dashboard.user.root,
+            href: paths.dashboard.user.group,
           },
           { name: 'New group' },
         ]}
