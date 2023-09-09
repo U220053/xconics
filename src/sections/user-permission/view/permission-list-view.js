@@ -266,7 +266,7 @@ export default function PermissionListView() {
             onMouseEnter={() => setHovered(true)}
             onMouseLeave={() => setHovered(false)}
             variant="contained"
-            startIcon={<Iconify icon="solar:export-bold" />}
+            startIcon={<Iconify icon="fa6-solid:file-pdf" />}
           >
             PDF
           </Button>

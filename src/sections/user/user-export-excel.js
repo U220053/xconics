@@ -40,7 +40,7 @@ const ExportToExceluser = ({ data, filename }) => {
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       variant="contained"
-      startIcon={<Iconify icon="solar:export-bold" />}
+      startIcon={<Iconify icon="mdi:microsoft-excel" />}
     >
      Excel
     </Button>
