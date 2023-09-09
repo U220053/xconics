@@ -185,7 +185,7 @@ export default function UserListView() {
   const [hovered, setHovered] = useState(false);
 
   const divStyle = {
-    backgroundColor: hovered ? '#2980b9' : '#3498db',
+    backgroundColor: hovered ? '#2980b9' : '#3498db',jsPDF,
     color: '#fff',
     padding: '10px 30px',
     cursor: 'pointer',
@@ -222,11 +222,11 @@ export default function UserListView() {
     <>
       <Container maxWidth={settings.themeStretch ? false : 'lg'}>
         <CustomBreadcrumbs
-          heading="List"
+          heading="User List"
           links={[
             { name: 'Dashboard', href: paths.dashboard.root },
-            { name: 'User', href: paths.dashboard.user.root },
-            { name: 'List' },
+            { name: 'List', href: paths.dashboard.user.root },
+            // { name: 'List' },
           ]}
           action={
             <Button

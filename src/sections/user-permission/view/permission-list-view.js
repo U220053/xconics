@@ -241,8 +241,8 @@ export default function PermissionListView() {
           heading="Permission List"
           links={[
             { name: 'Dashboard', href: paths.dashboard.root },
-            { name: 'User', href: paths.dashboard.user.root },
-            { name: 'Permission' },
+            { name: 'Permissions', href: paths.dashboard.user.root },
+            // { name: 'Permission' },
           ]}
           action={
             <Button
@@ -251,7 +251,7 @@ export default function PermissionListView() {
               variant="contained"
               startIcon={<Iconify icon="mingcute:add-line" />}
             >
-              New Group
+              New Permission
             </Button>
           }
           sx={{

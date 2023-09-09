@@ -56,8 +56,8 @@ export default function PermissionCreateView() {
             href: paths.dashboard.root,
           },
           {
-            name: 'User',
-            href: paths.dashboard.user.root,
+            name: 'Permission',
+            href: paths.dashboard.user.permission,
           },
           { name: 'New permission' },
         ]}

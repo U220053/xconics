@@ -109,7 +109,6 @@ export const paths = {
     },
     user: {
       root: `${ROOTS.DASHBOARD}/user`,
-
       new: `${ROOTS.DASHBOARD}/user/new`,
       list: `${ROOTS.DASHBOARD}/user/list`,
       edit: (id) => `${ROOTS.DASHBOARD}/user/${id}/edit`,
@@ -123,7 +122,7 @@ export const paths = {
       groupedit: (id)=>`${ROOTS.DASHBOARD}/user/group/${id}/edit`,
 
       cards: `${ROOTS.DASHBOARD}/user/cards`,
-      profile: `${ROOTS.DASHBOARD}/user/list`,
+      // profile: `${ROOTS.DASHBOARD}/user/list`,
       account: `${ROOTS.DASHBOARD}/user/account`,
       // groupcreate: `${ROOTS.DASHBOARD}/user/groupcreate`,
       // management: `${ROOTS.DASHBOARD}/user/management`,

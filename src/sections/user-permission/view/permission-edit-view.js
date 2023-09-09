@@ -56,8 +56,8 @@ export default function PermissionEditView({ id }) {
             href: paths.dashboard.root,
           },
           {
-            name: 'permission',
-            href: paths.dashboard.user.root,
+            name: 'Permission',
+            href: paths.dashboard.user.permission,
           },
           { name: dataUser?.screen_name },
         ]}

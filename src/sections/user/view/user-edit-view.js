@@ -57,10 +57,10 @@ export default function UserEditView({ id }) {
             href: paths.dashboard.root,
           },
           {
-            name: 'User',
+            name: 'List',
             href: paths.dashboard.user.root,
           },
-          { name: dataUser?.name },
+          { name: 'List Edit' },
         ]}
         sx={{
           mb: { xs: 3, md: 5 },

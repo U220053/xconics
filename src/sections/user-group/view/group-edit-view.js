@@ -42,10 +42,10 @@ export default function GroupEditView({ id }) {
                         href: paths.dashboard.root,
                     },
                     {
-                        name: 'User',
-                        href: paths.dashboard.user.root,
+                        name: 'Group',
+                        href: paths.dashboard.user.group,
                     },
-                    { name: dataUser?.name },
+                    { name: "Edit Group" },
                 ]}
                 sx={{
                     mb: { xs: 3, md: 5 },

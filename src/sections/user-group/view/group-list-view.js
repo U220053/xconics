@@ -217,11 +217,11 @@ function GroupListView() {
     <>
       <Container maxWidth={settings.themeStretch ? false : 'lg'}>
         <CustomBreadcrumbs
-          heading="Group"
+          heading="User Group"
           links={[
             { name: 'Dashboard', href: paths.dashboard.root },
-            { name: 'User', href: paths.dashboard.user.root },
-            { name: 'Group' },
+            { name: 'Group list', href: paths.dashboard.user.root },
+            // { name: 'Group' },
           ]}
           action={
             <Button
