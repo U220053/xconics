@@ -1,4 +1,3 @@
-
 import PropTypes from 'prop-types';
 import { useState, useCallback, useEffect } from 'react';
 
@@ -19,8 +18,6 @@ import Label from 'src/components/label';
 import Iconify from 'src/components/iconify';
 import CustomPopover, { usePopover } from 'src/components/custom-popover';
 import { ConfirmDialog } from 'src/components/custom-dialog';
-//
-// import UserQuickEditForm from './user-quick-edit-form';
 
 // ----------------------------------------------------------------------
 
@@ -41,7 +38,6 @@ export default function ClientTableRow({ row, selected, onEditRow, onSelectRow, 
     term_exp_date,
 
     status,
-    
   } = row;
 
   const confirm = useBoolean();
@@ -49,21 +45,6 @@ export default function ClientTableRow({ row, selected, onEditRow, onSelectRow, 
   const quickEdit = useBoolean();
 
   const popover = usePopover();
-  // useEffect(() => {
-  //   async function fetchData() {
-  //     try {
-  //       // const response = await axios.get('api/customer/usergroups');
-  //       // // const data = await response.json();
-
-  //     console.log(row);
-
-  //     } catch (error) {
-  //       console.error('Error fetching API data:', error);
-  //     }
-  //   }
-
-  //   fetchData();
-  // });
 
   return (
     <>
@@ -72,24 +53,9 @@ export default function ClientTableRow({ row, selected, onEditRow, onSelectRow, 
           <Checkbox checked={selected} onClick={onSelectRow} />
         </TableCell>
 
-        {/* } <TableCell sx={{ display: 'flex', alignItems: 'center' }}>
-          <Avatar alt={name} src={avatarUrl} sx={{ mr: 2 }} />
-
-          <ListItemText
-            primary={name}
-            secondary={email}
-            primaryTypographyProps={{ typography: 'body2' }}
-            secondaryTypographyProps={{
-              component: 'span',
-              color: 'text.disabled',
-            }}
-          />
-          </TableCell> */}
-
         <TableCell sx={{ whiteSpace: 'nowrap' }}>{company_name}</TableCell>
 
         <TableCell sx={{ whiteSpace: 'nowrap' }}>{contact_person_name}</TableCell>
-       
 
         <TableCell>
           <Label

@@ -12,6 +12,7 @@ import Container from '@mui/material/Container';
 import TableBody from '@mui/material/TableBody';
 import IconButton from '@mui/material/IconButton';
 import TableContainer from '@mui/material/TableContainer';
+import ExportToExceluser from '../client-export-excel';
 // routes
 import { paths } from 'src/routes/paths';
 import { useRouter } from 'src/routes/hooks';
@@ -27,6 +28,8 @@ import Scrollbar from 'src/components/scrollbar';
 import { ConfirmDialog } from 'src/components/custom-dialog';
 import { useSettingsContext } from 'src/components/settings';
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 import axios from 'src/utils/axios';
 import {
   useTable,
@@ -55,7 +58,6 @@ const TABLE_HEAD = [
   { id: 'company_name', label: 'Company Name', width: 180 },
   { id: 'contact_person_name', label: 'Contact Person Name', width: 180 },
 
-  // { id: 'client_manager_ref', label: 'Client Manager Name', width: 180 },
   { id: 'status', label: 'Status', width: 100 },
   { id: '', width: 88 },
 ];
@@ -99,7 +101,6 @@ export default function ClientListView() {
     }
 
     fetchData();
-    // }, [tableData]);
   }, [tableData]);
   const dataInPage = dataFiltered.slice(
     table.page * table.rowsPerPage,
@@ -130,8 +131,6 @@ export default function ClientListView() {
 
     try {
       await Promise.all(deletePromises);
-      // Optionally, you can perform additional actions after deleting all groups
-      // console.log('Selected groups deleted successfully');
     } catch (error) {
       console.error('Error deleting selected groups:', error);
     }
@@ -185,12 +184,58 @@ export default function ClientListView() {
   const handleResetFilters = useCallback(() => {
     setFilters(defaultFilters);
   }, []);
+ // starting of export to pdf
+ const [hovered, setHovered] = useState(false);
 
+ const divStyle = {
+   backgroundColor: hovered ? '#2980b9' : '#3498db',
+   color: '#fff',
+   padding: '10px 30px',
+   cursor: 'pointer',
+   fontSize: '15px',
+   margin: '10px',
+ };
+ const allRowsData = dataFiltered
+   .slice(table.page * table.rowsPerPage, table.page * table.rowsPerPage + table.rowsPerPage)
+   .map((row) => {
+     return {
+      //  companyname: row.company_name,
+      //  phoneNumber: row.user_mobile,
+      //  GroupRef: row.user_group_ref.user_group_name,
+      //  status: row.status,
+      name:row.company_name ,
+      PersonName: row.contact_person_name ,
+      // PhoneNo: contact_phone_number ,
+      // ContactEmail:   contact_email ,
+      // address:address ,
+      // City: city ,
+      // State: state ,
+      // Pin: pin ,
+      // AdminEmail: admin_email ,
+      // AdminPhone: admin_phone ,
+      status: row.status,
+     };
+   });
+
+ const labels = TABLE_HEAD.map((item) => item.label);
+ const exportToPDF = () => {
+   const doc = new jsPDF();
+
+   const tableData = allRowsData.map((rowData) => {
+     return Object.values(rowData);
+   });
+   doc.autoTable({
+     head: [labels],
+     body: tableData,
+   });
+   doc.save('CLIENT_LIST.pdf');
+ };
+ // ending of export to pdf
   return (
     <>
       <Container maxWidth={settings.themeStretch ? false : 'lg'}>
         <CustomBreadcrumbs
-          heading="List"
+          heading=" Client List"
           links={[
             { name: 'Dashboard', href: paths.dashboard.root },
             { name: 'client', href: paths.dashboard.client.root },
@@ -210,7 +255,19 @@ export default function ClientListView() {
             mb: { xs: 3, md: 5 },
           }}
         />
-
+ <div>
+          <ExportToExceluser data={dataFiltered} filename="Client_Data" />
+          <Button
+            onClick={exportToPDF}
+            style={divStyle}
+            onMouseEnter={() => setHovered(true)}
+            onMouseLeave={() => setHovered(false)}
+            variant="contained"
+            startIcon={<Iconify icon="fa6-solid:file-pdf" />}
+          >
+           Export to PDF
+          </Button>
+        </div>
         <Card>
           <Tabs
             value={filters.status}
@@ -232,7 +289,6 @@ export default function ClientListView() {
                     color={
                       (tab.value === 'active' && 'success') ||
                       (tab.value === 'inactive' && 'warning') ||
-                      // (tab.value === 'banned' && 'error') ||
                       'default'
                     }
                   >
@@ -374,7 +430,7 @@ export default function ClientListView() {
 // ----------------------------------------------------------------------
 
 function applyFilter({ inputData, comparator, filters }) {
-  const { name, status, role } = filters;
+  const { name, status } = filters;
 
   const stabilizedThis = inputData.map((el, index) => [el, index]);
 

@@ -7,48 +7,42 @@ import { paths } from 'src/routes/paths';
 // components
 import { useSettingsContext } from 'src/components/settings';
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
-//
+
 import axios from 'src/utils/axios';
 import ClientNewEditForm from '../client-new-edit-form';
-// import { CustomerEditView } from '.';
+
 // ----------------------------------------------------------------------
 
 export default function ClientEditView({ id }) {
   const settings = useSettingsContext();
-  // const [userGroup, setUserGroup] = useState([]);
-  // const [client_manager_ref, setClient_manager_ref] = useState([]);
-  // const [dataUser, setDataUser] = useState(null);
+
   const [isLoading, setIsLoading] = useState(true);
   const [dataClient, setDataClient] = useState(null);
 
   useEffect(() => {
     async function fetchData() {
       try {
-        // const client_manager_ref = await axios.get('api/client/manager');
-
-        const response = await axios.get(`api/client/manager/get/${id}`);//get single
+        const response = await axios.get(`api/client/manager/get/${id}`); 
         setDataClient(response.data.data);
 
-       
-        setIsLoading(false); // Set loading to false when data is fetched
+        setIsLoading(false); 
       } catch (error) {
-        console.error('Error fetching API data:', error);
-        setIsLoading(false); // Set loading to false on error
+       
+        setIsLoading(false); 
       }
     }
 
     fetchData();
-   
   }, [id]);
 
   if (isLoading) {
-    return <div>Loading...</div>; // Display a loading indicator
+    return <div>Loading...</div>; 
   }
 
   return (
     <Container maxWidth={settings.themeStretch ? false : 'lg'}>
       <CustomBreadcrumbs
-        heading="Edit"
+        heading="Edit Client"
         links={[
           {
             name: 'Dashboard',
@@ -65,10 +59,7 @@ export default function ClientEditView({ id }) {
         }}
       />
 
-      <ClientNewEditForm
-        currentClient={dataClient}
-       
-      />
+      <ClientNewEditForm currentClient={dataClient} />
     </Container>
   );
 }

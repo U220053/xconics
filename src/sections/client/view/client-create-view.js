@@ -5,21 +5,19 @@ import { paths } from 'src/routes/paths';
 // components
 import { useSettingsContext } from 'src/components/settings';
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
-//
+
 import ClientNewEditForm from '../client-new-edit-form';
 import { useEffect, useState } from 'react';
-import axios from 'src/utils/axios';
 
 // ----------------------------------------------------------------------
 
 export default function ClientCreateView() {
   const settings = useSettingsContext();
-  // const [userGroup, setUserGroup] = useState([]);
-  // const [client_manager_ref,setClient_manager_ref] = useState([]);
+
   const [isLoading, setIsLoading] = useState(false);
 
   if (isLoading) {
-    return <div>Loading...</div>; // Display a loading indicator
+    return <div>Loading...</div>;
   }
   return (
     <Container maxWidth={settings.themeStretch ? false : 'lg'}>
