@@ -13,43 +13,30 @@ import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
 import Grid from '@mui/material/Unstable_Grid2';
-import Typography from '@mui/material/Typography';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 // utils
-import { TextField } from '@mui/material';
 
 import MenuItem from '@mui/material/MenuItem';
 
-import { fData } from 'src/utils/format-number';
 // routes
 import { paths } from 'src/routes/paths';
 import { useRouter } from 'src/routes/hooks';
 // assets
-import { countries } from 'src/assets/data';
+
 // components
-import Label from 'src/components/label';
-import Iconify from 'src/components/iconify';
+
 import { useSnackbar } from 'src/components/snackbar';
 // import TextField from '@mui/material/TextField'
-import FormProvider, {
-  RHFSwitch,
-  RHFTextField,
-  RHFUploadAvatar,
-  RHFAutocomplete,
-  RHFSelect,
-} from 'src/components/hook-form';
+import FormProvider, { RHFTextField, RHFSelect } from 'src/components/hook-form';
 // import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import axios from 'src/utils/axios';
-import PickerDate from 'src/sections/_examples/mui/picker-view/picker-date.js';
 
 // ----------------------------------------------------------------------
 
 export default function CustomerNewEditForm({ currentCustomer, userGroup, client_manager_ref }) {
-  console.log('nitu', client_manager_ref);
   const router = useRouter();
   const [formData, setFormData] = useState({});
   const [active, setActive] = useState(new Date());
@@ -139,9 +126,6 @@ export default function CustomerNewEditForm({ currentCustomer, userGroup, client
   const [customer, setCustomer] = useState(false);
   const [dropdownData, setdropdownData] = useState([]);
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    // getGroupData();
-    // console.log(currentCustomer?._id);
     if (currentCustomer?.company_name) setCustomer(true);
     else setCustomer(false);
   }, []);
@@ -152,7 +136,6 @@ export default function CustomerNewEditForm({ currentCustomer, userGroup, client
 
   const onSubmit = handleSubmit(async (data) => {
     try {
-      console.log('clicked 1', data);
       const newData = {
         company_name: data.name,
         // user_group_description: data.description,
@@ -177,7 +160,6 @@ export default function CustomerNewEditForm({ currentCustomer, userGroup, client
         activation_date: active,
         term_exp_date: active1,
       };
-      console.log(newData);
 
       if (!customer) {
         await axios.post('/api/client/customer/create', newData);
@@ -189,8 +171,6 @@ export default function CustomerNewEditForm({ currentCustomer, userGroup, client
       enqueueSnackbar(currentCustomer ? 'Update success!' : 'Create success!');
 
       router.push(paths.dashboard.customer.list);
-
-      console.info('DATA', data);
     } catch (error) {
       console.error(error);
       setIsLoading(false);
@@ -205,36 +185,10 @@ export default function CustomerNewEditForm({ currentCustomer, userGroup, client
     { label: 'Yes', value: 'yes' },
     { label: 'No', value: 'no' },
   ];
-  // const obj ={}
-  // document.querySelectorAll("RHFTextField".forEach(e) => {
-  //   obj[e.name]= e.value
-  // }
-  // )
-  const handleLogData = () => {
-    console.log('Form Data:', formData);
-  };
-  // const [dropdownData, setDropdownData] = useState([]);
+
   const [groupData, setGroupData] = useState([]);
   const [selectedGroup, setSelectedGroup] = useState('');
 
-  // const handleDrop = useCallback(
-  //   (acceptedFiles) => {
-  //     const file = acceptedFiles[0];
-
-  //     const newFile = Object.assign(file, {
-  //       preview: URL.createObjectURL(file),
-  //     });
-  //     console.log(file);
-
-  //     if (file) {
-  //       setValue('avatarUrl', newFile, { shouldValidate: 'true' });
-  //     }
-  //   },
-  //   [setValue]
-  // );
-  // if (isLoading) {
-  //   return <div>Loading...</div>;
-  // }
   return (
     <FormProvider methods={methods} onSubmit={onSubmit}>
       <Grid xs={12} md={8}>
@@ -249,28 +203,6 @@ export default function CustomerNewEditForm({ currentCustomer, userGroup, client
               sm: 'repeat(2, 1fr)',
             }}
           >
-            {/* <Box sx={{ mb: 2 }}>
-              <RHFUploadAvatar
-                name="avatarUrl"
-                maxSize={3145728}
-                onDrop={handleDrop}
-                helperText={
-                  <Typography
-                    variant="caption"
-                    sx={{
-                      mt: 3,
-                      mx: 'auto',
-                      display: 'block',
-                      textAlign: 'center',
-                      color: 'text.disabled',
-                    }}
-                  >
-                    Allowed *.jpeg, *.jpg, *.png, *.gif
-                    <br /> max size of {fData(3145728)}
-                  </Typography>
-                }
-              />
-            </Box> */}
             <Box
               rowGap={3}
               columnGap={2}

@@ -24,10 +24,7 @@ export default function CustomerTableFiltersResult({
     onFilters('status', 'all');
   };
 
-  // const handleRemoveRole = (inputValue) => {
-  //   const newValue = filters.role.filter((item) => item !== inputValue);
-  //   onFilters('role', newValue);
-  // };
+  
 
   return (
     <Stack spacing={1.5} {...other}>

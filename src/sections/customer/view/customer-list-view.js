@@ -12,6 +12,7 @@ import Container from '@mui/material/Container';
 import TableBody from '@mui/material/TableBody';
 import IconButton from '@mui/material/IconButton';
 import TableContainer from '@mui/material/TableContainer';
+
 // routes
 import { paths } from 'src/routes/paths';
 import { useRouter } from 'src/routes/hooks';
@@ -27,6 +28,9 @@ import Scrollbar from 'src/components/scrollbar';
 import { ConfirmDialog } from 'src/components/custom-dialog';
 import { useSettingsContext } from 'src/components/settings';
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
+import ExportToExceluser from '../customer-export-excel';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 import axios from 'src/utils/axios';
 import {
   useTable,
@@ -45,7 +49,11 @@ import CustomerTableFiltersResult from '../customer-table-filters-result';
 
 // ----------------------------------------------------------------------
 
-const STATUS_OPTIONS = [{ value: 'all', label: 'All' }, { value: 'active', label: 'Active' }, { value: 'inactive', label: 'InActive' },];
+const STATUS_OPTIONS = [
+  { value: 'all', label: 'All' },
+  { value: 'active', label: 'Active' },
+  { value: 'inactive', label: 'InActive' },
+];
 
 const TABLE_HEAD = [
   { id: 'company_name', label: 'Comapny Name', width: 180 },
@@ -148,9 +156,7 @@ export default function CustomerListView() {
     },
     [dataInPage.length, table, tableData]
   );
- 
-  
-  
+
   const handleDeleteRows = useCallback(() => {
     const selectedIds = table.selected;
     const deleteRows = tableData.filter((row) => !table.selected.includes(row.id));
@@ -184,7 +190,44 @@ export default function CustomerListView() {
   const handleResetFilters = useCallback(() => {
     setFilters(defaultFilters);
   }, []);
+  // starting of export to pdf
+  const [hovered, setHovered] = useState(false);
 
+  const divStyle = {
+    backgroundColor: hovered ? '#2980b9' : '#3498db',
+    color: '#fff',
+    padding: '10px 30px',
+    cursor: 'pointer',
+    fontSize: '15px',
+    margin: '10px',
+  };
+  const allRowsData = dataFiltered
+    .slice(table.page * table.rowsPerPage, table.page * table.rowsPerPage + table.rowsPerPage)
+    .map((row) => {
+      return {
+        name: row.company_name,
+        PersonName: row.contact_person_name,
+        ClientManagerRef: row.client_manager_ref,
+
+        // { id: 'client_manager_ref', label: 'Client Manager Name', width: 180 },
+        // { id: 'status', label: 'Status', width: 100 },
+        status: row.status,
+      };
+    });
+
+  const labels = TABLE_HEAD.map((item) => item.label);
+  const exportToPDF = () => {
+    const doc = new jsPDF();
+
+    const tableData = allRowsData.map((rowData) => {
+      return Object.values(rowData);
+    });
+    doc.autoTable({
+      head: [labels],
+      body: tableData,
+    });
+    doc.save('CUSTOMER_LIST.pdf');
+  };
   return (
     <>
       <Container maxWidth={settings.themeStretch ? false : 'lg'}>
@@ -209,7 +252,19 @@ export default function CustomerListView() {
             mb: { xs: 3, md: 5 },
           }}
         />
-
+        <div>
+          <ExportToExceluser data={dataFiltered} filename="Customer_Data" />
+          <Button
+            onClick={exportToPDF}
+            style={divStyle}
+            onMouseEnter={() => setHovered(true)}
+            onMouseLeave={() => setHovered(false)}
+            variant="contained"
+            startIcon={<Iconify icon="fa6-solid:file-pdf" />}
+          >
+            Export to PDF
+          </Button>
+        </div>
         <Card>
           <Tabs
             value={filters.status}
@@ -227,9 +282,7 @@ export default function CustomerListView() {
                 label={tab.label}
                 icon={
                   <Label
-                    variant={
-                      ((tab.value === 'all' ) && 'filled') || 'soft'
-                    }
+                    variant={(tab.value === 'all' && 'filled') || 'soft'}
                     color={
                       (tab.value === 'active' && 'success') ||
                       (tab.value === 'inactive' && 'warning') ||
@@ -242,7 +295,7 @@ export default function CustomerListView() {
                       tableData.filter((customer) => customer.status === 1).length}
 
                     {tab.value === 'inactive' &&
-                      tableData.filter((customer) => customer.status ===0).length}
+                      tableData.filter((customer) => customer.status === 0).length}
                     {/* {tab.value === 'banned' &&
                       _userList.filter((customer) => customer.status === 'banned').length}
                     {tab.value === 'rejected' &&
@@ -378,7 +431,6 @@ export default function CustomerListView() {
 
 // ----------------------------------------------------------------------
 
-
 function applyFilter({ inputData, comparator, filters }) {
   const { name, status, role } = filters;
 
@@ -405,13 +457,6 @@ function applyFilter({ inputData, comparator, filters }) {
       inputData = inputData.filter((customer) => customer.status === 0);
     }
   }
-  // if (status !== 'all') {
-  //   inputData = inputData.filter((customer) => customer.status === status);
-  // }
-
-  // if (role.length) {
-  //   inputData = inputData.filter((customer) => role.includes(customer.role));
-  // }
 
   return inputData;
 }
