@@ -135,11 +135,11 @@ export function useNavData() {
             children: [
               { title: t('list'), path: paths.dashboard.product.root },
               {
-                title: t('details'),
-                path: paths.dashboard.product.demo.details,
+                title: t('Category'),
+                path: paths.dashboard.product.category,
               },
-              { title: t('create'), path: paths.dashboard.product.new },
-              { title: t('edit'), path: paths.dashboard.product.demo.edit },
+              // { title: t('create'), path: paths.dashboard.product.new },
+              // { title: t('edit'), path: paths.dashboard.product.demo.edit },
             ],
           },
 

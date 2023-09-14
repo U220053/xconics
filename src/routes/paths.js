@@ -148,6 +148,10 @@ export const paths = {
       new: `${ROOTS.DASHBOARD}/product/new`,
       details: (id) => `${ROOTS.DASHBOARD}/product/${id}`,
       edit: (id) => `${ROOTS.DASHBOARD}/product/${id}/edit`,
+
+      category:`${ROOTS.DASHBOARD}/product/categorylist`,
+      categorynew:`${ROOTS.DASHBOARD}/product/category/new`,
+      categoryedit: (id)=>`${ROOTS.DASHBOARD}/product/category/${id}/edit`,
       demo: {
         details: `${ROOTS.DASHBOARD}/product/${MOCK_ID}`,
         edit: `${ROOTS.DASHBOARD}/product/${MOCK_ID}/edit`,
