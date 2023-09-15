@@ -159,8 +159,8 @@ export const dashboardRoutes = [
           { path: ':id/edit', element: <ProductEditPage /> },
           
           { path: 'categorylist', element: <CategoryListPage /> },
-          { path: 'category/new', element: <CategoryEditPage /> },
-          { path: 'category/:id/edit', element: <CategoryCreatePage /> },
+          { path: 'category/new', element: < CategoryCreatePage/> },
+          { path: 'category/:id/edit', element: <CategoryEditPage /> },
 
         ],
       },

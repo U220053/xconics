@@ -12,26 +12,34 @@ import CategoryNewEditForm from '../category-new-edit-form';
 
 export default function CategoryEditView({ id }) {
     const settings = useSettingsContext();
-    const [dataUser, setDataUser] = useState(null);
-    const [isLoading, setIsLoading] = useState(true); // Add a loading state
+    const [category, setCategory] = useState([]); 
+     const [dataUser, setDataUser] = useState(null);
+     const [isLoading, setIsLoading] = useState(true); // Add a loading state
     useEffect(() => {
         async function fetchData() {
             try {
-                const response = await axios.get(`api/user/usergroup/${id}`);
+                const response = await axios.get(`/api/product/category/get/${id}`);
                 setDataUser(response.data.data);
                 setIsLoading(false);
-            } catch (error) {
+                const groupresponse = await axios.get('/api/product/category');
+                const newdata = JSON.parse(JSON.stringify(groupresponse.data.data));
+                const newGroupData = newdata.map((item) => {
+                  return { id: item._id, category_name: item.category_descripion };
+                });
+                setCategory(newGroupData);
+              } catch (error) {
                 console.error('Error fetching API data:', error);
-                setIsLoading(false); 
+                setIsLoading(false); // Set loading to false on error
+              }
             }
-        }
-    fetchData();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-    // const currentUser = _userList.find((user) => user.id === id);
-    if (isLoading) {
-        return <div>Loading...</div>; // Display a loading indicator
-      }
+        
+            fetchData();
+            // eslint-disable-next-line react-hooks/exhaustive-deps
+          }, [id]);
+        
+          if (isLoading) {
+            return <div>Loading...</div>; // Display a loading indicator
+          }
     return (
         <Container maxWidth={settings.themeStretch ? false : 'lg'}>
             <CustomBreadcrumbs
@@ -52,11 +60,12 @@ export default function CategoryEditView({ id }) {
                 }}
             />
 
-            <CategoryNewEditForm currentUser={dataUser} />
+            <CategoryNewEditForm currentUser={dataUser} category={category} />
         </Container>
     );
 }
 
 CategoryEditView.propTypes = {
     id: PropTypes.string,
+    
 };

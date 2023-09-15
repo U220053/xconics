@@ -7,7 +7,7 @@ import { useSettingsContext } from 'src/components/settings';
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
 import CategoryNewEditForm from '../category-new-edit-form';
 
-export default function CategoryrCreateView() {
+export default function CategoryCreateView() {
   const settings = useSettingsContext();
 
   return (

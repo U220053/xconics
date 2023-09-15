@@ -49,12 +49,14 @@ import ExportToExcelcategory from '../category-export-excel';
 const STATUS_OPTIONS = [
   { value: 'all', label: 'All' },
   { value: 'active', label: 'Active' },
-  { value: 'inactive', label: 'InActive' },
+  { value: 'inactive', label: 'Inactive' },
 ];
 const TABLE_HEAD = [
-//   { id: 'id', label: 'ID' },
-  { id: 'category_name', label: 'Category Name', width: 400 },
+  // { id: 'id', label: 'ID' },
+  { id: 'category_name', label: 'Category Name', width: 200 },
   { id: 'category_description', label: 'Category Description', width: 150 },
+  { id: '', width: 100 },
+  { id: 'status', label: 'Status', width: 80 },
   { id: '', width: 88 },
 ];
 const defaultFilters = {
@@ -76,7 +78,7 @@ function CategoryListView() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await axios.get('api/user/usergroups');
+        const response = await axios.get('/api/product/category');
         // const data = await response.json();
         setisSuccess(response.data.success);
         setTableData(response.data.data);
@@ -113,7 +115,7 @@ function CategoryListView() {
     [table]
   );
   async function deletegroup(id) {
-    await axios.post(`api/user/delete/deletegroup/${id}`);
+    await axios.post(`/api/product/category/delete/${id}`);
   }
   /// have to call API
   const handleDeleteRow = useCallback(
@@ -137,9 +139,9 @@ function CategoryListView() {
     try {
       await Promise.all(deletePromises);
       // Optionally, you can perform additional actions after deleting all groups
-      console.log('Selected groups deleted successfully');
+      console.log('Selected category deleted successfully');
     } catch (error) {
-      console.error('Error deleting selected groups:', error);
+      console.error('Error deleting selected category:', error);
     }
   };
   const handleDeleteRows = useCallback(() => {
@@ -148,9 +150,9 @@ function CategoryListView() {
     try {
       deleteSelectedGroups(selectedIds);
 
-      console.log('Selected groups deleted successfully');
+      console.log('Selected category deleted successfully');
     } catch (error) {
-      console.error('Error deleting selected groups:', error);
+      console.error('Error deleting selected category:', error);
     }
     setTableData(deleteRows);
 
@@ -193,7 +195,7 @@ function CategoryListView() {
       return {
         category_name: row.category_name,
         category_description: row.category_description,
-        // status: row.status,
+        status: row.status,
       };
     });
   const labels = TABLE_HEAD.map((item) => item.label);
@@ -250,7 +252,7 @@ function CategoryListView() {
           </Button>
         </div>
         <Card>
-          {/* <Tabs
+          <Tabs
             value={filters.status}
             onChange={handleFilterStatus}
             sx={{
@@ -282,7 +284,7 @@ function CategoryListView() {
                 }
               />
             ))}
-          </Tabs> */}
+          </Tabs>
           {/* <GroupTableToolbar
             filters={filters}
             onFilters={handleFilters}
@@ -414,15 +416,15 @@ function applyFilter({ inputData, comparator, filters }) {
 
   if (name) {
     inputData = inputData.filter(
-      (user) => user.user_group_name.toLowerCase().indexOf(name.toLowerCase()) !== -1
+      (category) => category.category_name.toLowerCase().indexOf(name.toLowerCase()) !== -1
     );
   }
 
   if (status !== 'all') {
     if (status === 'active') {
-      inputData = inputData.filter((user) => user.status === 1);
+      inputData = inputData.filter((category) => category.status === 1);
     } else {
-      inputData = inputData.filter((user) => user.status === 0);
+      inputData = inputData.filter((category) => category.status === 0);
     }
   }
 

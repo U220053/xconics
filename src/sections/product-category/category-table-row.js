@@ -1,57 +1,51 @@
-/* eslint-disable react/jsx-no-comment-textnodes */
-/* eslint-disable no-sequences */
-import PropTypes from 'prop-types';
-import { useState, useCallback,useEffect } from 'react';
+import PropTypes from 'prop-types'
+import { useState, useCallback, useEffect } from 'react'
 
 // @mui
-import Button from '@mui/material/Button';
-import Avatar from '@mui/material/Avatar';
-import Tooltip from '@mui/material/Tooltip';
-import MenuItem from '@mui/material/MenuItem';
-import TableRow from '@mui/material/TableRow';
-import Checkbox from '@mui/material/Checkbox';
-import TableCell from '@mui/material/TableCell';
-import IconButton from '@mui/material/IconButton';
-import ListItemText from '@mui/material/ListItemText';
+import Button from '@mui/material/Button'
+import MenuItem from '@mui/material/MenuItem'
+import TableRow from '@mui/material/TableRow'
+import Checkbox from '@mui/material/Checkbox'
+import TableCell from '@mui/material/TableCell'
+import IconButton from '@mui/material/IconButton'
+import ListItemText from '@mui/material/ListItemText'
 // hooks
-import { useBoolean } from 'src/hooks/use-boolean';
+import { useBoolean } from 'src/hooks/use-boolean'
 // components
-import Label from 'src/components/label';
-import Iconify from 'src/components/iconify';
-import CustomPopover, { usePopover } from 'src/components/custom-popover';
-import { ConfirmDialog } from 'src/components/custom-dialog';
+import Label from 'src/components/label'
+import Iconify from 'src/components/iconify'
+import CustomPopover, { usePopover } from 'src/components/custom-popover'
+import { ConfirmDialog } from 'src/components/custom-dialog'
 //
-// import UserQuickEditForm from './user-quick-edit-form';
+// import UserQuickEditForm from '../temp/user-quick-edit-form'
 
 // ----------------------------------------------------------------------
 
 // eslint-disable-next-line react/prop-types
-export default function CategoryTableRow({ row, selected, onEditRow, onSelectRow, onDeleteRow}) {
+export default function CategoryTableRow({ row, selected, onEditRow, onSelectRow, onDeleteRow }) {
+  const { category_name, category_description, status } = row
 
-  console.log(row);
-  const {category_name,category_description} = row;
+  const confirm = useBoolean()
 
-  const confirm = useBoolean();
+  const quickEdit = useBoolean()
 
-  const quickEdit = useBoolean();
+  const popover = usePopover()
+  // useEffect(() => {
+  //   async function fetchData() {
+  //     try {
+  //       // const response = await axios.get('api/user/usergroups');
+  //       // // const data = await response.json();
 
-  const popover = usePopover();
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        // const response = await axios.get('api/user/usergroups');
-        // // const data = await response.json();
-       
-      console.log(row);
-   
-      
-      } catch (error) {
-        console.error('Error fetching API data:', error);
-      }
-    }
-  
-    fetchData();
-  });
+  //     console.log(row);
+
+
+  //     } catch (error) {
+  //       console.error('Error fetching API data:', error);
+  //     }
+  //   }
+
+  //   fetchData();
+  // });
 
   return (
     <>
@@ -59,9 +53,27 @@ export default function CategoryTableRow({ row, selected, onEditRow, onSelectRow
         <TableCell padding="checkbox">
           <Checkbox checked={selected} onClick={onSelectRow} />
         </TableCell>
+
+        {/* } <TableCell sx={{ display: 'flex', alignItems: 'center' }}>
+          <Avatar alt={name} src={avatarUrl} sx={{ mr: 2 }} />
+
+          <ListItemText
+            primary={name}
+            secondary={email}
+            primaryTypographyProps={{ typography: 'body2' }}
+            secondaryTypographyProps={{
+              component: 'span',
+              color: 'text.disabled',
+            }}
+          />
+          </TableCell> */}
+
         <TableCell sx={{ whiteSpace: 'nowrap' }}>{category_name}</TableCell>
         <TableCell sx={{ whiteSpace: 'nowrap' }}>{category_description}</TableCell>
-        {/* <TableCell>
+        <TableCell sx={{ whiteSpace: 'nowrap' }}></TableCell>
+        {/* <TableCell sx={{ whiteSpace: 'nowrap' }}>{user_group_ref.user_group_name}</TableCell> */}
+
+        <TableCell>
           <Label
             variant="soft"
             color={
@@ -70,16 +82,19 @@ export default function CategoryTableRow({ row, selected, onEditRow, onSelectRow
               'default'
             }
           >
-            {status===1?'Active':'InActive'}
+            {status === 1 ? 'Active' : 'Inactive'}
           </Label>
-        </TableCell> */}
-     {/* <TableCell align="right" sx={{ px: 1, whiteSpace: 'nowrap' }}>
-           <IconButton color={popover.open ? 'inherit' : 'default'} onClick={popover.onOpen}>
-             <Iconify icon="eva:more-vertical-fill" />
-           </IconButton>
-         </TableCell> */}
+        </TableCell>
+
+        <TableCell align="right" sx={{ px: 1, whiteSpace: 'nowrap' }}>
+          <IconButton color={popover.open ? 'inherit' : 'default'} onClick={popover.onOpen}>
+            <Iconify icon="eva:more-vertical-fill" />
+          </IconButton>
+        </TableCell>
+        
       </TableRow>
-    <CustomPopover
+
+      <CustomPopover
         open={popover.open}
         onClose={popover.onClose}
         arrow="right-top"
@@ -87,8 +102,8 @@ export default function CategoryTableRow({ row, selected, onEditRow, onSelectRow
       >
         <MenuItem
           onClick={() => {
-            confirm.onTrue();
-            popover.onClose();
+            confirm.onTrue()
+            popover.onClose()
           }}
           sx={{ color: 'error.main' }}
         >
@@ -98,13 +113,24 @@ export default function CategoryTableRow({ row, selected, onEditRow, onSelectRow
 
         <MenuItem
           onClick={() => {
-            onEditRow();
-            popover.onClose();
+            onEditRow()
+            popover.onClose()
           }}
         >
           <Iconify icon="solar:pen-bold" />
           Edit
         </MenuItem>
+
+        {/* <MenuItem
+          onClick={() => {
+            onEditRow()
+            popover.onClose()
+          }}
+
+        >
+          <Iconify icon="solar:eye-bold" />
+          AuditTrailView
+        </MenuItem> */}
       </CustomPopover>
 
       <ConfirmDialog
@@ -119,7 +145,7 @@ export default function CategoryTableRow({ row, selected, onEditRow, onSelectRow
         }
       />
     </>
-  );
+  )
 }
 
 CategoryTableRow.propTypes = {
@@ -128,4 +154,4 @@ CategoryTableRow.propTypes = {
   onSelectRow: PropTypes.func,
   row: PropTypes.object,
   selected: PropTypes.bool,
-};
+}
