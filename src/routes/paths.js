@@ -152,7 +152,23 @@ export const paths = {
         details: `${ROOTS.DASHBOARD}/product/${MOCK_ID}`,
         edit: `${ROOTS.DASHBOARD}/product/${MOCK_ID}/edit`,
       },
+
+
+      masterlist: `${ROOTS.DASHBOARD}/product/masterlist`,
+      masternew: `${ROOTS.DASHBOARD}/product/master/new`,
+      
+      masteredit: (id) => `${ROOTS.DASHBOARD}/product/master/${id}/edit`,
     },
+    // productmaster: {
+    //   root: `${ROOTS.DASHBOARD}/product/master`,
+    //   new: `${ROOTS.DASHBOARD}/product/master/new`,
+    //   details: (id) => `${ROOTS.DASHBOARD}/product/master/${id}`,
+    //   edit: (id) => `${ROOTS.DASHBOARD}/product/master/${id}/edit`,
+    //   // demo: {
+    //   //   details: `${ROOTS.DASHBOARD}/product/${MOCK_ID}`,
+    //   //   edit: `${ROOTS.DASHBOARD}/product/${MOCK_ID}/edit`,
+    //   // },
+    // },
     invoice: {
       root: `${ROOTS.DASHBOARD}/invoice`,
       new: `${ROOTS.DASHBOARD}/invoice/new`,

@@ -134,6 +134,7 @@ export function useNavData() {
             icon: ICONS.product,
             children: [
               { title: t('list'), path: paths.dashboard.product.root },
+              { title: t('master'), path: paths.dashboard.product.masterlist },
               {
                 title: t('details'),
                 path: paths.dashboard.product.demo.details,
