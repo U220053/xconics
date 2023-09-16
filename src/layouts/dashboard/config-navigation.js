@@ -138,7 +138,7 @@ export function useNavData() {
                 title: t('details'),
                 path: paths.dashboard.product.demo.details,
               },
-              { title: t('create'), path: paths.dashboard.product.new },
+              { title: t('Device Master'), path: paths.dashboard.product.devicelist },
               { title: t('edit'), path: paths.dashboard.product.demo.edit },
             ],
           },

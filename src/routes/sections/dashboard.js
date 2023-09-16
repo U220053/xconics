@@ -21,6 +21,11 @@ const ProductDetailsPage = lazy(() => import('src/pages/dashboard/product/detail
 const ProductListPage = lazy(() => import('src/pages/dashboard/product/list'))
 const ProductCreatePage = lazy(() => import('src/pages/dashboard/product/new'))
 const ProductEditPage = lazy(() => import('src/pages/dashboard/product/edit'))
+
+const DeviceListPage = lazy(() => import('src/pages/dashboard/product/devicelist'))
+const DeviceCreatePage = lazy(() => import('src/pages/dashboard/product/devicenew'))
+const DeviceEditPage = lazy(() => import('src/pages/dashboard/product/deviceedit'))
+
 // ORDER
 const OrderListPage = lazy(() => import('src/pages/dashboard/order/list'))
 const OrderDetailsPage = lazy(() => import('src/pages/dashboard/order/details'))
@@ -151,6 +156,10 @@ export const dashboardRoutes = [
           { path: ':id', element: <ProductDetailsPage /> },
           { path: 'new', element: <ProductCreatePage /> },
           { path: ':id/edit', element: <ProductEditPage /> },
+
+          { path: 'devicelist', element: <DeviceListPage /> },
+          { path: 'device/new', element: <DeviceCreatePage /> },
+          { path: 'device/:id/edit', element: <DeviceEditPage /> },
         ],
       },
       {
