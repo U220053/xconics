@@ -410,6 +410,6 @@ export default function ProductNewEditForm({ currentProduct, category, enclosure
 ProductNewEditForm.propTypes = {
   currentProduct: PropTypes.object,
   product_category: PropTypes.array,
-  // userPer: PropTypes.array,
+
   enclosure: PropTypes.array,
 };

@@ -12,7 +12,7 @@ import Container from '@mui/material/Container';
 import TableBody from '@mui/material/TableBody';
 import IconButton from '@mui/material/IconButton';
 import TableContainer from '@mui/material/TableContainer';
-// import ExportToExceluser from '../client-export-excel';
+import ExportToExceluser from '../product-export-excel';
 // routes
 import { paths } from 'src/routes/paths';
 import { useRouter } from 'src/routes/hooks';
@@ -185,51 +185,40 @@ export default function ProductMasterListView() {
     setFilters(defaultFilters);
   }, []);
   // starting of export to pdf
-  //  const [hovered, setHovered] = useState(false);
+  const [hovered, setHovered] = useState(false);
 
-  //  const divStyle = {
-  //    backgroundColor: hovered ? '#2980b9' : '#3498db',
-  //    color: '#fff',
-  //    padding: '10px 30px',
-  //    cursor: 'pointer',
-  //    fontSize: '15px',
-  //    margin: '10px',
-  //  };
-  //  const allRowsData = dataFiltered
-  //    .slice(table.page * table.rowsPerPage, table.page * table.rowsPerPage + table.rowsPerPage)
-  //    .map((row) => {
-  //      return {
-  //       //  companyname: row.company_name,
-  //       //  phoneNumber: row.user_mobile,
-  //       //  GroupRef: row.user_group_ref.user_group_name,
-  //       //  status: row.status,
-  //       name:row.company_name ,
-  //       PersonName: row.contact_person_name ,
-  //       // PhoneNo: contact_phone_number ,
-  //       // ContactEmail:   contact_email ,
-  //       // address:address ,
-  //       // City: city ,
-  //       // State: state ,
-  //       // Pin: pin ,
-  //       // AdminEmail: admin_email ,
-  //       // AdminPhone: admin_phone ,
-  //       status: row.status,
-  //      };
-  //    });
+  const divStyle = {
+    backgroundColor: hovered ? '#2980b9' : '#3498db',
+    color: '#fff',
+    padding: '10px 30px',
+    cursor: 'pointer',
+    fontSize: '15px',
+    margin: '10px',
+  };
+  const allRowsData = dataFiltered
+    .slice(table.page * table.rowsPerPage, table.page * table.rowsPerPage + table.rowsPerPage)
+    .map((row) => {
+      return {
+        ProductName: row.product_name,
+        ProductCode: row.product_code,
+        ProductVersion: row.product_version,
+        status: row.status,
+      };
+    });
 
-  //  const labels = TABLE_HEAD.map((item) => item.label);
-  //  const exportToPDF = () => {
-  //    const doc = new jsPDF();
+  const labels = TABLE_HEAD.map((item) => item.label);
+  const exportToPDF = () => {
+    const doc = new jsPDF();
 
-  //    const tableData = allRowsData.map((rowData) => {
-  //      return Object.values(rowData);
-  //    });
-  //    doc.autoTable({
-  //      head: [labels],
-  //      body: tableData,
-  //    });
-  //    doc.save('CLIENT_LIST.pdf');
-  //  };
+    const tableData = allRowsData.map((rowData) => {
+      return Object.values(rowData);
+    });
+    doc.autoTable({
+      head: [labels],
+      body: tableData,
+    });
+    doc.save('PRODUCT_LIST.pdf');
+  };
   // ending of export to pdf
   return (
     <>
@@ -255,7 +244,7 @@ export default function ProductMasterListView() {
             mb: { xs: 3, md: 5 },
           }}
         />
-        {/* <div>
+        <div>
           <ExportToExceluser data={dataFiltered} filename="product_Data" />
           <Button
             onClick={exportToPDF}
@@ -265,9 +254,9 @@ export default function ProductMasterListView() {
             variant="contained"
             startIcon={<Iconify icon="fa6-solid:file-pdf" />}
           >
-           Export to PDF
+            Export to PDF
           </Button>
-        </div> */}
+        </div>
         <Card>
           <Tabs
             value={filters.status}

@@ -19,27 +19,7 @@ export default function ProductMasterEditView({ id }) {
   const [enclosure, setEnclosure] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [dataProduct, setDataProduct] = useState(null);
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     const productcategory = await axios.get('api/product/category');
-  //     const productenclosure = await axios.get('api/product/enclosure');
-  //     const newdata = JSON.parse(JSON.stringify(productcategory.data.data));
-  //     const newdata1 = JSON.parse(JSON.stringify(productenclosure.data.data));
 
-  //     setIsLoading(false);
-  //     const newProductCategory = newdata.map((item) => {
-  //       return { id: item._id, category_name: item.category_name };
-  //     });
-  //     setCategory(newProductCategory);
-  //     const newProductEnclosure = newdata1.map((item) => {
-  //       return { id: item._id, enclosure_type: item.enclosure_type };
-  //     });
-  //     setEnclosure(newProductEnclosure);
-  //     setIsLoading(false);
-  //   };
-  //   fetchData();
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
   useEffect(() => {
     async function fetchData() {
       try {
