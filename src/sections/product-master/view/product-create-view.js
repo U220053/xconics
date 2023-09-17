@@ -8,34 +8,39 @@ import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
 
 import ProductNewEditForm from '../product-new-edit-form';
 import { useEffect, useState } from 'react';
-import axios from 'src/utils/axios'
+import axios from 'src/utils/axios';
 
 // ----------------------------------------------------------------------
 
 export default function ProductMasterCreateView() {
   const settings = useSettingsContext();
 
-  const [product, setproduct_category] = useState([])
+  // const [userPer, setUserPer] = useState([]);
+  const [category, setCategory] = useState([]);
+  const [enclosure, setEnclosure] = useState([]);
   const [isLoading, setIsLoading] = useState(true); // Add a loading state
-  const fetchData = async () => {
-    const groupresponse = await axios.get('api/client/manager');
-    const newdata = JSON.parse(JSON.stringify(groupresponse.data.data))
-    // console.log(newdata);
-    setIsLoading(false);
-    const newGroupData = newdata.map((item) => {
-      return { id: item._id}
-    })
-    console.log(newGroupData);
-    setproduct_category(newGroupData);
-    console.log(product);
-    setIsLoading(false);
-  }
-  useEffect(() => {
-    
-    fetchData()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
 
+  useEffect(() => {
+    const fetchData = async () => {
+      const productcategory = await axios.get('api/product/category');
+      const productenclosure = await axios.get('api/product/enclosure');
+      const newdata = JSON.parse(JSON.stringify(productcategory.data.data));
+      const newdata1 = JSON.parse(JSON.stringify(productenclosure.data.data));
+
+      setIsLoading(false);
+      const newProductCategory = newdata.map((item) => {
+        return { id: item._id, category_name: item.category_name };
+      });
+      setCategory(newProductCategory);
+      const newProductEnclosure = newdata1.map((item) => {
+        return { id: item._id, enclosure_type: item.enclosure_type };
+      });
+      setEnclosure(newProductEnclosure);
+      setIsLoading(false);
+    };
+    fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   if (isLoading) {
     return <div>Loading...</div>; // Display a loading indicator
   }
@@ -59,7 +64,7 @@ export default function ProductMasterCreateView() {
         }}
       />
 
-      <ProductNewEditForm />
+      <ProductNewEditForm category={category} enclosure={enclosure} />
     </Container>
   );
 }

@@ -33,50 +33,14 @@ import axios from 'src/utils/axios';
 
 // ----------------------------------------------------------------------
 
-export default function ProductNewEditForm({ currentProduct,  product_category }) {
+export default function ProductNewEditForm({ currentProduct, category, enclosure }) {
   const router = useRouter();
   const [formData, setFormData] = useState({});
-  
+
   const [isLoading, setIsLoading] = useState(true);
   const { enqueueSnackbar } = useSnackbar();
-
+  // const [productCategories, setProductCategories] = useState([]);
   const NewUserSchema = Yup.object().shape({
-    // name: Yup.string().required('Name is required'),
-    // PersonName: Yup.string().required('Contact Person Name is required'),
-    // PhoneNo: Yup.number().required('Contact Phone No is required'),
-    // ContactEmail: Yup.string().email().required('Contact Email is required'),
-    // address: Yup.string().required('Address is required'),
-    // City: Yup.string().required('City is required'),
-    // State: Yup.string().required('State is required'),
-    // Pin: Yup.number().min(6).required('Pin is required'),
-    // AdminEmail: Yup.string().email().required('Admin Email is required'),
-    // AdminPhone: Yup.number().required(' Admin Phone No. is required'),
-    // // AdminPassword: Yup.string().required('Admin Password is required'),
-    // ActivationDate: Yup.string().required('Activation Date is required'),
-    // TermExpDate: Yup.string().required('Term Exp. Date is required'),
-    // ClientManagerName: Yup.string().required('Client Manager Name is required'),
-    // ClientManagerAttachDate: Yup.string().required('Client Manager Attach Date is required'),
-    // // SelectGroup: Yup.string().required('Select Group is required'),
-    // groupref: Yup.string().required('Select Group is required'),
-    // status: Yup.number().required('Status is required'),
-    // name: Yup.string(),
-    // PersonName: Yup.string(),
-    // PhoneNo: Yup.number(),
-    // ContactEmail: Yup.string(),
-    // address: Yup.string(),
-    // City: Yup.string(),
-    // State: Yup.string(),
-    // Pin: Yup.number(),
-    // AdminEmail: Yup.string(),
-    // AdminPhone: Yup.number(),
-    // // AdminPassword: Yup.string().required('Admin Password is required'),
-    // ActivationDate: Yup.mixed().nullable(),
-    // TermExpDate: Yup.string(),
-    // ClientManagerRef: Yup.string(),
-    // ClientManagerAttachDate: Yup.string(),
-    // // SelectGroup: Yup.string().required('Select Group is required'),
-    // groupref: Yup.string(),
-    // status: Yup.number(),
     ProductCode: Yup.string(),
     ProductVersion: Yup.string(),
     ProductCategory: Yup.string(),
@@ -93,65 +57,45 @@ export default function ProductNewEditForm({ currentProduct,  product_category }
     PowerConsumption: Yup.string(),
     Enclosure: Yup.string(),
     ApiCloudURL: Yup.string(),
-    PrimarySensor:Yup.string(),
-    SecondarySensor:Yup.string(),
-    Geolocation:Yup.string(),
-    IndoorLocation:Yup.string(),
-    Sensor:Yup.string(),
-    Gateway:Yup.string(),
-    Vision:Yup.string(),
-    Description:Yup.string(),
+    PrimarySensor: Yup.string(),
+    SecondarySensor: Yup.string(),
+    Geolocation: Yup.string(),
+    IndoorLocation: Yup.string(),
+    Sensor: Yup.string(),
+    Gateway: Yup.string(),
+    Vision: Yup.string(),
+    Description: Yup.string(),
     Status: Yup.number(),
-    ProductName:Yup.string(),
+    ProductName: Yup.string(),
   });
 
   const defaultValues = useMemo(
     () => ({
-      // name: currentProduct?.company_name || '',
-      // PersonName: currentProduct?.contact_person_name || '',
-      // PhoneNo: currentProduct?.contact_phone_no || '',
-      // ContactEmail: currentProduct?.contact_email || '',
-      // address: currentProduct?.address || '',
-      // City: currentProduct?.city || '',
-      // State: currentProduct?.state || '',
-      // Pin: currentProduct?.pin || '',
-      // AdminEmail: currentProduct?.admin_email || '',
-      // AdminPhone: currentProduct?.admin_phone || '',
-      // ActivationDate: currentProduct?.activation_date || '',
-      // TermExpDate: currentProduct?.term_exp_date || '',
-    //   // ClientManagerName: currentCustomer?.customer_client_ || '',
-    //   ClientManagerAttachDate: currentProduct?.Product_client_date || '',
-    //   SelectGroup: currentProduct?.customer_select_group || '',
-    //   // description: currentCustomer?.user_group_description || '',
-    //   // status: currentCustomer?.status === 1 ? 'Active' : 'Inactive' || '',
-    //   groupref: currentCustomer?.user_group_ref || '',
-    //   status: currentCustomer?.status || 1,
-    //   client_manager_ref: currentCustomer?.client_manager_ref || '',
-ProductCode:currentProduct?.product_code||'',
-ProductName:currentProduct?.product_name,
-ProductVersion:currentProduct?.product_version,
-ProductCategory:currentProduct?.product_category,
-PrimaryMcu:currentProduct?.primary_mcu,
-SecondaryMcu:currentProduct?.secondary_mcu,
-PrimaryComProtocol:currentProduct?.primary_com_protocol,
-SecondaryComProtocol:currentProduct?.secondary_com_protocol,
-BatteryOperated:currentProduct?.battery_operated,
-PrimaryBattery:currentProduct?.primary_battery,
-SecondaryBattery:currentProduct?.secondary_battery,
-OperatingVoltage:currentProduct?.operating_voltage,
-InputVoltage:currentProduct?.input_voltage,
-PowerConsumption:currentProduct?.power_consumption,
-Enclosure:currentProduct?.enclosure,
-ApiCloudURL:currentProduct?.api_cloud_url,
-PrimarySensor:currentProduct?.primary_sensor,
-SecondarySensor:currentProduct?.secondary_sensor,
-Geolocation:currentProduct?.geolocation,
-IndoorLocation:currentProduct?.indoor_location,
-Sensor:currentProduct?.sensor,
-Gateway:currentProduct?.gateway,
-Vision:currentProduct?.vision,
-Description:currentProduct?.description,
-Status:currentProduct?.status||1,
+      ProductCode: currentProduct?.product_code || '',
+      ProductName: currentProduct?.product_name,
+      ProductVersion: currentProduct?.product_version,
+      ProductCategory: currentProduct?.product_category,
+      PrimaryMcu: currentProduct?.primary_mcu,
+      SecondaryMcu: currentProduct?.secondary_mcu,
+      PrimaryComProtocol: currentProduct?.primary_com_protocol,
+      SecondaryComProtocol: currentProduct?.secondary_com_protocol,
+      BatteryOperated: currentProduct?.battery_operated,
+      PrimaryBattery: currentProduct?.primary_battery,
+      SecondaryBattery: currentProduct?.secondary_battery,
+      OperatingVoltage: currentProduct?.operating_voltage,
+      InputVoltage: currentProduct?.input_voltage,
+      PowerConsumption: currentProduct?.power_consumption,
+      Enclosure: currentProduct?.enclosure,
+      ApiCloudURL: currentProduct?.api_cloud_url,
+      PrimarySensor: currentProduct?.primary_sensor,
+      SecondarySensor: currentProduct?.secondary_sensor,
+      Geolocation: currentProduct?.geolocation,
+      IndoorLocation: currentProduct?.indoor_location,
+      Sensor: currentProduct?.sensor,
+      Gateway: currentProduct?.gateway,
+      Vision: currentProduct?.vision,
+      Description: currentProduct?.description,
+      Status: currentProduct?.status || 1,
     }),
     [currentProduct]
   );
@@ -171,11 +115,13 @@ Status:currentProduct?.status||1,
   } = methods;
 
   const [product, setProduct] = useState(false);
-  const [dropdownData, setdropdownData] = useState([]);
+  // const [group, setuserPer] = useState(false);
+  // const [productcat, setproductcat] = useState(false);
   useEffect(() => {
-    if (currentProduct?.company_name) setProduct(true);
+    if (currentProduct?.product_code) setProduct(true);
     else setProduct(false);
   }, []);
+
   const values = watch();
   const onFormChange = (data) => {
     setFormData(data);
@@ -207,31 +153,31 @@ Status:currentProduct?.status||1,
         // activation_date: active,
         // term_exp_date: active1,
 
-        product_code:data.ProductCode,
-product_name:data.ProductName,
-product_version:data.ProductVersion,
-product_category:data.ProductCategory,
-primary_mcu:data.PrimaryMcu,
-secondary_mcu:data.SecondaryMcu,
-primary_com_protocol:data.PrimaryComProtocol,
-secondary_com_protocol:data.SecondaryComProtocol,
-battery_operated:data.BatteryOperated,
-primary_battery:data.PrimaryBattery,
-secondary_battery:data.SecondaryBattery,
-operating_voltage:data.OperatingVoltage,
-input_voltage:data.InputVoltage,
-power_consumption:data.PowerConsumption,
-enclosure:data.Enclosure,
-api_cloud_url:data.ApiCloudURL,
-primary_sensor:data.PrimarySensor,
-secondary_sensor:data.SecondarySensor,
-geolocation:data.Geolocation,
-indoor_location:data.IndoorLocation,
-sensor:data.Sensor,
-gateway:data.Gateway,
-Vision:data.vision,
-description:data.Description,
-status:data.Status,
+        product_code: data.ProductCode,
+        product_name: data.ProductName,
+        product_version: data.ProductVersion,
+        product_category: data.ProductCategory,
+        primary_mcu: data.PrimaryMcu,
+        secondary_mcu: data.SecondaryMcu,
+        primary_com_protocol: data.PrimaryComProtocol,
+        secondary_com_protocol: data.SecondaryComProtocol,
+        battery_operated: data.BatteryOperated,
+        primary_battery: data.PrimaryBattery,
+        secondary_battery: data.SecondaryBattery,
+        operating_voltage: data.OperatingVoltage,
+        input_voltage: data.InputVoltage,
+        power_consumption: data.PowerConsumption,
+        enclosure: data.Enclosure,
+        api_cloud_url: data.ApiCloudURL,
+        primary_sensor: data.PrimarySensor,
+        secondary_sensor: data.SecondarySensor,
+        geolocation: data.Geolocation,
+        indoor_location: data.IndoorLocation,
+        sensor: data.Sensor,
+        gateway: data.Gateway,
+        Vision: data.vision,
+        description: data.Description,
+        status: data.Status,
       };
 
       if (!product) {
@@ -258,14 +204,14 @@ status:data.Status,
     { label: 'Yes', value: 1 },
     { label: 'No', value: 0 },
   ];
-// BLE/GSM/LORA/LTE/WIFI
-const comprotocol = [
-  { label: 'BLE', value: 'BLE' },
-  { label: 'GSM', value: 'GSM' },
-  { label: 'LORA', value: 'LORA' },
-  { label: 'LTE', value: 'LTE' },
-  { label: 'WIFI', value: 'WIFI' },
-];
+  // BLE/GSM/LORA/LTE/WIFI
+  const comprotocol = [
+    { label: 'BLE', value: 'BLE' },
+    { label: 'GSM', value: 'GSM' },
+    { label: 'LORA', value: 'LORA' },
+    { label: 'LTE', value: 'LTE' },
+    { label: 'WIFI', value: 'WIFI' },
+  ];
 
   return (
     <FormProvider methods={methods} onSubmit={onSubmit}>
@@ -293,29 +239,24 @@ const comprotocol = [
               <RHFTextField name="ProductCode" label="Product Code" />
               <RHFTextField name="ProductName" label="Product Name" />
               <RHFTextField name="ProductVersion" label="Product Version" />
-              {/* <RHFTextField  /> */}
-              {/* {client_manager_ref.map((option) => (
-                  <MenuItem key={option.id} value={option.id}>
-                    {option.client_manager_ref}
-                  </MenuItem>
-                ))} */}
-                 <RHFSelect
-                fullWidth
-                name="ProductCategory" label="Product Category"
+
+              <RHFSelect
+                name="ProductCategory"
+                label="Product Category"
                 PaperPropsSx={{ textTransform: 'capitalize' }}
-                // Set the value based on your condition
               >
-               {product_category.map((option) => (
+                {category.map((option) => (
                   <MenuItem key={option.id} value={option.id}>
-                    {option.product_category}
+                    {option.category_name}
                   </MenuItem>
                 ))}
               </RHFSelect>
-              <RHFTextField name="SecondaryMcu" label="Secondary Mcu"  />
-             
-               <RHFSelect
+              <RHFTextField name="SecondaryMcu" label="Secondary Mcu" />
+
+              <RHFSelect
                 fullWidth
-                name="PrimaryComProtocol" label="Primary Com Protocol"
+                name="PrimaryComProtocol"
+                label="Primary Com Protocol"
                 PaperPropsSx={{ textTransform: 'capitalize' }}
                 defaultValue={currentProduct?.Geolocation || 1} // Set the value based on your condition
               >
@@ -327,7 +268,8 @@ const comprotocol = [
               </RHFSelect>
               <RHFSelect
                 fullWidth
-                name="SecondaryComProtocol" label="Secondary Com Protocol"
+                name="SecondaryComProtocol"
+                label="Secondary Com Protocol"
                 PaperPropsSx={{ textTransform: 'capitalize' }}
                 // Set the value based on your condition
               >
@@ -337,22 +279,46 @@ const comprotocol = [
                   </MenuItem>
                 ))}
               </RHFSelect>
-              <RHFTextField name="BatteryOperated" label="Battery Operated" />
+              {/* <RHFTextField /> */}
+              <RHFSelect
+                fullWidth
+                name="BatteryOperated"
+                label="Battery Operated"
+                PaperPropsSx={{ textTransform: 'capitalize' }}
+                // Set the value based on your condition
+              >
+                {yesno.map((option) => (
+                  <MenuItem key={option.value} value={option.value}>
+                    {option.label}
+                  </MenuItem>
+                ))}
+              </RHFSelect>
               <RHFTextField name="PrimaryBattery" label="Primary Battery" />
               <RHFTextField name="SecondaryBattery" label="Secondary Battery" />
-              <RHFTextField name="OperatingVoltage" label="Operating Voltage" />  
-              <RHFTextField name="InputVoltage" label="Input Voltage" />  
-              <RHFTextField name="PowerConsumption" label="Power Consumption" /> 
-               <RHFTextField name="Enclosure" label="Enclosure" /> 
-                <RHFTextField name="ApiCloudURL" label="Api Cloud URL" />
-                  <RHFTextField name="PrimarySensor" label="Primary Sensor" />  
-                  <RHFTextField name="SecondarySensor" label="Secondary Sensor" />  
-                  <RHFSelect
+              <RHFTextField name="OperatingVoltage" label="Operating Voltage" />
+              <RHFTextField name="InputVoltage" label="Input Voltage" />
+              <RHFTextField name="PowerConsumption" label="Power Consumption" />
+              <RHFSelect
+                name="Enclosure"
+                label="Enclosure"
+                PaperPropsSx={{ textTransform: 'capitalize' }}
+              >
+                {enclosure.map((option) => (
+                  <MenuItem key={option.id} value={option.id}>
+                    {option.enclosure_type}
+                  </MenuItem>
+                ))}
+              </RHFSelect>
+
+              <RHFTextField name="ApiCloudURL" label="Api Cloud URL" />
+              <RHFTextField name="PrimarySensor" label="Primary Sensor" />
+              <RHFTextField name="SecondarySensor" label="Secondary Sensor" />
+              <RHFSelect
                 fullWidth
                 name="Geolocation"
                 label="Geolocation"
                 PaperPropsSx={{ textTransform: 'capitalize' }}
-              // Set the value based on your condition
+                // Set the value based on your condition
               >
                 {yesno.map((option) => (
                   <MenuItem key={option.value} value={option.value}>
@@ -365,7 +331,7 @@ const comprotocol = [
                 name="IndoorLocation"
                 label="Indoor Location"
                 PaperPropsSx={{ textTransform: 'capitalize' }}
-              // Set the value based on your condition
+                // Set the value based on your condition
               >
                 {yesno.map((option) => (
                   <MenuItem key={option.value} value={option.value}>
@@ -378,7 +344,7 @@ const comprotocol = [
                 name="Sensor"
                 label="Sensor"
                 PaperPropsSx={{ textTransform: 'capitalize' }}
-               // Set the value based on your condition
+                // Set the value based on your condition
               >
                 {yesno.map((option) => (
                   <MenuItem key={option.value} value={option.value}>
@@ -391,7 +357,7 @@ const comprotocol = [
                 name="Gateway"
                 label="Gateway"
                 PaperPropsSx={{ textTransform: 'capitalize' }}
-               // Set the value based on your condition
+                // Set the value based on your condition
               >
                 {yesno.map((option) => (
                   <MenuItem key={option.value} value={option.value}>
@@ -404,7 +370,7 @@ const comprotocol = [
                 name="Vision"
                 label="Vision"
                 PaperPropsSx={{ textTransform: 'capitalize' }}
-                 // Set the value based on your condition
+                // Set the value based on your condition
               >
                 {yesno.map((option) => (
                   <MenuItem key={option.value} value={option.value}>
@@ -412,14 +378,8 @@ const comprotocol = [
                   </MenuItem>
                 ))}
               </RHFSelect>
-                  {/* <RHFTextField name="Geolocation" label="Geolocation" /> 
-                   <RHFTextField name="IndoorLocation" label="Indoor Location" />
-                     <RHFTextField name="Sensor" label="Sensor" />
-                       <RHFTextField name="Gateway" label="Gateway" /> 
-                        <RHFTextField name="Vision" label="Vision" />   */}
-                        <RHFTextField name="Description" label="Description" />
-                        
-              
+
+              <RHFTextField name="Description" label="Description" />
 
               <RHFSelect
                 fullWidth
@@ -450,4 +410,6 @@ const comprotocol = [
 ProductNewEditForm.propTypes = {
   currentProduct: PropTypes.object,
   product_category: PropTypes.array,
+  // userPer: PropTypes.array,
+  enclosure: PropTypes.array,
 };

@@ -3,8 +3,6 @@ import { useState, useCallback, useEffect } from 'react';
 
 // @mui
 import Button from '@mui/material/Button';
-import Avatar from '@mui/material/Avatar';
-import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import TableRow from '@mui/material/TableRow';
 import Checkbox from '@mui/material/Checkbox';
@@ -24,25 +22,14 @@ import { ConfirmDialog } from 'src/components/custom-dialog';
 // eslint-disable-next-line react/prop-types
 export default function ProductTableRow({ row, selected, onEditRow, onSelectRow, onDeleteRow }) {
   const {
-    company_name,
-    contact_person_name,
-    contact_phone_number,
-    contact_email,
-    address,
-    city,
-    state,
-    pin,
-    admin_email,
-    admin_phone,
-    activation_date,
-    term_exp_date,
+    product_name,
+    product_code,
+    product_version,
 
     status,
   } = row;
 
   const confirm = useBoolean();
-
-  const quickEdit = useBoolean();
 
   const popover = usePopover();
 
@@ -53,10 +40,10 @@ export default function ProductTableRow({ row, selected, onEditRow, onSelectRow,
           <Checkbox checked={selected} onClick={onSelectRow} />
         </TableCell>
 
-        <TableCell sx={{ whiteSpace: 'nowrap' }}>{company_name}</TableCell>
+        <TableCell sx={{ whiteSpace: 'nowrap' }}>{product_name}</TableCell>
 
-        <TableCell sx={{ whiteSpace: 'nowrap' }}>{contact_person_name}</TableCell>
-
+        <TableCell sx={{ whiteSpace: 'nowrap' }}>{product_code}</TableCell>
+        <TableCell sx={{ whiteSpace: 'nowrap' }}>{product_version}</TableCell>
         <TableCell>
           <Label
             variant="soft"

@@ -15,20 +15,55 @@ import ProductNewEditForm from '../product-new-edit-form';
 
 export default function ProductMasterEditView({ id }) {
   const settings = useSettingsContext();
-
+  const [category, setCategory] = useState([]);
+  const [enclosure, setEnclosure] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [dataProduct, setDataProduct] = useState(null);
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     const productcategory = await axios.get('api/product/category');
+  //     const productenclosure = await axios.get('api/product/enclosure');
+  //     const newdata = JSON.parse(JSON.stringify(productcategory.data.data));
+  //     const newdata1 = JSON.parse(JSON.stringify(productenclosure.data.data));
 
+  //     setIsLoading(false);
+  //     const newProductCategory = newdata.map((item) => {
+  //       return { id: item._id, category_name: item.category_name };
+  //     });
+  //     setCategory(newProductCategory);
+  //     const newProductEnclosure = newdata1.map((item) => {
+  //       return { id: item._id, enclosure_type: item.enclosure_type };
+  //     });
+  //     setEnclosure(newProductEnclosure);
+  //     setIsLoading(false);
+  //   };
+  //   fetchData();
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await axios.get(`api/product/get/${id}`); 
+        const response = await axios.get(`api/product/get/${id}`);
         setDataProduct(response.data.data);
 
-        setIsLoading(false); 
+        setIsLoading(false);
+        const productcategory = await axios.get('api/product/category');
+        const productenclosure = await axios.get('api/product/enclosure');
+        const newdata = JSON.parse(JSON.stringify(productcategory.data.data));
+        const newdata1 = JSON.parse(JSON.stringify(productenclosure.data.data));
+
+        setIsLoading(false);
+        const newProductCategory = newdata.map((item) => {
+          return { id: item._id, category_name: item.category_name };
+        });
+        setCategory(newProductCategory);
+        const newProductEnclosure = newdata1.map((item) => {
+          return { id: item._id, enclosure_type: item.enclosure_type };
+        });
+        setEnclosure(newProductEnclosure);
+        setIsLoading(false);
       } catch (error) {
-       
-        setIsLoading(false); 
+        setIsLoading(false);
       }
     }
 
@@ -36,7 +71,7 @@ export default function ProductMasterEditView({ id }) {
   }, [id]);
 
   if (isLoading) {
-    return <div>Loading...</div>; 
+    return <div>Loading...</div>;
   }
 
   return (
@@ -59,7 +94,7 @@ export default function ProductMasterEditView({ id }) {
         }}
       />
 
-      <ProductNewEditForm currentProduct={dataProduct} />
+      <ProductNewEditForm currentProduct={dataProduct} category={category} enclosure={enclosure} />
     </Container>
   );
 }

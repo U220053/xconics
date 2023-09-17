@@ -55,9 +55,9 @@ const STATUS_OPTIONS = [
 ];
 
 const TABLE_HEAD = [
-  { id: 'company_name', label: 'Company Name', width: 180 },
-  { id: 'contact_person_name', label: 'Contact Person Name', width: 180 },
-
+  { id: 'product_name', label: 'Product Name', width: 180 },
+  { id: 'product_code', label: 'Product Code', width: 180 },
+  { id: 'product_version', label: 'Product Version', width: 180 },
   { id: 'status', label: 'Status', width: 100 },
   { id: '', width: 88 },
 ];
@@ -90,7 +90,7 @@ export default function ProductMasterListView() {
     filters,
   });
   useEffect(() => {
-    async function fetchData() {pr
+    async function fetchData() {
       try {
         const response = await axios.get('api/product/');
         setisSuccess(response.data.success);
@@ -169,7 +169,7 @@ export default function ProductMasterListView() {
   }, [dataFiltered.length, dataInPage.length, table, tableData]);
   const handleEditRow = useCallback(
     (id) => {
-      router.push(paths.dashboard.client.edit(id));
+      router.push(paths.dashboard.product.masteredit(id));
     },
     [router]
   );
@@ -184,53 +184,53 @@ export default function ProductMasterListView() {
   const handleResetFilters = useCallback(() => {
     setFilters(defaultFilters);
   }, []);
- // starting of export to pdf
-//  const [hovered, setHovered] = useState(false);
+  // starting of export to pdf
+  //  const [hovered, setHovered] = useState(false);
 
-//  const divStyle = {
-//    backgroundColor: hovered ? '#2980b9' : '#3498db',
-//    color: '#fff',
-//    padding: '10px 30px',
-//    cursor: 'pointer',
-//    fontSize: '15px',
-//    margin: '10px',
-//  };
-//  const allRowsData = dataFiltered
-//    .slice(table.page * table.rowsPerPage, table.page * table.rowsPerPage + table.rowsPerPage)
-//    .map((row) => {
-//      return {
-//       //  companyname: row.company_name,
-//       //  phoneNumber: row.user_mobile,
-//       //  GroupRef: row.user_group_ref.user_group_name,
-//       //  status: row.status,
-//       name:row.company_name ,
-//       PersonName: row.contact_person_name ,
-//       // PhoneNo: contact_phone_number ,
-//       // ContactEmail:   contact_email ,
-//       // address:address ,
-//       // City: city ,
-//       // State: state ,
-//       // Pin: pin ,
-//       // AdminEmail: admin_email ,
-//       // AdminPhone: admin_phone ,
-//       status: row.status,
-//      };
-//    });
+  //  const divStyle = {
+  //    backgroundColor: hovered ? '#2980b9' : '#3498db',
+  //    color: '#fff',
+  //    padding: '10px 30px',
+  //    cursor: 'pointer',
+  //    fontSize: '15px',
+  //    margin: '10px',
+  //  };
+  //  const allRowsData = dataFiltered
+  //    .slice(table.page * table.rowsPerPage, table.page * table.rowsPerPage + table.rowsPerPage)
+  //    .map((row) => {
+  //      return {
+  //       //  companyname: row.company_name,
+  //       //  phoneNumber: row.user_mobile,
+  //       //  GroupRef: row.user_group_ref.user_group_name,
+  //       //  status: row.status,
+  //       name:row.company_name ,
+  //       PersonName: row.contact_person_name ,
+  //       // PhoneNo: contact_phone_number ,
+  //       // ContactEmail:   contact_email ,
+  //       // address:address ,
+  //       // City: city ,
+  //       // State: state ,
+  //       // Pin: pin ,
+  //       // AdminEmail: admin_email ,
+  //       // AdminPhone: admin_phone ,
+  //       status: row.status,
+  //      };
+  //    });
 
-//  const labels = TABLE_HEAD.map((item) => item.label);
-//  const exportToPDF = () => {
-//    const doc = new jsPDF();
+  //  const labels = TABLE_HEAD.map((item) => item.label);
+  //  const exportToPDF = () => {
+  //    const doc = new jsPDF();
 
-//    const tableData = allRowsData.map((rowData) => {
-//      return Object.values(rowData);
-//    });
-//    doc.autoTable({
-//      head: [labels],
-//      body: tableData,
-//    });
-//    doc.save('CLIENT_LIST.pdf');
-//  };
- // ending of export to pdf
+  //    const tableData = allRowsData.map((rowData) => {
+  //      return Object.values(rowData);
+  //    });
+  //    doc.autoTable({
+  //      head: [labels],
+  //      body: tableData,
+  //    });
+  //    doc.save('CLIENT_LIST.pdf');
+  //  };
+  // ending of export to pdf
   return (
     <>
       <Container maxWidth={settings.themeStretch ? false : 'lg'}>
@@ -255,7 +255,7 @@ export default function ProductMasterListView() {
             mb: { xs: 3, md: 5 },
           }}
         />
- {/* <div>
+        {/* <div>
           <ExportToExceluser data={dataFiltered} filename="product_Data" />
           <Button
             onClick={exportToPDF}
