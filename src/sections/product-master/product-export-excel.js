@@ -6,14 +6,9 @@ import Button from '@mui/material/Button';
 
 const ExportToExcelButton = ({ data, filename }) => {
   const handleExportToExcel = () => {
-    // const excludedColumns = ['user_group_ref', 'del_flag', '__v'];
-    // Add the keys of the columns to be excluded
-    // Filter the data array to include only the columns you want to export
     const filteredData = data.map((item) => {
       const filteredItem = { ...item };
-      //   excludedColumns.forEach((columnKey) => {
-      //     delete filteredItem[columnKey];
-      //   });
+
       return filteredItem;
     });
 

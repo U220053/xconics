@@ -352,7 +352,6 @@ export default function ProductNewEditForm({ currentProduct, category, enclosure
                 name="vision"
                 label="vision"
                 PaperPropsSx={{ textTransform: 'capitalize' }}
-                // Set the value based on your condition
               >
                 {yesno.map((option) => (
                   <MenuItem key={option.value} value={option.value}>

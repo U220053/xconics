@@ -15,7 +15,6 @@ import axios from 'src/utils/axios';
 export default function ProductMasterCreateView() {
   const settings = useSettingsContext();
 
-  // const [userPer, setUserPer] = useState([]);
   const [category, setCategory] = useState([]);
   const [enclosure, setEnclosure] = useState([]);
   const [isLoading, setIsLoading] = useState(true); // Add a loading state

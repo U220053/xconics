@@ -14,9 +14,9 @@ import Iconify from 'src/components/iconify';
 export default function ProductTableFiltersResult({
   filters,
   onFilters,
-  //
+
   onResetFilters,
-  //
+
   results,
   ...other
 }) {
