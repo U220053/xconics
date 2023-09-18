@@ -71,7 +71,7 @@ export default function ProductNewEditForm({ currentProduct, category, enclosure
     Gateway: Yup.string(),
     vision: Yup.string(),
     Description: Yup.string(),
-    Status: Yup.number(),
+    status: Yup.number(),
     ProductName: Yup.string(),
   });
 
@@ -101,7 +101,7 @@ export default function ProductNewEditForm({ currentProduct, category, enclosure
       Gateway: currentProduct?.gateway,
       vision: currentProduct?.vision,
       Description: currentProduct?.description,
-      Status: currentProduct?.status || 1,
+      status: currentProduct?.status || 1,
     }),
     [currentProduct]
   );
@@ -159,7 +159,7 @@ export default function ProductNewEditForm({ currentProduct, category, enclosure
         gateway: data.Gateway,
         vision: data.vision,
         description: data.Description,
-        status: data.Status,
+        status: data.status,
       };
 
       if (!product) {
@@ -365,7 +365,7 @@ export default function ProductNewEditForm({ currentProduct, category, enclosure
               <RHFSelect
                 fullWidth
                 name="status"
-                label="Status"
+                label="status"
                 PaperPropsSx={{ textTransform: 'capitalize' }}
                 defaultValue={currentProduct?.status || 1} // Set the value based on your condition
               >

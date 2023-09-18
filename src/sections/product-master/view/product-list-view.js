@@ -58,7 +58,7 @@ const TABLE_HEAD = [
   { id: 'product_name', label: 'Product Name', width: 180 },
   { id: 'product_code', label: 'Product Code', width: 180 },
   { id: 'product_version', label: 'Product Version', width: 180 },
-  { id: 'status', label: 'Status', width: 100 },
+  { id: 'status', label: 'status', width: 100 },
   { id: '', width: 88 },
 ];
 
@@ -224,10 +224,10 @@ export default function ProductMasterListView() {
     <>
       <Container maxWidth={settings.themeStretch ? false : 'lg'}>
         <CustomBreadcrumbs
-          heading=" product List"
+          heading=" Product List"
           links={[
             { name: 'Dashboard', href: paths.dashboard.root },
-            { name: 'Product Master', href: paths.dashboard.product.masterlist },
+            // { name: 'Product Master', href: paths.dashboard.product.masterlist },
             { name: 'List' },
           ]}
           action={

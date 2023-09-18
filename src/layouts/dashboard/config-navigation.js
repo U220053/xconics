@@ -103,7 +103,7 @@ export function useNavData() {
             children: [
               { title: t('list'), path: paths.dashboard.user.list },
               { title: t('group'), path: paths.dashboard.user.group },
-              { title: t('permission'), path: paths.dashboard.user.permission},
+              { title: t('permission'), path: paths.dashboard.user.permission },
             ],
           },
 
@@ -112,20 +112,14 @@ export function useNavData() {
             title: t('Customer'),
             path: paths.dashboard.user.root,
             icon: ICONS.user,
-            children: [
-              { title: t('list'), path: paths.dashboard.customer.list },
-             
-            ],
+            children: [{ title: t('list'), path: paths.dashboard.customer.list }],
           },
           // CLIENT
           {
             title: t('Client'),
             path: paths.dashboard.user.root,
             icon: ICONS.user,
-            children: [
-              { title: t('list'), path: paths.dashboard.client.list },
-             
-            ],
+            children: [{ title: t('list'), path: paths.dashboard.client.list }],
           },
           // PRODUCT
           {
@@ -133,14 +127,14 @@ export function useNavData() {
             path: paths.dashboard.product.root,
             icon: ICONS.product,
             children: [
-              { title: t('list'), path: paths.dashboard.product.root },
-              { title: t('master'), path: paths.dashboard.product.masterlist },
-              {
-                title: t('details'),
-                path: paths.dashboard.product.demo.details,
-              },
-              { title: t('create'), path: paths.dashboard.product.new },
-              { title: t('edit'), path: paths.dashboard.product.demo.edit },
+              // { title: t('list'), path: paths.dashboard.product.root },
+              { title: t('list'), path: paths.dashboard.product.masterlist },
+              // {
+              //   title: t('details'),
+              //   path: paths.dashboard.product.demo.details,
+              // },
+              // { title: t('create'), path: paths.dashboard.product.new },
+              // { title: t('edit'), path: paths.dashboard.product.demo.edit },
             ],
           },
 
