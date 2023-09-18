@@ -56,14 +56,20 @@ export default function ProductNewEditForm({ currentProduct, category, enclosure
     InputVoltage: Yup.string(),
     PowerConsumption: Yup.string(),
     Enclosure: Yup.string(),
-    ApiCloudURL: Yup.string(),
+    ApiCloudURL: Yup.string()
+      .matches(
+        /((https?):\/\/)?(www.)?[a-z0-9]+(\.[a-z]{2,}){1,3}(#?\/?[a-zA-Z0-9#]+)*\/?(\?[a-zA-Z0-9-_]+=[a-zA-Z0-9-%]+&?)?$/,
+        'Enter correct url!'
+      )
+      .required('Please enter website'),
+
     PrimarySensor: Yup.string(),
     SecondarySensor: Yup.string(),
     Geolocation: Yup.string(),
     IndoorLocation: Yup.string(),
     Sensor: Yup.string(),
     Gateway: Yup.string(),
-    Vision: Yup.string(),
+    vision: Yup.string(),
     Description: Yup.string(),
     Status: Yup.number(),
     ProductName: Yup.string(),
@@ -93,7 +99,7 @@ export default function ProductNewEditForm({ currentProduct, category, enclosure
       IndoorLocation: currentProduct?.indoor_location,
       Sensor: currentProduct?.sensor,
       Gateway: currentProduct?.gateway,
-      Vision: currentProduct?.vision,
+      vision: currentProduct?.vision,
       Description: currentProduct?.description,
       Status: currentProduct?.status || 1,
     }),
@@ -115,8 +121,7 @@ export default function ProductNewEditForm({ currentProduct, category, enclosure
   } = methods;
 
   const [product, setProduct] = useState(false);
-  // const [group, setuserPer] = useState(false);
-  // const [productcat, setproductcat] = useState(false);
+
   useEffect(() => {
     if (currentProduct?.product_code) setProduct(true);
     else setProduct(false);
@@ -130,29 +135,6 @@ export default function ProductNewEditForm({ currentProduct, category, enclosure
   const onSubmit = handleSubmit(async (data) => {
     try {
       const newData = {
-        // company_name: data.name,
-        // // user_group_description: data.description,
-        // contact_person_name: data.PersonName,
-        // contact_phone_no: data.PhoneNo,
-        // contact_email: data.ContactEmail,
-        // address: data.address,
-        // city: data.City,
-        // state: data.State,
-        // pin: data.Pin,
-        // admin_email: data.AdminEmail,
-        // admin_phone: data.AdminPhone,
-        // // activation_date: data.ActivationDate,
-        // //  term_exp_date: data.TermExpDate,
-        // // customer_client_: data.ClientManagerName,
-        // // customer_client_date: data.ClientManagerAttachDate,
-        // // customer_select_group: data.SelectGroup,
-        // group_ref: data.groupref,
-        // status: data.status,
-        // client_manager_ref: data.client_manager_ref,
-        // data,
-        // activation_date: active,
-        // term_exp_date: active1,
-
         product_code: data.ProductCode,
         product_name: data.ProductName,
         product_version: data.ProductVersion,
@@ -175,7 +157,7 @@ export default function ProductNewEditForm({ currentProduct, category, enclosure
         indoor_location: data.IndoorLocation,
         sensor: data.Sensor,
         gateway: data.Gateway,
-        Vision: data.vision,
+        vision: data.vision,
         description: data.Description,
         status: data.Status,
       };
@@ -367,8 +349,8 @@ export default function ProductNewEditForm({ currentProduct, category, enclosure
               </RHFSelect>
               <RHFSelect
                 fullWidth
-                name="Vision"
-                label="Vision"
+                name="vision"
+                label="vision"
                 PaperPropsSx={{ textTransform: 'capitalize' }}
                 // Set the value based on your condition
               >
