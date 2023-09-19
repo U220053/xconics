@@ -21,6 +21,11 @@ const ProductDetailsPage = lazy(() => import('src/pages/dashboard/product/detail
 const ProductListPage = lazy(() => import('src/pages/dashboard/product/list'))
 const ProductCreatePage = lazy(() => import('src/pages/dashboard/product/new'))
 const ProductEditPage = lazy(() => import('src/pages/dashboard/product/edit'))
+//PRODUCT-MASTER
+
+const ProductMasterListPage = lazy(() => import('src/pages/dashboard/product/master-list'))
+const ProductMasterCreatePage = lazy(() => import('src/pages/dashboard/product/master-new'))
+const ProductMasterEditPage = lazy(() => import('src/pages/dashboard/product/master-edit'))
 // ORDER
 const OrderListPage = lazy(() => import('src/pages/dashboard/order/list'))
 const OrderDetailsPage = lazy(() => import('src/pages/dashboard/order/details'))
@@ -151,8 +156,23 @@ export const dashboardRoutes = [
           { path: ':id', element: <ProductDetailsPage /> },
           { path: 'new', element: <ProductCreatePage /> },
           { path: ':id/edit', element: <ProductEditPage /> },
+         
+          { path: 'masterlist', element: <ProductMasterListPage /> },
+         
+          { path: 'master/new', element: <ProductMasterCreatePage /> },
+          { path: 'master/:id/edit', element: <ProductMasterEditPage /> },
         ],
       },
+      // {
+      //   path: 'productmaster',
+      //   children: [
+      //     { element: <ProductMasterListPage />, index: true },
+      //     { path: 'list', element: <ProductMasterListPage /> },
+         
+      //     { path: 'new', element: <ProductMasterCreatePage /> },
+      //     { path: ':id/edit', element: <ProductMasterEditPage /> },
+      //   ],
+      // },
       {
         path: 'order',
         children: [

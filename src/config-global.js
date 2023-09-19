@@ -4,7 +4,7 @@ import { paths } from 'src/routes/paths';
 // API
 // ----------------------------------------------------------------------
 
-export const HOST_API = "http://3.6.104.128:8000/";
+export const HOST_API = "http://3.109.193.106:8000/";
 export const ASSETS_API = process.env.REACT_APP_ASSETS_API;
 
 
