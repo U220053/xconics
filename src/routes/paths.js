@@ -159,16 +159,12 @@ export const paths = {
       
       masteredit: (id) => `${ROOTS.DASHBOARD}/product/master/${id}/edit`,
     },
-    // productmaster: {
-    //   root: `${ROOTS.DASHBOARD}/product/master`,
-    //   new: `${ROOTS.DASHBOARD}/product/master/new`,
-    //   details: (id) => `${ROOTS.DASHBOARD}/product/master/${id}`,
-    //   edit: (id) => `${ROOTS.DASHBOARD}/product/master/${id}/edit`,
-    //   // demo: {
-    //   //   details: `${ROOTS.DASHBOARD}/product/${MOCK_ID}`,
-    //   //   edit: `${ROOTS.DASHBOARD}/product/${MOCK_ID}/edit`,
-    //   // },
-    // },
+  location:{
+    root: `${ROOTS.DASHBOARD}/location`,
+      new: `${ROOTS.DASHBOARD}/location/new`,
+      list: `${ROOTS.DASHBOARD}/location/list`,
+      edit: (id) => `${ROOTS.DASHBOARD}/location/${id}/edit`,
+  },
     invoice: {
       root: `${ROOTS.DASHBOARD}/invoice`,
       new: `${ROOTS.DASHBOARD}/invoice/new`,
