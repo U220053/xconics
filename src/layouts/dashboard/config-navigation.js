@@ -146,6 +146,9 @@ export function useNavData() {
     children: [
       
       { title: t('list'), path: paths.dashboard.customer.list },
+      {title:t('premises'), path: paths.dashboard.user.list},
+      {title:t('floor'), path: paths.dashboard.user.list},
+      {title:t('zone'), path: paths.dashboard.user.list},
           
     ],
   },
