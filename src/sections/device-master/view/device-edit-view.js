@@ -55,7 +55,7 @@ export default function DeviceEditView({ id }) {
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
-  // const currentUser = _userList.find((user) => user.id === id);
+
   if (isLoading) {
     return <div>Loading...</div>; // Display a loading indicator
   }
@@ -81,7 +81,7 @@ export default function DeviceEditView({ id }) {
       />
 
       <DeviceNewEditForm
-        currentUser={dataUser}
+        currentDevice={dataUser}
         batchid={batchid}
         client={client}
         productcode={productcode}

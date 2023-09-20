@@ -287,19 +287,19 @@ export default function DeviceListView() {
                       (tab.value === 'inactive' && 'warning') ||
                       (tab.value === 'issued' && 'info') ||
                       (tab.value === 'maintenance' && 'primary') ||
-                      (tab.value === 'breakdown' && 'success') ||
+                      (tab.value === 'breakdown' && 'secondary') ||
                       'default'
                     }
                   >
                     {tab.value === 'all' && tableData.length}
-                    {tab.value === 'active' && tableData.filter((user) => user.status === 1).length}
+                    {tab.value === 'active' && tableData.filter((device) => device.status === 1).length}
                     {tab.value === 'inactive' &&
-                      tableData.filter((user) => user.status === 0).length}
-                    {tab.value === 'issued' && tableData.filter((user) => user.status === 2).length}
+                      tableData.filter((device) => device.status === 0).length}
+                    {tab.value === 'issued' && tableData.filter((device) => device.status === 2).length}
                     {tab.value === 'maintenance' &&
-                      tableData.filter((user) => user.status === 3).length}
+                      tableData.filter((device) => device.status === 3).length}
                     {tab.value === 'breakdown' &&
-                      tableData.filter((user) => user.status === 4).length}
+                      tableData.filter((device) => device.status === 4).length}
                   </Label>
                 }
               />
@@ -436,21 +436,21 @@ function applyFilter({ inputData, comparator, filters }) {
 
   if (name) {
     inputData = inputData.filter(
-      (user) => user.device_qr_code.toLowerCase().indexOf(name.toLowerCase()) !== -1
+      (device) => device.device_qr_code.toLowerCase().indexOf(name.toLowerCase()) !== -1
     );
   }
 
   if (status !== 'all') {
     if (status === 'active') {
-      inputData = inputData.filter((user) => user.status === 1);
+      inputData = inputData.filter((device) => device.status === 1);
     } else if (status === 'inactive') {
-      inputData = inputData.filter((user) => user.status === 0);
+      inputData = inputData.filter((device) => device.status === 0);
     } else if (status === 'issued') {
-      inputData = inputData.filter((user) => user.status === 2);
+      inputData = inputData.filter((device) => device.status === 2);
     } else if (status === 'maintenance') {
-      inputData = inputData.filter((user) => user.status === 3);
+      inputData = inputData.filter((device) => device.status === 3);
     } else {
-      inputData = inputData.filter((user) => user.status === 4);
+      inputData = inputData.filter((device) => device.status === 4);
     }
   }
 
