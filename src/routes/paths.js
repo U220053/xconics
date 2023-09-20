@@ -113,13 +113,13 @@ export const paths = {
       list: `${ROOTS.DASHBOARD}/user/list`,
       edit: (id) => `${ROOTS.DASHBOARD}/user/${id}/edit`,
 
-      permission:`${ROOTS.DASHBOARD}/user/permission`,
-      permissionnew:`${ROOTS.DASHBOARD}/user/permission/new`,
-      permissionedit: (id)=>`${ROOTS.DASHBOARD}/user/permission/${id}/edit`,
+      permission: `${ROOTS.DASHBOARD}/user/permission`,
+      permissionnew: `${ROOTS.DASHBOARD}/user/permission/new`,
+      permissionedit: (id) => `${ROOTS.DASHBOARD}/user/permission/${id}/edit`,
 
-      group:`${ROOTS.DASHBOARD}/user/grouplist`,
-      groupnew:`${ROOTS.DASHBOARD}/user/group/new`,
-      groupedit: (id)=>`${ROOTS.DASHBOARD}/user/group/${id}/edit`,
+      group: `${ROOTS.DASHBOARD}/user/grouplist`,
+      groupnew: `${ROOTS.DASHBOARD}/user/group/new`,
+      groupedit: (id) => `${ROOTS.DASHBOARD}/user/group/${id}/edit`,
 
       cards: `${ROOTS.DASHBOARD}/user/cards`,
       // profile: `${ROOTS.DASHBOARD}/user/list`,
@@ -137,7 +137,7 @@ export const paths = {
       list: `${ROOTS.DASHBOARD}/customer/list`,
       edit: (id) => `${ROOTS.DASHBOARD}/customer/${id}/edit`,
     },
-    client:{
+    client: {
       root: `${ROOTS.DASHBOARD}/client`,
       new: `${ROOTS.DASHBOARD}/client/new`,
       list: `${ROOTS.DASHBOARD}/client/list`,
@@ -152,12 +152,16 @@ export const paths = {
         details: `${ROOTS.DASHBOARD}/product/${MOCK_ID}`,
         edit: `${ROOTS.DASHBOARD}/product/${MOCK_ID}/edit`,
       },
-
-
       masterlist: `${ROOTS.DASHBOARD}/product/masterlist`,
       masternew: `${ROOTS.DASHBOARD}/product/master/new`,
-      
       masteredit: (id) => `${ROOTS.DASHBOARD}/product/master/${id}/edit`,
+    },
+    //location
+    location: {
+      root: `${ROOTS.DASHBOARD}/location`,
+      premiseslist: `${ROOTS.DASHBOARD}/location/premiseslist`,
+      premisesnew: `${ROOTS.DASHBOARD}/location/premises/new`,
+      premisesedit: (id) => `${ROOTS.DASHBOARD}/location/premises/${id}/edit`,
     },
     // productmaster: {
     //   root: `${ROOTS.DASHBOARD}/product/master`,
