@@ -55,15 +55,15 @@ import ExportToExcelDevice from '../device-export-excel';
 // ];
 const STATUS_OPTIONS = [
   { value: 'all', label: 'All' },
-  { label: 'Active', value: 'Active' },
-  { label: 'Inactive', value: 'Inactive' },
-  { label: 'Issued', value: 'Issued' },
-  { label: 'Maintainance', value: 'Maintainance' },
-  { label: 'Breakdown', value: 'Breakdown' },
+  { value: 'active', label: 'Active' },
+  { value: 'inactive', label: 'Inactive' },
+  { value: 'issued', label: 'Issued' },
+  { value: 'maintenance', label: 'Maintenance' },
+  { value: 'breakdown', label: 'Breakdown' },
 ];
 const TABLE_HEAD = [
   { id: 'device_qr_code', label: 'device_QR_Code' },
-  { id: 'product_code', label: 'Product_Code' },
+  { id: 'production_batch_no', label: 'Production_Batch_No' },
   { id: 'mac_id', label: 'MAC_ID' },
   { id: 'activation_date', label: 'Activation_Date' },
   { id: 'status', label: 'Status', width: 150 },
@@ -74,7 +74,7 @@ const defaultFilters = {
   status: 'all',
 };
 
-function DeviceListView() {
+export default function DeviceListView() {
   const table = useTable();
   const settings = useSettingsContext();
   // const [updateTrigger, setUpdateTrigger] = useState(false);
@@ -205,7 +205,7 @@ function DeviceListView() {
     .map((row) => {
       return {
         device_qr_code: row.device_qr_code,
-        product_code: row.product_code.product_code,
+        production_batch_no: row.production_batch_no,
         mac_id: row.mac_id,
         activation_date: row.activation_date,
         status: row.status,
@@ -287,7 +287,7 @@ function DeviceListView() {
                       (tab.value === 'inactive' && 'warning') ||
                       (tab.value === 'issued' && 'info') ||
                       (tab.value === 'maintenance' && 'primary') ||
-                      (tab.value === 'breakdown' && 'danger') ||
+                      (tab.value === 'breakdown' && 'success') ||
                       'default'
                     }
                   >
@@ -436,26 +436,23 @@ function applyFilter({ inputData, comparator, filters }) {
 
   if (name) {
     inputData = inputData.filter(
-      (user) => user.user_group_name.toLowerCase().indexOf(name.toLowerCase()) !== -1
+      (user) => user.device_qr_code.toLowerCase().indexOf(name.toLowerCase()) !== -1
     );
   }
 
   if (status !== 'all') {
-    let statusMapping = {
-      Inactive: 0,
-      Active: 1,
-      Issued: 2,
-      Maintenance: 3,
-      Breakdown: 4,
-    };
-
-    let filterStatus = statusMapping[status];
-
-    if (filterStatus !== undefined) {
-      inputData = inputData.filter((user) => user.status === filterStatus);
+    if (status === 'active') {
+      inputData = inputData.filter((user) => user.status === 1);
+    } else if (status === 'inactive') {
+      inputData = inputData.filter((user) => user.status === 0);
+    } else if (status === 'issued') {
+      inputData = inputData.filter((user) => user.status === 2);
+    } else if (status === 'maintenance') {
+      inputData = inputData.filter((user) => user.status === 3);
+    } else {
+      inputData = inputData.filter((user) => user.status === 4);
     }
   }
 
   return inputData;
 }
-export default DeviceListView;

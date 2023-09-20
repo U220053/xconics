@@ -15,7 +15,7 @@ export default function DeviceEditView({ id }) {
   const [dataUser, setDataUser] = useState(null);
   const [batchid, setBatchid] = useState([]);
   const [client, setClient] = useState([]);
-  const [productcode,setProductcode] = useState([]);
+  const [productcode, setProductcode] = useState([]);
   const [isLoading, setIsLoading] = useState(true); // Add a loading state
   useEffect(() => {
     async function fetchData() {
@@ -28,8 +28,8 @@ export default function DeviceEditView({ id }) {
         const productresponse = await axios.get('api/product');
 
         const newdata33 = JSON.parse(JSON.stringify(productresponse.data.data));
-        const newproductdata= newdata33.map((item) => {
-          return { id: item._id,product_code: item.product_code };
+        const newproductdata = newdata33.map((item) => {
+          return { id: item._id, product_code: item.product_code };
         });
         setProductcode(newproductdata);
 
@@ -38,7 +38,8 @@ export default function DeviceEditView({ id }) {
           return { id: items._id, company_name: items.company_name };
         });
         setClient(newclientdata);
-
+        console.log(newclientdata);
+        
         const newdata = JSON.parse(JSON.stringify(batchresponse.data.data));
         const newbatchData = newdata.map((item) => {
           return { id: item._id, batch_id: item.batch_id };
@@ -79,11 +80,19 @@ export default function DeviceEditView({ id }) {
         }}
       />
 
-      <DeviceNewEditForm currentUser={dataUser} batchid={batchid} client={client} productcode={productcode}/>
+      <DeviceNewEditForm
+        currentUser={dataUser}
+        batchid={batchid}
+        client={client}
+        productcode={productcode}
+      />
     </Container>
   );
 }
 
 DeviceEditView.propTypes = {
   id: PropTypes.string,
+  batchid: PropTypes.array,
+  client: PropTypes.array,
+  productcode: PropTypes.array,
 };

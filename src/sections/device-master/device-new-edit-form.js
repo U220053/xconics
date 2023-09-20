@@ -45,19 +45,38 @@ export default function DeviceNewEditForm({ currentUser, batchid, client, produc
     api_cloud_url: Yup.string().required('API_Cloud_URL is required'),
     redirect_url: Yup.string().required('Redirect_URL is required'),
     client: Yup.string().required('Client is required'),
-    status: Yup.string().required('Status is required'),
+    // status: Yup.string().required('Status is required'),
   });
 
-  const defaultValues = useMemo(() => {
-    const statusMapping = {
-      0: 'Inactive',
-      1: 'Active',
-      2: 'Issued',
-      3: 'Maintenance',
-      4: 'Breakdown',
-    };
+  // const defaultValues = useMemo(() => {
+  //   const statusMapping = {
+  //     0: 'Inactive',
+  //     1: 'Active',
+  //     2: 'Issued',
+  //     3: 'Maintenance',
+  //     4: 'Breakdown',
+  //   };
 
-    return {
+  //   return {
+  //     device_qr_code: currentUser?.device_qr_code || '',
+  //     product_code: currentUser?.product_code || '',
+  //     production_batch_no: currentUser?.production_batch_no || '',
+  //     mac_id: currentUser?.mac_id || '',
+  //     imei_no: currentUser?.imei_no || '',
+  //     qc_passed: currentUser?.qc_passed || '',
+  //     qc_ledger_no: currentUser?.qc_ledger_no || '',
+  //     qc_sub_ledger_no: currentUser?.qc_sub_ledger_no || '',
+  //     activation_code: currentUser?.activation_code || '',
+  //     activation_date: currentUser?.activation_date || new Date(),
+  //     api_cloud_url: currentUser?.api_cloud_url || '',
+  //     redirect_url: currentUser?.redirect_url || '',
+  //     client: currentUser?.client || '',
+  //     status: currentUser?.status || 1,
+  //   };
+  // }, [currentUser]);
+
+  const defaultValues = useMemo(
+    () => ({
       device_qr_code: currentUser?.device_qr_code || '',
       product_code: currentUser?.product_code || '',
       production_batch_no: currentUser?.production_batch_no || '',
@@ -71,9 +90,10 @@ export default function DeviceNewEditForm({ currentUser, batchid, client, produc
       api_cloud_url: currentUser?.api_cloud_url || '',
       redirect_url: currentUser?.redirect_url || '',
       client: currentUser?.client || '',
-      status: statusMapping[currentUser?.status] || 0,
-    };
-  }, [currentUser]);
+      status: currentUser?.status || '',
+    }),
+    [currentUser]
+  );
 
   const methods = useForm({
     resolver: yupResolver(NewUserSchema),
@@ -91,7 +111,7 @@ export default function DeviceNewEditForm({ currentUser, batchid, client, produc
   const [user, setUser] = useState(false);
   useEffect(() => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    console.log(currentUser?._id);
+    console.log(currentUser);
     if (currentUser?._id) setUser(true);
     else setUser(false);
     // setValue('name', currentUser?.user_group_name || '');
@@ -102,15 +122,15 @@ export default function DeviceNewEditForm({ currentUser, batchid, client, produc
 
   const onSubmit = handleSubmit(async (data) => {
     try {
-      const statusMapping = {
-        Active: 1,
-        Inactive: 0,
-        Issued: 2,
-        Maintenance: 3,
-        Breakdown: 4,
-      };
-      console.log(data);
-      const status = statusMapping[data.status] || 0;
+      // const statusMapping = {
+      //   Active: 1,
+      //   Inactive: 0,
+      //   Issued: 2,
+      //   Maintenance: 3,
+      //   Breakdown: 4,
+      // };
+      // console.log(data);
+      // const status = statusMapping[data.status] || 0;
 
       const newData = {
         device_qr_code: data.device_qr_code,
@@ -126,9 +146,10 @@ export default function DeviceNewEditForm({ currentUser, batchid, client, produc
         api_cloud_url: data.api_cloud_url,
         redirect_url: data.redirect_url,
         client: data.client,
-        status: status,
+        status: data.status,
       };
 
+      console.log('newdata', newData);
       if (!user) {
         await axios.post('/api/product/device/create', newData);
       } else {
@@ -145,10 +166,10 @@ export default function DeviceNewEditForm({ currentUser, batchid, client, produc
   });
 
   const statuses = [
-    { label: 'Active', value: 1 },
+    { label: 'Active', value: 1},
     { label: 'Inactive', value: 0 },
     { label: 'Issued', value: 2 },
-    { label: 'Maintainance', value: 3 },
+    { label: 'Maintenance', value: 3 },
     { label: 'Breakdown', value: 4 },
   ];
 
@@ -247,7 +268,7 @@ export default function DeviceNewEditForm({ currentUser, batchid, client, produc
               label="Status"
               PaperPropsSx={{ textTransform: 'capitalize' }}
               // defaultValue={currentUser?.status || 1} // Set the value based on your condition
-              defaultValue={[1, 0, 2, 3, 4].includes(currentUser?.status) ? currentUser?.status : 1}
+              // defaultValue={[1, 0, 2, 3, 4].includes(currentUser?.status) ? currentUser?.status : 1}
             >
               {statuses.map((option) => (
                 <MenuItem key={option.value} value={option.value}>

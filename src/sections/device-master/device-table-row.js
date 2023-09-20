@@ -27,9 +27,10 @@ import { ConfirmDialog } from 'src/components/custom-dialog';
 
 // eslint-disable-next-line react/prop-types
 export default function DeviceTableRow({ row, selected, onEditRow, onSelectRow, onDeleteRow }) {
-  console.log(row);
+  // console.log("row", row);
 
-  const { device_qr_code, product_code, mac_id, activation_date, status } = row;
+  const { device_qr_code, production_batch_no, mac_id, activation_date, status } = row;
+  console.log("production_batch_no", production_batch_no);
 
   const confirm = useBoolean();
 
@@ -42,7 +43,7 @@ export default function DeviceTableRow({ row, selected, onEditRow, onSelectRow, 
         // const response = await axios.get('api/user/usergroups');
         // // const data = await response.json();
 
-        console.log(row);
+        // console.log(row);
       } catch (error) {
         console.error('Error fetching API data:', error);
       }
@@ -58,10 +59,37 @@ export default function DeviceTableRow({ row, selected, onEditRow, onSelectRow, 
           <Checkbox checked={selected} onClick={onSelectRow} />
         </TableCell>
         <TableCell sx={{ whiteSpace: 'nowrap' }}>{device_qr_code}</TableCell>
-        <TableCell sx={{ whiteSpace: 'nowrap' }}>{product_code.product_code}</TableCell>
+        <TableCell sx={{ whiteSpace: 'nowrap' }}>{production_batch_no?.batch_id || 'NA'}</TableCell>
         <TableCell sx={{ whiteSpace: 'nowrap' }}>{mac_id}</TableCell>
         <TableCell sx={{ whiteSpace: 'nowrap' }}>{activation_date}</TableCell>
         <TableCell>
+          <Label
+            variant="soft"
+            color={
+              (status === 'active' && 'warning') ||
+              (status === 'inactive' && 'success') ||
+              (status === 'issued' && 'success') ||
+              (status === 'maintenance' && 'warning') ||
+              (status === 'breakdown' && 'warning') ||
+              'default'
+            }
+          >
+            {(() => {
+              if (status === 1) {
+                return 'active';
+              } else if(status ===0){
+                return 'inactive';
+              } else if(status === 2){
+                return 'issued';
+              } else if(status === 3){
+                return 'maintenance';
+              } else{
+                return 'breakdown';
+              }
+            })()}
+          </Label>
+        </TableCell>
+        {/* <TableCell>
           <Label
             variant="soft"
             color={
@@ -84,7 +112,7 @@ export default function DeviceTableRow({ row, selected, onEditRow, onSelectRow, 
               }[status]
             }
           </Label>
-        </TableCell>
+        </TableCell> */}
 
         <TableCell align="right" sx={{ px: 1, whiteSpace: 'nowrap' }}>
           <IconButton color={popover.open ? 'inherit' : 'default'} onClick={popover.onOpen}>

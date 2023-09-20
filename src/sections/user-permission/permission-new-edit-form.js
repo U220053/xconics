@@ -104,7 +104,7 @@ export default function PermissionNewEditForm({ currentGroup, userPer }) {
     if (currentGroup?.screen_name) setuserPer(true);
     else setuserPer(false);
 
-    console.log(currentGroup);
+    console.log("currentGroup", currentGroup);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

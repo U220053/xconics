@@ -41,7 +41,6 @@ export default function DeviceCreateView() {
         return { id: item._id, batch_id: item.batch_id }
       });
       setBatchid(newbatchData);
-
       setIsLoading(false);
     }catch(e){
       console.log('Error', e);
