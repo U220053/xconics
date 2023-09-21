@@ -33,62 +33,35 @@ import axios from 'src/utils/axios';
 
 // ----------------------------------------------------------------------
 
-export default function LocationNewEditForm({ currentLocation,client_manager_ref }) {
+export default function LocationNewEditForm({ currentLocation, client_manager_ref }) {
   const router = useRouter();
   const [formData, setFormData] = useState({});
   const [active, setActive] = useState(
     currentLocation ? new Date(currentLocation?.activation_date) : new Date()
   );
-  
+
   const [isLoading, setIsLoading] = useState(true);
   const { enqueueSnackbar } = useSnackbar();
 
   const NewUserSchema = Yup.object().shape({
-    // name: Yup.string(),
-    // PersonName: Yup.string(),
-    // PhoneNo: Yup.number(),
-    // ContactEmail: Yup.string().email(),
-    // address: Yup.string(),
-    // City: Yup.string(),
-    // State: Yup.string(),
-    // Pin: Yup.number().min(6),
-    // AdminEmail: Yup.string().email(),
-    // AdminPhone: Yup.number(),
-
-    // ActivationDate: Yup.mixed().nullable(),
-    // TermExpDate: Yup.string(),
-
-    // status: Yup.number(),
     locationName: Yup.string(),
-locationType: Yup.string(),
-lat: Yup.string(),
-lang: Yup.string(),
-activationDate: Yup.mixed().nullable(),
-client: Yup.string(),
-status: Yup.string(),
-
+    locationType: Yup.string(),
+    lat: Yup.string(),
+    lang: Yup.string(),
+    activationDate: Yup.mixed().nullable(),
+    client: Yup.string(),
+    status: Yup.string(),
   });
 
   const defaultValues = useMemo(
     () => ({
-    //   name: currentLocation?.company_name || '',
-    //   PersonName: currentLocation?.contact_person_name || '',
-    //   PhoneNo: currentLocation?.contact_phone_number || '',
-    //   ContactEmail: currentLocation?.contact_email || '',
-    //   address: currentLocation?.address || '',
-    //   City: currentLocation?.city || '',
-    //   State: currentLocation?.state || '',
-    //   Pin: currentLocation?.pin || '',
-    //   AdminEmail: currentLocation?.admin_email || '',
-    //   AdminPhone: currentLocation?.admin_phone || '',
-    locationName: currentLocation?.location_name || '',
-    locationType: currentLocation?.location_type || '',
-    lat: currentLocation?.lat || '',
-    lang: currentLocation?.lang || '',
-    activation_date: currentLocation?.activation_date || new Date(),
-    client: currentLocation?.client?._id || '',
-    status: currentLocation?.status || '',
-    
+      locationName: currentLocation?.location_name || '',
+      locationType: currentLocation?.location_type || '',
+      lat: currentLocation?.lat || '',
+      lang: currentLocation?.lang || '',
+      activation_date: currentLocation?.activation_date || new Date(),
+      client: currentLocation?.client?._id || '',
+      status: currentLocation?.status || '',
     }),
     [currentLocation]
   );
@@ -101,13 +74,13 @@ status: Yup.string(),
   const {
     reset,
     watch,
-    
+
     handleSubmit,
     formState: { isSubmitting },
   } = methods;
 
   const [location, setLocation] = useState(false);
- 
+
   useEffect(() => {
     if (currentLocation?._id) setLocation(true);
     else setLocation(false);
@@ -120,26 +93,14 @@ status: Yup.string(),
   const onSubmit = handleSubmit(async (data) => {
     try {
       const newData = {
-        // company_name: data.name,
+        location_name: data.locationName,
+        location_type: data.locationType,
+        lat: data.lat,
+        lang: data.lang,
 
-        // contact_person_name: data.PersonName,
-        // contact_phone_number: data.PhoneNo,
-        // contact_email: data.ContactEmail,
-        // address: data.address,
-        // city: data.City,
-        // state: data.State,
-        // pin: data.Pin,
-        // admin_email: data.AdminEmail,
-        // admin_phone: data.AdminPhone,
-
-       location_name:data.locationName,
-      location_type:data.locationType,
-      lat:data.lat,
-       lang:data.lang,
-// activation_date:data.activationDate,
-activation_date:active,
-client:data.client,
-status:data.status,
+        activation_date: active,
+        client: data.client,
+        status: data.status,
 
         data,
       };
@@ -195,14 +156,14 @@ status:data.status,
                 sm: 'repeat(2, 1fr)',
               }}
             >
-               
               <RHFTextField name="locationName" label="Location Name" />
-             
+
               <RHFSelect
                 fullWidth
-                name="locationType" label="Location Type"
+                name="locationType"
+                label="Location Type"
                 PaperPropsSx={{ textTransform: 'capitalize' }}
-                defaultValue={currentLocation?.status || 1} 
+                defaultValue={currentLocation?.status || 1}
               >
                 {loc_type.map((option) => (
                   <MenuItem key={option.value} value={option.value}>
@@ -213,25 +174,12 @@ status:data.status,
               <RHFTextField name="lat" label="Latitude" />
               <RHFTextField name="lang" label="Longitude" />
               <DatePicker
-              // views={['day', 'month', 'year']}
-              label="Activation_Date"
-              value={active}
-              format="dd/MM/yyyy"
-              onChange={(newValue) => {
-                setActive(newValue);
-              }}
-              slotProps={{
-                textField: {
-                  fullWidth: true,
-                  margin: 'normal',
-                },
-              }}
-            />
-              {/* <DatePicker
-              name="activationDate"
-                label="Activation Date"
+                // views={['day', 'month', 'year']}
+                label="Activation_Date"
+                value={active}
+                format="dd/MM/yyyy"
                 onChange={(newValue) => {
-                   setActive(newValue);
+                  setActive(newValue);
                 }}
                 slotProps={{
                   textField: {
@@ -239,13 +187,12 @@ status:data.status,
                     margin: 'normal',
                   },
                 }}
-              /> */}
-              {/* <RHFTextField name="client" label="Client" /> */}
-             
+              />
+
               <RHFSelect
                 fullWidth
-                name="client" label="Client"
-               
+                name="client"
+                label="Client"
                 PaperPropsSx={{ textTransform: 'capitalize' }}
               >
                 {client_manager_ref.map((option) => (
@@ -254,15 +201,13 @@ status:data.status,
                   </MenuItem>
                 ))}
               </RHFSelect>
-             
-              
 
               <RHFSelect
                 fullWidth
                 name="status"
                 label="status"
                 PaperPropsSx={{ textTransform: 'capitalize' }}
-                defaultValue={currentLocation?.status || 1} 
+                defaultValue={currentLocation?.status || 1}
               >
                 {statuses.map((option) => (
                   <MenuItem key={option.value} value={option.value}>
