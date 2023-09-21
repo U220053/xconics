@@ -128,7 +128,7 @@ export default function ZoneListView() {
     [table]
   );
   async function deletegroup(id) {
-    await axios.post(`api/user/permission/delete/${id}`);
+    await axios.post(`api/location/zone/delete/${id}`);
   }
   /// have to call API
   const handleDeleteRow = useCallback(
