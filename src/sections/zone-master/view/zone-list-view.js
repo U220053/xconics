@@ -55,14 +55,14 @@ const STATUS_OPTIONS = [
 ];
 
 const TABLE_HEAD = [
-  { id: 'user_group_ref', label: 'Group Name' },
-  { id: 'screen_name', label: 'Screen Name', width: 180 },
-  { id: 'add', label: 'Add', width: 220 },
-  { id: 'edit', label: 'Edit', width: 180 },
-  { id: 'delete', label: 'Delete', width: 180 },
-  { id: 'export', label: 'Export', width: 180 },
-  { id: 'print', label: 'Print', width: 180 },
-  { id: 'enable', label: 'Enable', width: 180 },
+  { id: 'area_name', label: 'Area Name' },
+  { id: 'svg_tag', label: 'Svg Tag', width: 180 },
+  { id: 'floor', label: 'Floor id', width: 220 },
+  { id: 'zone_type', label: 'Zone Type', width: 180 },
+  { id: 'zone_default_color_code', label: 'Zone Default Color Code', width: 180 },
+  { id: 'zone_alert_color_code', label: 'Zone Alert Color code', width: 180 },
+  { id: 'zone_gateway', label: 'Zone Gateway', width: 180 },
+  { id: 'zone_remarks', label: 'Zone Remarks', width: 180 },
   { id: 'status', label: 'Status', width: 100 },
   { id: '', width: 88 },
 ];
@@ -230,7 +230,7 @@ export default function ZoneListView() {
       head: [labels],
       body: tableData,
     });
-    doc.save('table-permission.pdf');
+    doc.save('zone_list.pdf');
   };
   // ending of export to pdf
 
@@ -251,7 +251,7 @@ export default function ZoneListView() {
               variant="contained"
               startIcon={<Iconify icon="mingcute:add-line" />}
             >
-              New Permission
+              New Zone
             </Button>
           }
           sx={{
@@ -259,7 +259,7 @@ export default function ZoneListView() {
           }}
         />
         <div>
-          <ExportToExcelZone data={dataFiltered} filename="Permission_Data" />
+          <ExportToExcelZone data={dataFiltered} filename="Zone list" />
           <Button
             onClick={exportToPDF}
             style={divStyle}
