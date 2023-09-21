@@ -55,10 +55,10 @@ const STATUS_OPTIONS = [
 ];
 
 const TABLE_HEAD = [
-  { id: 'area_name', label: 'Area Name' },
-  { id: 'svg_tag', label: 'Svg Tag', width: 180 },
-  { id: 'floor', label: 'Floor id', width: 220 },
-  { id: 'zone_type', label: 'Zone Type', width: 180 },
+  { id: 'area_name', label: 'Area Name', width: 180 },
+  { id: 'svg_tag', label: 'Svg Tag', width: 130 },
+  { id: 'floor', label: 'Floor Id', width: 150 },
+  { id: 'zone_type', label: 'Zone Type', width: 150 },
   { id: 'zone_default_color_code', label: 'Zone Default Color Code', width: 180 },
   { id: 'zone_alert_color_code', label: 'Zone Alert Color code', width: 180 },
   { id: 'zone_gateway', label: 'Zone Gateway', width: 180 },
@@ -308,12 +308,12 @@ export default function ZoneListView() {
               />
             ))}
           </Tabs>
-          {/* <ZoneTableToolbar
+          <ZoneTableToolbar
             filters={filters}
             onFilters={handleFilters}
             //
             roleOptions={_roles}
-          /> */}
+          />
           {canReset && (
             <ZoneTableFiltersResult
               filters={filters}
