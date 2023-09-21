@@ -60,6 +60,7 @@ export default function PremisesNewEditForm({ currentPremises, userLoc }) {
     premises_type: Yup.string().required('premises_type is required'),
     lat: Yup.string().required('lat is required'),
     lang: Yup.string().required('lang is required'),
+    svg_tag: Yup.string().required('svg_tag is required'),
     activation_date: Yup.mixed().nullable(),
     location: Yup.string().required('location is required'),
     status: Yup.number().required('Status is required'),
@@ -72,6 +73,7 @@ export default function PremisesNewEditForm({ currentPremises, userLoc }) {
       status: currentPremises?.status || 1,
       lat: currentPremises?.lat || '',
       lang: currentPremises?.lang || '',
+      svg_tag: currentPremises?.svg_tag || '',
       activation_date: currentPremises?.activation_date || new Date(),
       location: currentPremises?.location || '',
     }),
@@ -115,6 +117,7 @@ export default function PremisesNewEditForm({ currentPremises, userLoc }) {
         premises_type: data.premises_type,
         lat: data.lat,
         lang: data.lang,
+        svg_tag: data.svg_tag,
         activation_date: active,
         location: data.location,
         status: data.status,
@@ -180,6 +183,7 @@ export default function PremisesNewEditForm({ currentPremises, userLoc }) {
             </RHFSelect>
             <RHFTextField name="lat" label="Latitude" />
             <RHFTextField name="lang" label="lang" />
+            <RHFTextField name="svg_tag" label="svg_tag" />
             <RHFSelect
               fullWidth
               name="location"

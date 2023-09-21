@@ -27,7 +27,7 @@ import { ConfirmDialog } from 'src/components/custom-dialog';
 // eslint-disable-next-line react/prop-types
 export default function PremisesTableRow({ row, selected, onEditRow, onSelectRow, onDeleteRow }) {
   console.log(row);
-  const { premises_name, lat, lang, premises_type, activation_date, location, status } = row
+  const { premises_name, lat, lang, svg_tag, premises_type, activation_date, location, status } = row
 
   const confirm = useBoolean()
 
@@ -75,6 +75,7 @@ export default function PremisesTableRow({ row, selected, onEditRow, onSelectRow
         <TableCell sx={{ whiteSpace: 'nowrap' }}>{premises_type}</TableCell>
         <TableCell sx={{ whiteSpace: 'nowrap' }}>{lat}</TableCell>
         <TableCell sx={{ whiteSpace: 'nowrap' }}>{lang}</TableCell>
+        <TableCell sx={{ whiteSpace: 'nowrap' }}>{svg_tag}</TableCell>
         <TableCell sx={{ whiteSpace: 'nowrap' }}>{activation_date}</TableCell>
         <TableCell sx={{ whiteSpace: 'nowrap' }}>{location.location_name}</TableCell>
         <TableCell>
