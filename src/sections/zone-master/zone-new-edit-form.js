@@ -80,7 +80,7 @@ export default function ZoneNewEditForm({ currentZone, userPer }) {
       // enable: currentGroup?.enable_permission || false,
       area_name: currentZone?.area_name || '',
       svg_tag: currentZone?.svg_tag || '',
-      floor: currentZone?.floor || '',
+      floor: currentZone?.floor._id || '',
       zone_type: currentZone?.zone_type || '',
       zone_default_color_code: currentZone?.zone_default_color_code || '',
       zone_alert_color_code: currentZone?.zone_alert_color_code || '',
@@ -148,7 +148,7 @@ export default function ZoneNewEditForm({ currentZone, userPer }) {
       if (!zone) {
         response = await axios.post('/api/location/zone/create', newData);
       } else {
-        response = await axios.post(`/api/location/zone/update/${currentZone.area_name}`, newData);
+        response = await axios.post(`/api/location/zone/update/${currentZone._id}`, newData);
       }
       await new Promise((resolve) => setTimeout(resolve, 500));
       reset();
@@ -197,8 +197,8 @@ export default function ZoneNewEditForm({ currentZone, userPer }) {
             <RHFTextField name="svg_tag" label="SVG Tag" />
             <RHFSelect
               fullWidth
-              name="floor_name"
-              label="floor_name"
+              name="floor"
+              label="floor"
               PaperPropsSx={{ textTransform: 'capitalize' }}
             >
               {userPer.map((option) => (

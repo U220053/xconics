@@ -68,7 +68,7 @@ export default function ZoneEditView({ id }) {
           mb: { xs: 3, md: 5 },
         }}
       />
-      <ZoneNewEditForm currentZone={dataUser} userPer={userPer}/>
+      <ZoneNewEditForm currentZone={dataUser} userPer={userPer} />
     </Container>
   );
 }
