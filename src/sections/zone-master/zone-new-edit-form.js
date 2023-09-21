@@ -44,41 +44,55 @@ import FormProvider, {
 } from 'src/components/hook-form'
 import axios from 'src/utils/axios'
 import { Select } from '@mui/base'
-
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 // ----------------------------------------------------------------------
 
-export default function ZoneNewEditForm({ currentGroup, userPer }) {
+export default function ZoneNewEditForm({ currentZone  }) {
 
   const router = useRouter()
   const [formData, setFormData] = useState({});
   const { enqueueSnackbar } = useSnackbar()
-
+  const [active, setActive] = useState(
+    currentZone ? new Date(currentZone?.activation_date) : new Date()
+  );
   const NewUserSchema = Yup.object().shape({
-    name: Yup.string().required('Group name is required'),
-    add: Yup.boolean(),
-    edit: Yup.boolean(),
-    delete: Yup.boolean(),
-    export: Yup.boolean(),
-    print: Yup.boolean(),
-    enable: Yup.boolean(),
-    groupref: Yup.string(),
-    status: Yup.number().required('Status is required'),
-  })
-
+    area_name: Yup.string(),
+    svg_tag: Yup.string(),
+    floor: Yup.string(),
+    zone_type: Yup.string(),
+    zone_default_color_code: Yup.string(),
+    zone_alert_color_code: Yup.string(),
+    zone_gateway: Yup.string(),
+    zone_remarks: Yup.string(),
+    activation_date: Yup.mixed().nullable(),
+    status: Yup.string(),
+  });
+  
   const defaultValues = useMemo(
     () => ({
-      name: currentGroup?.screen_name || '',
-      groupref: currentGroup?.user_group_ref || "",
-      status: currentGroup?.status || 1,
-      add: currentGroup?.add_permission || false,
-      delete: currentGroup?.delete_permission || false,
-      edit: currentGroup?.edit_permission || false,
-      export: currentGroup?.export_permission || false,
-      print: currentGroup?.print_permission || false,
-      enable: currentGroup?.enable_permission || false,
+      // name: currentGroup?.screen_name || '',
+      // groupref: currentGroup?.user_group_ref || "",
+      // status: currentGroup?.status || 1,
+      // add: currentGroup?.add_permission || false,
+      // delete: currentGroup?.delete_permission || false,
+      // edit: currentGroup?.edit_permission || false,
+      // export: currentGroup?.export_permission || false,
+      // print: currentGroup?.print_permission || false,
+      // enable: currentGroup?.enable_permission || false,
+      area_name: currentZone?.area_name || "",
+      svg_tag: currentZone?.svg_tag || "",
+      floor: currentZone?.floor || "",
+      zone_type: currentZone?.zone_type || "",
+      zone_default_color_code: currentZone?.zone_default_color_code || '',
+      zone_alert_color_code: currentZone?.zone_alert_color_code || '',
+      zone_gateway: currentZone?.zone_gateway || '',
+      zone_remarks: currentZone?.zone_remarks || '',
+      activation_date: currentZone?.activation_date || new Date(),
+      status: currentZone?.status || '',
     }),
-    [currentGroup]
-  )
+    [currentZone]
+  );
+  
 
   const methods = useForm({
     resolver: yupResolver(NewUserSchema),
@@ -94,19 +108,19 @@ export default function ZoneNewEditForm({ currentGroup, userPer }) {
     formState: { isSubmitting },
   } = methods
 
-  const [group, setuserPer] = useState(false)
+   const [zone, setuserPer] = useState(false)
   const [dropdownData, setdropdownData] = useState([]);
 
 
   const values = watch()
 
-  useEffect(() => {
-    if (currentGroup?.screen_name) setuserPer(true);
-    else setuserPer(false);
+  // useEffect(() => {
+  //   if (currentGroup?.screen_name) setuserPer(true);
+  //   else setuserPer(false);
 
-    console.log(currentGroup);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  //   console.log(currentGroup);
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
 
   const onFormChange = (data) => {
     setFormData(data);
@@ -115,28 +129,35 @@ export default function ZoneNewEditForm({ currentGroup, userPer }) {
   const onSubmit = handleSubmit(async (data) => {
     try {
       const newData = {
-        screen_name: data.name,
-        user_group_ref: data.groupref,
-        status: data.status,
-        add_permission: data.add,
-        delete_permission: data.delete,
-        edit_permission: data.edit,
-        export_permission: data.export,
-        print_permission: data.print,
-        enable_permission: data.enable
+       
+
+
+
+
+        area_name:data.area_name,
+ svg_tag:data.svg_tag,
+ floor:data.floor,
+ zone_type:data.zone_type,
+ zone_default_color_code:data.zone_default_color_code,
+ zone_alert_color_code:data.zone_alert_color_code,
+ zone_gateway:data.zone_gateway,
+ zone_remarks:data.zone_remarks,
+//  activation_date:data.activation_date,
+activation_date: active,
+status :data.status,
       }
       let response;
-      if (!group) {
-        response = await axios.post('/api/user/permission/create', newData);
+      if (!zone) {
+        response = await axios.post('/api/location/zone/create', newData);
       } else {
-        response = await axios.post(`/api/user/permission/update/${currentGroup._id}`, newData);
+        response = await axios.post(`/api/location/zone/update/${currentZone._id}`, newData);
       }
       await new Promise((resolve) => setTimeout(resolve, 500));
       reset();
-      enqueueSnackbar(currentGroup ? 'Update success!' : 'Create success!')
+      enqueueSnackbar(currentZone ? 'Update success!' : 'Create success!')
       await new Promise((resolve) => setTimeout(resolve, 500));
-      console.log(response);
-      router.push(paths.dashboard.user.permission);
+     
+      router.push(paths.dashboard.location.zonelist);
     } catch (error) {
       console.warn(error);
     }
@@ -145,6 +166,14 @@ export default function ZoneNewEditForm({ currentGroup, userPer }) {
 
   const statuses = [{ label: 'Active', value: 1 }
     , { label: "Inactive", value: 0 }]
+
+    // " Hazardous" , "Danger", "Restricted", "Safe"
+
+const ztype = [{ label: 'Hazardous', value: 'Hazardous' }
+    , { label: "Danger", value: 'Danger' }
+  , { label: "Restricted", value: 'Restricted' },
+  { label: "Safe", value: 'Safe' }
+]
 
   const handleLogData = () => {
     console.log('Form Data:', formData);
@@ -163,21 +192,42 @@ export default function ZoneNewEditForm({ currentGroup, userPer }) {
               sm: 'repeat(2, 1fr)',
             }}
           >
-            <RHFTextField name="name" label="Screen Name" />
-
+            <RHFTextField name="area_name" label="Area Name" />
+            <RHFTextField name="svg_tag" label="SVG Tag" />
+            <RHFTextField name="floor" label="Floor ID" />
+           
             <RHFSelect
-              // helperText= "Select Group"
-              // fullWidth
-              name="groupref"
-              label="Select Group"
-              // InputLabelProps={{ shrink: true }}
-              PaperPropsSx={{ textTransform: 'capitalize' }}
-              defaultValue={currentGroup?.user_group_ref || ""}
-            >
-              {
-                userPer.map((option) => <MenuItem key={option.id} value={option.id}>{option.group_name}</MenuItem>)
-              }
-            </RHFSelect>
+                fullWidth
+                name="zone_type" label="Zone Type"
+                PaperPropsSx={{ textTransform: 'capitalize' }}
+               
+              >
+                {ztype.map((option) => (
+                  <MenuItem key={option.value} value={option.value}>
+                    {option.label}
+                  </MenuItem>
+                ))}
+              </RHFSelect>
+            <RHFTextField name="zone_defaut_color_code" label="zone_defaut_color_code" />
+            <RHFTextField name="zone_alert_color_code" label="Zone_alert_color_code" />
+            <RHFTextField name="zone_gateway" label="Zone Gateway" />
+            <RHFTextField name="zone_remark" label="Zone remark" />
+            
+            <DatePicker
+              // views={['day', 'month', 'year']}
+              label="activation_date"
+              value={active}
+              format="dd/MM/yyyy"
+              onChange={(newValue) => {
+                setActive(newValue);
+              }}
+              slotProps={{
+                textField: {
+                  fullWidth: true,
+                  margin: 'normal',
+                },
+              }}
+            />
 
             <div style={{ display: "flex", flexDirection: "column"}}>
               <RHFSelect
@@ -185,7 +235,7 @@ export default function ZoneNewEditForm({ currentGroup, userPer }) {
                 name="status"
                 label="Status"
                 PaperPropsSx={{ textTransform: 'capitalize' }}
-                defaultValue={currentGroup?.status || 1} // Set the value based on your condition
+                defaultValue={currentZone?.status || 1} // Set the value based on your condition
               >
                 {statuses.map((option) => (
                   <MenuItem key={option.value} value={option.value}>
@@ -194,20 +244,15 @@ export default function ZoneNewEditForm({ currentGroup, userPer }) {
                 ))}
               </RHFSelect>
 
-              <div style={{paddingTop: "20px", paddingLeft: "20px"}}>
-                <RHFCheckbox name="add" label="Add Permission" />
-                <RHFCheckbox name="edit" label="Edit Permission" />
-                <RHFCheckbox name="delete" label="Delete Permission" />
-                <RHFCheckbox name="export" label="Export Permission" />
-                <RHFCheckbox name="print" label="Print Permission" />
-                <RHFCheckbox name="enable" label="Enable Permission" />
-              </div>
+              
+               
+              
             </div>
           </Box>
 
           <Stack alignItems="flex-end" sx={{ mt: 3 }}>
             <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
-              {!currentGroup ? 'Create New Permission' : 'Save Changes'}
+              {!currentZone ? 'Create New Zone' : 'Save Changes'}
             </LoadingButton>
           </Stack>
         </Card>
@@ -217,6 +262,6 @@ export default function ZoneNewEditForm({ currentGroup, userPer }) {
 }
 
 ZoneNewEditForm.propTypes = {
-  currentGroup: PropTypes.object,
+  currentZone: PropTypes.object,
   userPer: PropTypes.object
 }
