@@ -73,7 +73,7 @@ export default function ZoneTableRow({ row, selected, onEditRow, onSelectRow, on
           </TableCell> */}
         <TableCell sx={{ whiteSpace: 'nowrap' }}>{area_name}</TableCell>
         <TableCell sx={{ whiteSpace: 'nowrap' }}>{svg_tag}</TableCell>
-        <TableCell sx={{ whiteSpace: 'nowrap' }}>{floor}</TableCell>
+        <TableCell sx={{ whiteSpace: 'nowrap' }}>{floor.floor_name}</TableCell>
         <TableCell sx={{ whiteSpace: 'nowrap' }}>{zone_type}</TableCell>
         <TableCell sx={{ whiteSpace: 'nowrap' }}>{zone_default_color_code}</TableCell>
         <TableCell sx={{ whiteSpace: 'nowrap' }}>{zone_alert_color_code}</TableCell>
@@ -127,17 +127,6 @@ export default function ZoneTableRow({ row, selected, onEditRow, onSelectRow, on
         >
           <Iconify icon="solar:pen-bold" />
           Edit
-        </MenuItem>
-
-        <MenuItem
-          onClick={() => {
-            onEditRow()
-            popover.onClose()
-          }}
-
-        >
-          <Iconify icon="solar:eye-bold" />
-          AuditTrailView
         </MenuItem>
       </CustomPopover>
 

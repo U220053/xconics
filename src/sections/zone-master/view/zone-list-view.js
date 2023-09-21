@@ -89,7 +89,7 @@ export default function ZoneListView() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await axios.get('api/user/permission');
+        const response = await axios.get('api/location/zone');
         // const data = await response.json();
 
         setisSuccess(response.data.success);
@@ -206,14 +206,14 @@ export default function ZoneListView() {
     .slice(table.page * table.rowsPerPage, table.page * table.rowsPerPage + table.rowsPerPage)
     .map((row) => {
       return {
-        user_group_ref: row.user_group_ref.user_group_name,
-        screen_name: row.screen_name,
-        add: row.add_permission,
-        edit: row.edit_permission,
-        delete: row.delete_permission,
-        export: row.export_permission,
-        print: row.print_permission,
-        enable: row.enable_permission,
+        area_name: row.area_name,
+        svg_tag: row.svg_tag,
+        floor: row.floor.floor_name,
+        zone_type: row.zone_type,
+        zone_default_color_code: row.zone_default_color_code,
+        zone_alert_color_code: row.zone_alert_color_code,
+        zone_gateway: row.zone_gateway,
+        zone_remarks: row.zone_remarks,
         status: row.status,
       };
     });

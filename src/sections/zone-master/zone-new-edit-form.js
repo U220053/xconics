@@ -1,38 +1,38 @@
 /* eslint-disable import/order */
 /* eslint-disable no-unused-vars */
-import PropTypes from 'prop-types'
-import * as Yup from 'yup'
+import PropTypes from 'prop-types';
+import * as Yup from 'yup';
 // eslint-disable-next-line import/no-duplicates
-import { useCallback, useMemo, useState } from 'react'
-import { useForm, Controller } from 'react-hook-form'
-import { yupResolver } from '@hookform/resolvers/yup'
+import { useCallback, useMemo, useState } from 'react';
+import { useForm, Controller } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
 // eslint-disable-next-line import/no-duplicates
-import { useEffect } from 'react'
+import { useEffect } from 'react';
 
 // @mui
 
-import LoadingButton from '@mui/lab/LoadingButton'
-import Box from '@mui/material/Box'
-import Card from '@mui/material/Card'
-import Stack from '@mui/material/Stack'
-import Button from '@mui/material/Button'
-import Switch from '@mui/material/Switch'
-import Grid from '@mui/material/Unstable_Grid2'
-import Typography from '@mui/material/Typography'
-import FormControlLabel from '@mui/material/FormControlLabel'
+import LoadingButton from '@mui/lab/LoadingButton';
+import Box from '@mui/material/Box';
+import Card from '@mui/material/Card';
+import Stack from '@mui/material/Stack';
+import Button from '@mui/material/Button';
+import Switch from '@mui/material/Switch';
+import Grid from '@mui/material/Unstable_Grid2';
+import Typography from '@mui/material/Typography';
+import FormControlLabel from '@mui/material/FormControlLabel';
 // utils
 import MenuItem from '@mui/material/MenuItem';
-import { fData } from 'src/utils/format-number'
+import { fData } from 'src/utils/format-number';
 // routes
-import { paths } from 'src/routes/paths'
-import { useRouter } from 'src/routes/hooks'
+import { paths } from 'src/routes/paths';
+import { useRouter } from 'src/routes/hooks';
 // assets
-import { countries } from 'src/assets/data'
+import { countries } from 'src/assets/data';
 import { Option } from '@mui/base/Option';
 // components
-import Label from 'src/components/label'
-import Iconify from 'src/components/iconify'
-import { useSnackbar } from 'src/components/snackbar'
+import Label from 'src/components/label';
+import Iconify from 'src/components/iconify';
+import { useSnackbar } from 'src/components/snackbar';
 
 import FormProvider, {
   RHFSwitch,
@@ -40,18 +40,17 @@ import FormProvider, {
   RHFSelect,
   RHFUploadAvatar,
   RHFAutocomplete,
-  RHFCheckbox
-} from 'src/components/hook-form'
-import axios from 'src/utils/axios'
-import { Select } from '@mui/base'
+  RHFCheckbox,
+} from 'src/components/hook-form';
+import axios from 'src/utils/axios';
+import { Select } from '@mui/base';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 // ----------------------------------------------------------------------
 
-export default function ZoneNewEditForm({ currentZone  }) {
-
-  const router = useRouter()
+export default function ZoneNewEditForm({ currentZone }) {
+  const router = useRouter();
   const [formData, setFormData] = useState({});
-  const { enqueueSnackbar } = useSnackbar()
+  const { enqueueSnackbar } = useSnackbar();
   const [active, setActive] = useState(
     currentZone ? new Date(currentZone?.activation_date) : new Date()
   );
@@ -67,7 +66,7 @@ export default function ZoneNewEditForm({ currentZone  }) {
     activation_date: Yup.mixed().nullable(),
     status: Yup.string(),
   });
-  
+
   const defaultValues = useMemo(
     () => ({
       // name: currentGroup?.screen_name || '',
@@ -79,10 +78,10 @@ export default function ZoneNewEditForm({ currentZone  }) {
       // export: currentGroup?.export_permission || false,
       // print: currentGroup?.print_permission || false,
       // enable: currentGroup?.enable_permission || false,
-      area_name: currentZone?.area_name || "",
-      svg_tag: currentZone?.svg_tag || "",
-      floor: currentZone?.floor || "",
-      zone_type: currentZone?.zone_type || "",
+      area_name: currentZone?.area_name || '',
+      svg_tag: currentZone?.svg_tag || '',
+      floor: currentZone?.floor || '',
+      zone_type: currentZone?.zone_type || '',
       zone_default_color_code: currentZone?.zone_default_color_code || '',
       zone_alert_color_code: currentZone?.zone_alert_color_code || '',
       zone_gateway: currentZone?.zone_gateway || '',
@@ -92,12 +91,11 @@ export default function ZoneNewEditForm({ currentZone  }) {
     }),
     [currentZone]
   );
-  
 
   const methods = useForm({
     resolver: yupResolver(NewUserSchema),
     defaultValues,
-  })
+  });
 
   const {
     reset,
@@ -106,13 +104,12 @@ export default function ZoneNewEditForm({ currentZone  }) {
     setValue,
     handleSubmit,
     formState: { isSubmitting },
-  } = methods
+  } = methods;
 
-   const [zone, setuserPer] = useState(false)
+  const [zone, setuserPer] = useState(false);
   const [dropdownData, setdropdownData] = useState([]);
 
-
-  const values = watch()
+  const values = watch();
 
   // useEffect(() => {
   //   if (currentGroup?.screen_name) setuserPer(true);
@@ -129,23 +126,18 @@ export default function ZoneNewEditForm({ currentZone  }) {
   const onSubmit = handleSubmit(async (data) => {
     try {
       const newData = {
-       
-
-
-
-
-        area_name:data.area_name,
- svg_tag:data.svg_tag,
- floor:data.floor,
- zone_type:data.zone_type,
- zone_default_color_code:data.zone_default_color_code,
- zone_alert_color_code:data.zone_alert_color_code,
- zone_gateway:data.zone_gateway,
- zone_remarks:data.zone_remarks,
-//  activation_date:data.activation_date,
-activation_date: active,
-status :data.status,
-      }
+        area_name: data.area_name,
+        svg_tag: data.svg_tag,
+        floor: data.floor,
+        zone_type: data.zone_type,
+        zone_default_color_code: data.zone_default_color_code,
+        zone_alert_color_code: data.zone_alert_color_code,
+        zone_gateway: data.zone_gateway,
+        zone_remarks: data.zone_remarks,
+        //  activation_date:data.activation_date,
+        activation_date: active,
+        status: data.status,
+      };
       let response;
       if (!zone) {
         response = await axios.post('/api/location/zone/create', newData);
@@ -154,9 +146,9 @@ status :data.status,
       }
       await new Promise((resolve) => setTimeout(resolve, 500));
       reset();
-      enqueueSnackbar(currentZone ? 'Update success!' : 'Create success!')
+      enqueueSnackbar(currentZone ? 'Update success!' : 'Create success!');
       await new Promise((resolve) => setTimeout(resolve, 500));
-     
+
       router.push(paths.dashboard.location.zonelist);
     } catch (error) {
       console.warn(error);
@@ -164,16 +156,19 @@ status :data.status,
     onFormChange(data);
   });
 
-  const statuses = [{ label: 'Active', value: 1 }
-    , { label: "Inactive", value: 0 }]
+  const statuses = [
+    { label: 'Active', value: 1 },
+    { label: 'Inactive', value: 0 },
+  ];
 
-    // " Hazardous" , "Danger", "Restricted", "Safe"
+  // " Hazardous" , "Danger", "Restricted", "Safe"
 
-const ztype = [{ label: 'Hazardous', value: 'Hazardous' }
-    , { label: "Danger", value: 'Danger' }
-  , { label: "Restricted", value: 'Restricted' },
-  { label: "Safe", value: 'Safe' }
-]
+  const ztype = [
+    { label: 'Hazardous', value: 'Hazardous' },
+    { label: 'Danger', value: 'Danger' },
+    { label: 'Restricted', value: 'Restricted' },
+    { label: 'Safe', value: 'Safe' },
+  ];
 
   const handleLogData = () => {
     console.log('Form Data:', formData);
@@ -195,24 +190,22 @@ const ztype = [{ label: 'Hazardous', value: 'Hazardous' }
             <RHFTextField name="area_name" label="Area Name" />
             <RHFTextField name="svg_tag" label="SVG Tag" />
             <RHFTextField name="floor" label="Floor ID" />
-           
             <RHFSelect
-                fullWidth
-                name="zone_type" label="Zone Type"
-                PaperPropsSx={{ textTransform: 'capitalize' }}
-               
-              >
-                {ztype.map((option) => (
-                  <MenuItem key={option.value} value={option.value}>
-                    {option.label}
-                  </MenuItem>
-                ))}
-              </RHFSelect>
+              fullWidth
+              name="zone_type"
+              label="Zone Type"
+              PaperPropsSx={{ textTransform: 'capitalize' }}
+            >
+              {ztype.map((option) => (
+                <MenuItem key={option.value} value={option.value}>
+                  {option.label}
+                </MenuItem>
+              ))}
+            </RHFSelect>
             <RHFTextField name="zone_defaut_color_code" label="zone_defaut_color_code" />
             <RHFTextField name="zone_alert_color_code" label="Zone_alert_color_code" />
             <RHFTextField name="zone_gateway" label="Zone Gateway" />
             <RHFTextField name="zone_remark" label="Zone remark" />
-            
             <DatePicker
               // views={['day', 'month', 'year']}
               label="activation_date"
@@ -228,8 +221,7 @@ const ztype = [{ label: 'Hazardous', value: 'Hazardous' }
                 },
               }}
             />
-
-            <div style={{ display: "flex", flexDirection: "column"}}>
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
               <RHFSelect
                 fullWidth
                 name="status"
@@ -243,10 +235,6 @@ const ztype = [{ label: 'Hazardous', value: 'Hazardous' }
                   </MenuItem>
                 ))}
               </RHFSelect>
-
-              
-               
-              
             </div>
           </Box>
 
@@ -258,10 +246,10 @@ const ztype = [{ label: 'Hazardous', value: 'Hazardous' }
         </Card>
       </Grid>
     </FormProvider>
-  )
+  );
 }
 
 ZoneNewEditForm.propTypes = {
   currentZone: PropTypes.object,
-  userPer: PropTypes.object
-}
+  userPer: PropTypes.object,
+};
