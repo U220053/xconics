@@ -19,6 +19,15 @@ export default function ZoneEditView({ id }) {
       try {
         const response = await axios.get(`api/location/zone/get/${id}`);
         setDataUser(response.data.data);
+
+        const groupresponse = await axios.get('api/location/floor');
+        const newdata = JSON.parse(JSON.stringify(groupresponse.data.data));
+        setIsLoading(false);
+        const newGroupData = newdata.map((item) => {
+          return { id: item._id, floor_name: item.floor_name };
+        });
+        setUserPer(newGroupData);
+        setIsLoading(false);
         setIsLoading(false); // Set loading to false when data is fetched
         // const groupresponse = await axios.get('api/user/usergroups');
         // const newdata = JSON.parse(JSON.stringify(groupresponse.data.data));
@@ -53,13 +62,13 @@ export default function ZoneEditView({ id }) {
             name: 'Zone',
             href: paths.dashboard.location.zonelist,
           },
-          { name: 'Edit Zone'},
+          { name: 'Edit Zone' },
         ]}
         sx={{
           mb: { xs: 3, md: 5 },
         }}
       />
-    <ZoneNewEditForm  currentZone={dataUser} />
+      <ZoneNewEditForm currentZone={dataUser} userPer={userPer}/>
     </Container>
   );
 }
@@ -67,10 +76,3 @@ export default function ZoneEditView({ id }) {
 ZoneEditView.propTypes = {
   id: PropTypes.string.isRequired, // Add this line to validate the 'id' prop
 };
-
-
-
-
-
-
-

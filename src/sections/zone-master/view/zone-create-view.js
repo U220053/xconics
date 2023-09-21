@@ -19,11 +19,11 @@ export default function ZoneCreateView() {
   const [isLoading, setIsLoading] = useState(true); // Add a loading state
   useEffect(() => {
     const fetchData = async () => {
-      const groupresponse = await axios.get('api/user/usergroups')
+      const groupresponse = await axios.get('api/location/floor')
       const newdata = JSON.parse(JSON.stringify(groupresponse.data.data))
       setIsLoading(false);
       const newGroupData = newdata.map((item) => {
-        return { id: item._id, group_name: item.user_group_name }
+        return { id: item._id, floor_name: item.floor_name }
       })
       setUserPer(newGroupData);
       setIsLoading(false);

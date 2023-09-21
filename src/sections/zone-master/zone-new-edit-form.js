@@ -47,7 +47,7 @@ import { Select } from '@mui/base';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 // ----------------------------------------------------------------------
 
-export default function ZoneNewEditForm({ currentZone }) {
+export default function ZoneNewEditForm({ currentZone, userPer }) {
   const router = useRouter();
   const [formData, setFormData] = useState({});
   const { enqueueSnackbar } = useSnackbar();
@@ -195,7 +195,18 @@ export default function ZoneNewEditForm({ currentZone }) {
           >
             <RHFTextField name="area_name" label="Area Name" />
             <RHFTextField name="svg_tag" label="SVG Tag" />
-            <RHFTextField name="floor" label="Floor ID" />
+            <RHFSelect
+              fullWidth
+              name="floor_name"
+              label="floor_name"
+              PaperPropsSx={{ textTransform: 'capitalize' }}
+            >
+              {userPer.map((option) => (
+                <MenuItem key={option.id} value={option.id}>
+                  {option.floor_name}
+                </MenuItem>
+              ))}
+            </RHFSelect>
             <RHFSelect
               fullWidth
               name="zone_type"
