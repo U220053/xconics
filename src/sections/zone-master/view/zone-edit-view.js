@@ -17,16 +17,16 @@ export default function ZoneEditView({ id }) {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await axios.get(`api/user/permission/get/${id}`);
+        const response = await axios.get(`api/location/zone/get/${id}`);
         setDataUser(response.data.data);
         setIsLoading(false); // Set loading to false when data is fetched
-        const groupresponse = await axios.get('api/user/usergroups');
-        const newdata = JSON.parse(JSON.stringify(groupresponse.data.data));
+        // const groupresponse = await axios.get('api/user/usergroups');
+        // const newdata = JSON.parse(JSON.stringify(groupresponse.data.data));
         // eslint-disable-next-line arrow-body-style
-        const newGroupData = newdata.map((item) => {
-          return { id: item._id, group_name: item.user_group_name }
-        })
-        setUserPer(newGroupData);
+        // const newGroupData = newdata.map((item) => {
+        //   return { id: item._id, group_name: item.user_group_name }
+        // })
+        // setUserPer(newGroupData);
       } catch (error) {
         console.error('Error fetching API data:', error);
         setIsLoading(false); // Set loading to false on error
@@ -59,7 +59,7 @@ export default function ZoneEditView({ id }) {
           mb: { xs: 3, md: 5 },
         }}
       />
-    <ZoneNewEditForm currentGroup={dataUser} userPer={userPer} />
+    <ZoneNewEditForm  currentZone={dataUser} />
     </Container>
   );
 }

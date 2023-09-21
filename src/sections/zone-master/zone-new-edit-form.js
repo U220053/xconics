@@ -106,10 +106,10 @@ export default function ZoneNewEditForm({ currentZone }) {
     formState: { isSubmitting },
   } = methods;
 
-  const [zone, setuserPer] = useState(false);
-  const [dropdownData, setdropdownData] = useState([]);
+  // const [zone, setuserPer] = useState(false);
+  // const [dropdownData, setdropdownData] = useState([]);
 
-  const values = watch();
+  // const values = watch();
 
   // useEffect(() => {
   //   if (currentGroup?.screen_name) setuserPer(true);
@@ -118,6 +118,12 @@ export default function ZoneNewEditForm({ currentZone }) {
   //   console.log(currentGroup);
   //   // eslint-disable-next-line react-hooks/exhaustive-deps
   // }, []);
+  const [zone, setZone] = useState(false);
+  const [dropdownData, setdropdownData] = useState([]);
+  useEffect(() => {
+    if (currentZone?.area_name) setZone(true);
+    else setZone(false);
+  }, []);
 
   const onFormChange = (data) => {
     setFormData(data);
@@ -142,7 +148,7 @@ export default function ZoneNewEditForm({ currentZone }) {
       if (!zone) {
         response = await axios.post('/api/location/zone/create', newData);
       } else {
-        response = await axios.post(`/api/location/zone/update/${currentZone._id}`, newData);
+        response = await axios.post(`/api/location/zone/update/${currentZone.area_name}`, newData);
       }
       await new Promise((resolve) => setTimeout(resolve, 500));
       reset();
