@@ -219,10 +219,10 @@ export default function ZoneNewEditForm({ currentZone, userPer }) {
                 </MenuItem>
               ))}
             </RHFSelect>
-            <RHFTextField name="zone_defaut_color_code" label="zone_defaut_color_code" />
+            <RHFTextField name="zone_default_color_code" label="zone_default_color_code" />
             <RHFTextField name="zone_alert_color_code" label="Zone_alert_color_code" />
             <RHFTextField name="zone_gateway" label="Zone Gateway" />
-            <RHFTextField name="zone_remark" label="Zone remark" />
+            <RHFTextField name="zone_remarks" label="Zone remark" />
             <DatePicker
               // views={['day', 'month', 'year']}
               label="activation_date"
