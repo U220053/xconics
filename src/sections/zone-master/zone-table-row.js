@@ -27,7 +27,7 @@ import { ConfirmDialog } from 'src/components/custom-dialog';
 // eslint-disable-next-line react/prop-types
 export default function ZoneTableRow({ row, selected, onEditRow, onSelectRow, onDeleteRow }) {
   console.log(row);
-  const { user_group_ref, screen_name, add_permission, edit_permission, delete_permission, export_permission, print_permission, enable_permission, status } = row
+  const { area_name, svg_tag, floor, zone_type, zone_default_color_code, zone_alert_color_code, zone_gateway, zone_remarks, status } = row
 
   const confirm = useBoolean()
 
@@ -71,14 +71,14 @@ export default function ZoneTableRow({ row, selected, onEditRow, onSelectRow, on
             }}
           />
           </TableCell> */}
-        <TableCell sx={{ whiteSpace: 'nowrap' }}>{user_group_ref.user_group_name}</TableCell>
-        <TableCell sx={{ whiteSpace: 'nowrap' }}>{screen_name}</TableCell>
-        <TableCell sx={{ whiteSpace: 'nowrap' }}>{add_permission?"YES":"NO"}</TableCell>
-        <TableCell sx={{ whiteSpace: 'nowrap' }}>{edit_permission?"YES":"NO"}</TableCell>
-        <TableCell sx={{ whiteSpace: 'nowrap' }}>{delete_permission?"YES":"NO"}</TableCell>
-        <TableCell sx={{ whiteSpace: 'nowrap' }}>{export_permission?"YES":"NO"}</TableCell>
-        <TableCell sx={{ whiteSpace: 'nowrap' }}>{print_permission?"YES":"NO"}</TableCell>
-        <TableCell sx={{ whiteSpace: 'nowrap' }}>{enable_permission?"YES":"NO"}</TableCell>
+        <TableCell sx={{ whiteSpace: 'nowrap' }}>{area_name}</TableCell>
+        <TableCell sx={{ whiteSpace: 'nowrap' }}>{svg_tag}</TableCell>
+        <TableCell sx={{ whiteSpace: 'nowrap' }}>{floor}</TableCell>
+        <TableCell sx={{ whiteSpace: 'nowrap' }}>{zone_type}</TableCell>
+        <TableCell sx={{ whiteSpace: 'nowrap' }}>{zone_default_color_code}</TableCell>
+        <TableCell sx={{ whiteSpace: 'nowrap' }}>{zone_alert_color_code}</TableCell>
+        <TableCell sx={{ whiteSpace: 'nowrap' }}>{zone_gateway}</TableCell>
+        <TableCell sx={{ whiteSpace: 'nowrap' }}>{zone_remarks}</TableCell>
 
 
 
