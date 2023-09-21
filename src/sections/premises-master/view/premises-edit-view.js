@@ -10,23 +10,24 @@ import PremisesNewEditForm from '../premises-new-edit-form';
 
 export default function PremisesEditView({ id }) {
   const settings = useSettingsContext();
-  const [userPer, setUserPer] = useState([]);
-  const [dataUser, setDataUser] = useState(null);
+  const [userLoc, setUserLoc] = useState([]);
+  const [dataPre, setDataPre] = useState(null);
   const [isLoading, setIsLoading] = useState(true); // Add a loading state
 
   useEffect(() => {
     async function fetchData() {
       try {
         const response = await axios.get(`api/location/premises/get/${id}`);
-        setDataUser(response.data.data);
+        setDataPre(response.data.data);
+
         setIsLoading(false); // Set loading to false when data is fetched
-        const groupresponse = await axios.get('api/location');
-        const newdata = JSON.parse(JSON.stringify(groupresponse.data.data));
+        const locresponse = await axios.get('api/location');
+        const newdata = JSON.parse(JSON.stringify(locresponse.data.data));
         // eslint-disable-next-line arrow-body-style
-        const newGroupData = newdata.map((item) => {
+        const newlocData = newdata.map((item) => {
           return { id: item._id, location_name: item.location_name }
         })
-        setUserPer(newGroupData);
+        setUserLoc(newlocData);
       } catch (error) {
         console.error('Error fetching API data:', error);
         setIsLoading(false); // Set loading to false on error
@@ -59,7 +60,7 @@ export default function PremisesEditView({ id }) {
           mb: { xs: 3, md: 5 },
         }}
       />
-    <PremisesNewEditForm currentGroup={dataUser} userPer={userPer} />
+    <PremisesNewEditForm currentPremises={dataPre} userLoc={userLoc} />
     </Container>
   );
 }

@@ -47,10 +47,10 @@ import { Select } from '@mui/base';
 
 // ----------------------------------------------------------------------
 
-export default function PremisesNewEditForm({ currentGroup, userPer }) {
+export default function PremisesNewEditForm({ currentPremises, userLoc }) {
   const router = useRouter();
   const [active, setActive] = useState(
-    currentGroup ? new Date(currentGroup?.activation_date) : new Date()
+    currentPremises ? new Date(currentPremises?.activation_date) : new Date()
   );
   const [formData, setFormData] = useState({});
   const { enqueueSnackbar } = useSnackbar();
@@ -67,15 +67,15 @@ export default function PremisesNewEditForm({ currentGroup, userPer }) {
 
   const defaultValues = useMemo(
     () => ({
-      premises_name: currentGroup?.premises_name || '',
-      premises_type: currentGroup?.premises_type || '',
-      status: currentGroup?.status || 1,
-      lat: currentGroup?.lat || '',
-      lang: currentGroup?.lang || '',
-      activation_date: currentGroup?.activation_date || new Date(),
-      location: currentGroup?.location || '',
+      premises_name: currentPremises?.premises_name || '',
+      premises_type: currentPremises?.premises_type || '',
+      status: currentPremises?.status || 1,
+      lat: currentPremises?.lat || '',
+      lang: currentPremises?.lang || '',
+      activation_date: currentPremises?.activation_date || new Date(),
+      location: currentPremises?.location || '',
     }),
-    [currentGroup]
+    [currentPremises]
   );
 
   const methods = useForm({
@@ -92,15 +92,15 @@ export default function PremisesNewEditForm({ currentGroup, userPer }) {
     formState: { isSubmitting },
   } = methods;
 
-  const [group, setuserPer] = useState(false);
+  const [preLoc, setPreLoc] = useState(false);
   const [dropdownData, setdropdownData] = useState([]);
 
   const values = watch();
 
   useEffect(() => {
-    if (currentGroup?.premises_name) setuserPer(true);
-    else setuserPer(false);
-    console.log(currentGroup);
+    if (currentPremises?.premises_name) setPreLoc(true);
+    else setPreLoc(false);
+    console.log(currentPremises);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -120,14 +120,14 @@ export default function PremisesNewEditForm({ currentGroup, userPer }) {
         status: data.status,
       };
       let response;
-      if (!group) {
+      if (!preLoc) {
         response = await axios.post('/api/location/premises/create', newData);
       } else {
-        response = await axios.post(`/api/location/premises/update/${currentGroup._id}`, newData);
+        response = await axios.post(`/api/location/premises/update/${currentPremises._id}`, newData);
       }
       await new Promise((resolve) => setTimeout(resolve, 500));
       reset();
-      enqueueSnackbar(currentGroup ? 'Update success!' : 'Create success!');
+      enqueueSnackbar(currentPremises ? 'Update success!' : 'Create success!');
       await new Promise((resolve) => setTimeout(resolve, 500));
       console.log(response);
       router.push(paths.dashboard.location.premiseslist);
@@ -187,7 +187,7 @@ export default function PremisesNewEditForm({ currentGroup, userPer }) {
               // InputLabelProps={{ shrink: true }}
               PaperPropsSx={{ textTransform: 'capitalize' }}
             >
-              {userPer.map((option) => (
+              {userLoc.map((option) => (
                 <MenuItem key={option.id} value={option.id}>
                   {option.location_name}
                 </MenuItem>
@@ -198,7 +198,7 @@ export default function PremisesNewEditForm({ currentGroup, userPer }) {
               name="status"
               label="Status"
               PaperPropsSx={{ textTransform: 'capitalize' }}
-              defaultValue={currentGroup?.status || 1} // Set the value based on your condition
+              defaultValue={currentPremises?.status || 1} // Set the value based on your condition
             >
               {statuses.map((option) => (
                 <MenuItem key={option.value} value={option.value}>
@@ -225,7 +225,7 @@ export default function PremisesNewEditForm({ currentGroup, userPer }) {
 
           <Stack alignItems="flex-end" sx={{ mt: 3 }}>
             <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
-              {!currentGroup ? 'Create Premises' : 'Save Changes'}
+              {!currentPremises ? 'Create Premises' : 'Save Changes'}
             </LoadingButton>
           </Stack>
         </Card>
@@ -235,6 +235,6 @@ export default function PremisesNewEditForm({ currentGroup, userPer }) {
 }
 
 PremisesNewEditForm.propTypes = {
-  currentGroup: PropTypes.object,
-  userPer: PropTypes.object,
+  currentPremises: PropTypes.object,
+  userLoc: PropTypes.object,
 };

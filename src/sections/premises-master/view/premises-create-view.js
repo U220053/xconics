@@ -15,17 +15,18 @@ import PremisesNewEditForm from '../premises-new-edit-form';
 
 export default function PremisesCreateView() {
   const settings = useSettingsContext();
-  const [userPer, setUserPer] = useState([])
+  const [userLoc, setUserLoc] = useState([])
   const [isLoading, setIsLoading] = useState(true); // Add a loading state
+
   useEffect(() => {
     const fetchData = async () => {
-      const groupresponse = await axios.get('api/location')
-      const newdata = JSON.parse(JSON.stringify(groupresponse.data.data))
+      const locresponse = await axios.get('api/location')
+      const newdata = JSON.parse(JSON.stringify(locresponse.data.data))
       setIsLoading(false);
-      const newGroupData = newdata.map((item) => {
+      const newlocData = newdata.map((item) => {
         return { id: item._id, location_name: item.location_name }
       })
-      setUserPer(newGroupData);
+      setUserLoc(newlocData);
       setIsLoading(false);
     }
     fetchData()
@@ -56,7 +57,7 @@ export default function PremisesCreateView() {
         }}
       />
 
-      <PremisesNewEditForm userPer={userPer} />
+      <PremisesNewEditForm userLoc={userLoc} />
     </Container>
   );
 }
