@@ -143,6 +143,12 @@ export const paths = {
       list: `${ROOTS.DASHBOARD}/client/list`,
       edit: (id) => `${ROOTS.DASHBOARD}/client/${id}/edit`,
     },
+    location: {
+      root: `${ROOTS.DASHBOARD}/location`,
+      zonelist: `${ROOTS.DASHBOARD}/location/zonelist`,
+      zonenew: `${ROOTS.DASHBOARD}/location/zone/new`,
+      zoneedit: (id) => `${ROOTS.DASHBOARD}/location/zone/${id}/edit`,
+    },
     product: {
       root: `${ROOTS.DASHBOARD}/product`,
       new: `${ROOTS.DASHBOARD}/product/new`,
