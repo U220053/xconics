@@ -26,6 +26,11 @@ const ProductEditPage = lazy(() => import('src/pages/dashboard/product/edit'))
 const ProductMasterListPage = lazy(() => import('src/pages/dashboard/product/master-list'))
 const ProductMasterCreatePage = lazy(() => import('src/pages/dashboard/product/master-new'))
 const ProductMasterEditPage = lazy(() => import('src/pages/dashboard/product/master-edit'))
+//LOCATION-MASTER
+
+const LocationListPage = lazy(() => import('src/pages/dashboard/location/list'))
+const LocationCreatePage = lazy(() => import('src/pages/dashboard/location/new'))
+const LocationEditPage = lazy(() => import('src/pages/dashboard/location/edit'))
 // ORDER
 const OrderListPage = lazy(() => import('src/pages/dashboard/order/list'))
 const OrderDetailsPage = lazy(() => import('src/pages/dashboard/order/details'))
@@ -161,6 +166,21 @@ export const dashboardRoutes = [
          
           { path: 'master/new', element: <ProductMasterCreatePage /> },
           { path: 'master/:id/edit', element: <ProductMasterEditPage /> },
+        ],
+      },
+      {
+        path: 'location',
+        children: [
+          { element: <LocationListPage />, index: true },
+          // { path: 'list', element: <ProductListPage /> },
+          // { path: ':id', element: <ProductDetailsPage /> },
+          // { path: 'new', element: <ProductCreatePage /> },
+          // { path: ':id/edit', element: <ProductEditPage /> },
+         
+          { path: 'list', element: <LocationListPage /> },
+         
+          { path: 'new', element: <LocationCreatePage /> },
+          { path: ':id/edit', element: <LocationEditPage /> },
         ],
       },
       // {

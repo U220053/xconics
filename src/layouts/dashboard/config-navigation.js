@@ -43,6 +43,7 @@ const ICONS = {
   ecommerce: icon('ic_ecommerce'),
   analytics: icon('ic_analytics'),
   dashboard: icon('ic_dashboard'),
+  location:icon('ic_tour'),
 };
 
 // ----------------------------------------------------------------------
@@ -137,7 +138,20 @@ export function useNavData() {
               // { title: t('edit'), path: paths.dashboard.product.demo.edit },
             ],
           },
-
+  // LOCATION
+  {
+    title: t('location'),
+    path: paths.dashboard.user.root,
+    icon: ICONS.location,
+    children: [
+      
+      { title: t('list'), path: paths.dashboard.location.list },
+      {title:t('premises'), path: paths.dashboard.user.list},
+      {title:t('floor'), path: paths.dashboard.user.list},
+      {title:t('zone'), path: paths.dashboard.user.list},
+          
+    ],
+  },
           // ORDER
           // {
           //   title: t('order'),
