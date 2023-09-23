@@ -44,7 +44,6 @@ const ICONS = {
   analytics: icon('ic_analytics'),
   dashboard: icon('ic_dashboard'),
   location: icon('ic_tour'),
-  location: icon('ic_tour'),
 };
 
 // ----------------------------------------------------------------------
@@ -140,6 +139,18 @@ export function useNavData() {
               { 
                 title: t('production batch'), path: paths.dashboard.product.batchlist 
               },
+            ],
+          },
+          // LOCATION
+          {
+            title: t('location'),
+            path: paths.dashboard.user.root,
+            icon: ICONS.location,
+            children: [
+              { title: t('list'), path: paths.dashboard.customer.list },
+              { title: t('premises'), path: paths.dashboard.customer.list },
+              { title: t('floor'), path: paths.dashboard.user.list },
+              { title: t('zone'), path: paths.dashboard.location.zonelist},
             ],
           },
 
