@@ -3,8 +3,6 @@ import { useState, useCallback, useEffect } from 'react'
 
 // @mui
 import Button from '@mui/material/Button'
-import Avatar from '@mui/material/Avatar'
-import Tooltip from '@mui/material/Tooltip'
 import MenuItem from '@mui/material/MenuItem'
 import TableRow from '@mui/material/TableRow'
 import Checkbox from '@mui/material/Checkbox'
@@ -25,7 +23,6 @@ import UserQuickEditForm from '../temp/user-quick-edit-form'
 
 // eslint-disable-next-line react/prop-types
 export default function UserTableRow({ row, selected, onEditRow, onSelectRow, onDeleteRow }) {
-  console.log(row);
   const { user_email, user_mobile, user_group_ref, status } = row
 
   const confirm = useBoolean()
