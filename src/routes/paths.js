@@ -143,11 +143,26 @@ export const paths = {
       list: `${ROOTS.DASHBOARD}/client/list`,
       edit: (id) => `${ROOTS.DASHBOARD}/client/${id}/edit`,
     },
+    location: {
+      root: `${ROOTS.DASHBOARD}/location`,
+      zonelist: `${ROOTS.DASHBOARD}/location/zonelist`,
+      zonenew: `${ROOTS.DASHBOARD}/location/zone/new`,
+      zoneedit: (id) => `${ROOTS.DASHBOARD}/location/zone/${id}/edit`,
+    },
     product: {
       root: `${ROOTS.DASHBOARD}/product`,
       new: `${ROOTS.DASHBOARD}/product/new`,
       details: (id) => `${ROOTS.DASHBOARD}/product/${id}`,
       edit: (id) => `${ROOTS.DASHBOARD}/product/${id}/edit`,
+
+      category: `${ROOTS.DASHBOARD}/product/categorylist`,
+      categorynew: `${ROOTS.DASHBOARD}/product/category/new`,
+      categoryedit: (id) => `${ROOTS.DASHBOARD}/product/category/${id}/edit`,
+
+      batchlist: `${ROOTS.DASHBOARD}/product/batchlist`,
+      batchnew: `${ROOTS.DASHBOARD}/product/batch/new`,
+      batchedit: (id) => `${ROOTS.DASHBOARD}/product/batch/${id}/edit`,
+
       demo: {
         details: `${ROOTS.DASHBOARD}/product/${MOCK_ID}`,
         edit: `${ROOTS.DASHBOARD}/product/${MOCK_ID}/edit`,
@@ -156,23 +171,19 @@ export const paths = {
       masternew: `${ROOTS.DASHBOARD}/product/master/new`,
       masteredit: (id) => `${ROOTS.DASHBOARD}/product/master/${id}/edit`,
     },
-    //location
+
+    //location master
     location: {
       root: `${ROOTS.DASHBOARD}/location`,
+      new: `${ROOTS.DASHBOARD}/location/new`,
+      list: `${ROOTS.DASHBOARD}/location/list`,
+      edit: (id) => `${ROOTS.DASHBOARD}/location/${id}/edit`,
+
       premiseslist: `${ROOTS.DASHBOARD}/location/premiseslist`,
       premisesnew: `${ROOTS.DASHBOARD}/location/premises/new`,
       premisesedit: (id) => `${ROOTS.DASHBOARD}/location/premises/${id}/edit`,
+
     },
-    // productmaster: {
-    //   root: `${ROOTS.DASHBOARD}/product/master`,
-    //   new: `${ROOTS.DASHBOARD}/product/master/new`,
-    //   details: (id) => `${ROOTS.DASHBOARD}/product/master/${id}`,
-    //   edit: (id) => `${ROOTS.DASHBOARD}/product/master/${id}/edit`,
-    //   // demo: {
-    //   //   details: `${ROOTS.DASHBOARD}/product/${MOCK_ID}`,
-    //   //   edit: `${ROOTS.DASHBOARD}/product/${MOCK_ID}/edit`,
-    //   // },
-    // },
     invoice: {
       root: `${ROOTS.DASHBOARD}/invoice`,
       new: `${ROOTS.DASHBOARD}/invoice/new`,
