@@ -21,6 +21,12 @@ const ProductDetailsPage = lazy(() => import('src/pages/dashboard/product/detail
 const ProductListPage = lazy(() => import('src/pages/dashboard/product/list'))
 const ProductCreatePage = lazy(() => import('src/pages/dashboard/product/new'))
 const ProductEditPage = lazy(() => import('src/pages/dashboard/product/edit'))
+
+const CategoryListPage = lazy(() => import('src/pages/dashboard/product/category-list'))
+const CategoryEditPage = lazy(() => import('src/pages/dashboard/product/category-edit'))
+const CategoryCreatePage = lazy(() => import('src/pages/dashboard/product/category-new'))
+
+
 //PRODUCT-MASTER
 
 const ProductMasterListPage = lazy(() => import('src/pages/dashboard/product/master-list'))
@@ -119,18 +125,18 @@ export const dashboardRoutes = [
           { element: <UserListPage />, index: true },
           { path: 'list', element: <UserListPage /> },
           // { path: 'cards', element: <UserCardsPage /> },
-         
+
           { path: 'permission', element: <PermissionListPage /> },
           { path: 'permission/:id/edit', element: <PermissionEditPage /> },
-          { path: 'permission/new', element: <PermissionCreatePage/> },
+          { path: 'permission/new', element: <PermissionCreatePage /> },
           { path: 'list', element: <UserListPage /> },
           { path: 'new', element: <UserCreatePage /> },
           { path: ':id/edit', element: <UserEditPage /> },
           { path: 'account', element: <UserAccountPage /> },
           // { path: 'management', element: <UserManagementPage /> },
           { path: 'grouplist', element: <GroupListPage /> },
-          { path: 'group/new', element: <GroupCreatePage/> },
-          { path: 'group/:id/edit', element: <GroupEditPage/> },
+          { path: 'group/new', element: <GroupCreatePage /> },
+          { path: 'group/:id/edit', element: <GroupEditPage /> },
         ],
       },
       {
@@ -144,15 +150,15 @@ export const dashboardRoutes = [
         ],
       },
       {
-      path: 'client',
-      children: [
-        { element: <ClientListPage />, index: true },
-        { path: 'list', element: <ClientListPage /> },
+        path: 'client',
+        children: [
+          { element: <ClientListPage />, index: true },
+          { path: 'list', element: <ClientListPage /> },
 
-        { path: 'new', element: <ClientCreatePage /> },
-        { path: ':id/edit', element: <ClientPage /> },
-      ],
-    },
+          { path: 'new', element: <ClientCreatePage /> },
+          { path: ':id/edit', element: <ClientPage /> },
+        ],
+      },
       {
         path: 'product',
         children: [
@@ -161,9 +167,10 @@ export const dashboardRoutes = [
           { path: ':id', element: <ProductDetailsPage /> },
           { path: 'new', element: <ProductCreatePage /> },
           { path: ':id/edit', element: <ProductEditPage /> },
-         
+          { path: 'categorylist', element: <CategoryListPage /> },
+          { path: 'category/new', element: < CategoryCreatePage /> },
+          { path: 'category/:id/edit', element: <CategoryEditPage /> },
           { path: 'masterlist', element: <ProductMasterListPage /> },
-         
           { path: 'master/new', element: <ProductMasterCreatePage /> },
           { path: 'master/:id/edit', element: <ProductMasterEditPage /> },
         ],
@@ -172,27 +179,11 @@ export const dashboardRoutes = [
         path: 'location',
         children: [
           { element: <LocationListPage />, index: true },
-          // { path: 'list', element: <ProductListPage /> },
-          // { path: ':id', element: <ProductDetailsPage /> },
-          // { path: 'new', element: <ProductCreatePage /> },
-          // { path: ':id/edit', element: <ProductEditPage /> },
-         
           { path: 'list', element: <LocationListPage /> },
-         
           { path: 'new', element: <LocationCreatePage /> },
           { path: ':id/edit', element: <LocationEditPage /> },
         ],
       },
-      // {
-      //   path: 'productmaster',
-      //   children: [
-      //     { element: <ProductMasterListPage />, index: true },
-      //     { path: 'list', element: <ProductMasterListPage /> },
-         
-      //     { path: 'new', element: <ProductMasterCreatePage /> },
-      //     { path: ':id/edit', element: <ProductMasterEditPage /> },
-      //   ],
-      // },
       {
         path: 'order',
         children: [

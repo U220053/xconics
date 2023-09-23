@@ -15,7 +15,7 @@ import UserNewEditForm from '../user-new-edit-form';
 // ...
 export default function UserEditView({ id }) {
   const settings = useSettingsContext();
-  const [userGroup, setUserGroup] = useState([]);
+ const [userGroup, setUserGroup] = useState([]); 
   const [dataUser, setDataUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true); // Add a loading state
 
