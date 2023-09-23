@@ -154,6 +154,15 @@ export const paths = {
       new: `${ROOTS.DASHBOARD}/product/new`,
       details: (id) => `${ROOTS.DASHBOARD}/product/${id}`,
       edit: (id) => `${ROOTS.DASHBOARD}/product/${id}/edit`,
+
+      category:`${ROOTS.DASHBOARD}/product/categorylist`,
+      categorynew:`${ROOTS.DASHBOARD}/product/category/new`,
+      categoryedit: (id)=>`${ROOTS.DASHBOARD}/product/category/${id}/edit`,
+
+      batchlist:`${ROOTS.DASHBOARD}/product/batchlist`,
+      batchnew:`${ROOTS.DASHBOARD}/product/batch/new`,
+      batchedit: (id)=>`${ROOTS.DASHBOARD}/product/batch/${id}/edit`,
+      
       demo: {
         details: `${ROOTS.DASHBOARD}/product/${MOCK_ID}`,
         edit: `${ROOTS.DASHBOARD}/product/${MOCK_ID}/edit`,
@@ -165,16 +174,12 @@ export const paths = {
       
       masteredit: (id) => `${ROOTS.DASHBOARD}/product/master/${id}/edit`,
     },
-    // productmaster: {
-    //   root: `${ROOTS.DASHBOARD}/product/master`,
-    //   new: `${ROOTS.DASHBOARD}/product/master/new`,
-    //   details: (id) => `${ROOTS.DASHBOARD}/product/master/${id}`,
-    //   edit: (id) => `${ROOTS.DASHBOARD}/product/master/${id}/edit`,
-    //   // demo: {
-    //   //   details: `${ROOTS.DASHBOARD}/product/${MOCK_ID}`,
-    //   //   edit: `${ROOTS.DASHBOARD}/product/${MOCK_ID}/edit`,
-    //   // },
-    // },
+  location:{
+    root: `${ROOTS.DASHBOARD}/location`,
+      new: `${ROOTS.DASHBOARD}/location/new`,
+      list: `${ROOTS.DASHBOARD}/location/list`,
+      edit: (id) => `${ROOTS.DASHBOARD}/location/${id}/edit`,
+  },
     invoice: {
       root: `${ROOTS.DASHBOARD}/invoice`,
       new: `${ROOTS.DASHBOARD}/invoice/new`,
