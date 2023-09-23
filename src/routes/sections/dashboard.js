@@ -175,16 +175,7 @@ export const dashboardRoutes = [
           { path: 'zone/:id/edit', element: <ZoneEditPage /> },
         ],
       },
-      // {
-      //   path: 'productmaster',
-      //   children: [
-      //     { element: <ProductMasterListPage />, index: true },
-      //     { path: 'list', element: <ProductMasterListPage /> },
-         
-      //     { path: 'new', element: <ProductMasterCreatePage /> },
-      //     { path: ':id/edit', element: <ProductMasterEditPage /> },
-      //   ],
-      // },
+ 
       {
         path: 'order',
         children: [
