@@ -26,7 +26,9 @@ const CategoryListPage = lazy(() => import('src/pages/dashboard/product/category
 const CategoryEditPage = lazy(() => import('src/pages/dashboard/product/category-edit'))
 const CategoryCreatePage = lazy(() => import('src/pages/dashboard/product/category-new'))
 
-
+const BatchListPage = lazy(() => import('src/pages/dashboard/product/batch-list'))
+const BatchCreatePage = lazy(() => import('src/pages/dashboard/product/batch-new'))
+const BatchEditPage = lazy(() => import('src/pages/dashboard/product/batch-edit'))
 //PRODUCT-MASTER
 
 const ProductMasterListPage = lazy(() => import('src/pages/dashboard/product/master-list'))
@@ -167,12 +169,18 @@ export const dashboardRoutes = [
           { path: ':id', element: <ProductDetailsPage /> },
           { path: 'new', element: <ProductCreatePage /> },
           { path: ':id/edit', element: <ProductEditPage /> },
+          
           { path: 'categorylist', element: <CategoryListPage /> },
           { path: 'category/new', element: < CategoryCreatePage /> },
           { path: 'category/:id/edit', element: <CategoryEditPage /> },
+          
           { path: 'masterlist', element: <ProductMasterListPage /> },
           { path: 'master/new', element: <ProductMasterCreatePage /> },
           { path: 'master/:id/edit', element: <ProductMasterEditPage /> },
+          
+          { path: 'batchlist', element: <BatchListPage /> },
+          { path: 'batch/new', element: <BatchCreatePage /> },
+          { path: 'batch/:id/edit', element: <BatchEditPage /> },
         ],
       },
       {
