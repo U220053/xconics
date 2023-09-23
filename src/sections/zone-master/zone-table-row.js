@@ -1,6 +1,4 @@
-
 import PropTypes from 'prop-types';
-import { useState, useCallback, useEffect } from 'react';
 
 // @mui
 import Button from '@mui/material/Button';
@@ -26,30 +24,21 @@ import { ConfirmDialog } from 'src/components/custom-dialog';
 
 // eslint-disable-next-line react/prop-types
 export default function ZoneTableRow({ row, selected, onEditRow, onSelectRow, onDeleteRow }) {
-  console.log(row);
-  const { area_name, svg_tag, floor, zone_type, zone_default_color_code, zone_alert_color_code, zone_gateway, zone_remarks, status } = row
+  const {
+    area_name,
+    svg_tag,
+    floor,
+    zone_type,
+    zone_default_color_code,
+    zone_alert_color_code,
+    zone_gateway,
+    zone_remarks,
+    status,
+  } = row;
 
-  const confirm = useBoolean()
+  const confirm = useBoolean();
 
-  // const quickEdit = useBoolean()
-
-  const popover = usePopover()
-  // useEffect(() => {
-  //   async function fetchData() {
-  //     try {
-  //       // const response = await axios.get('api/user/usergroups');
-  //       // // const data = await response.json();
-
-  //     console.log(row);
-
-
-  //     } catch (error) {
-  //       console.error('Error fetching API data:', error);
-  //     }
-  //   }
-
-  //   fetchData();
-  // });
+  const popover = usePopover();
 
   return (
     <>
@@ -58,19 +47,6 @@ export default function ZoneTableRow({ row, selected, onEditRow, onSelectRow, on
           <Checkbox checked={selected} onClick={onSelectRow} />
         </TableCell>
 
-        {/* } <TableCell sx={{ display: 'flex', alignItems: 'center' }}>
-          <Avatar alt={name} src={avatarUrl} sx={{ mr: 2 }} />
-
-          <ListItemText
-            primary={name}
-            secondary={email}
-            primaryTypographyProps={{ typography: 'body2' }}
-            secondaryTypographyProps={{
-              component: 'span',
-              color: 'text.disabled',
-            }}
-          />
-          </TableCell> */}
         <TableCell sx={{ whiteSpace: 'nowrap' }}>{area_name}</TableCell>
         <TableCell sx={{ whiteSpace: 'nowrap' }}>{svg_tag}</TableCell>
         <TableCell sx={{ whiteSpace: 'nowrap' }}>{floor.floor_name}</TableCell>
@@ -80,16 +56,10 @@ export default function ZoneTableRow({ row, selected, onEditRow, onSelectRow, on
         <TableCell sx={{ whiteSpace: 'nowrap' }}>{zone_gateway}</TableCell>
         <TableCell sx={{ whiteSpace: 'nowrap' }}>{zone_remarks}</TableCell>
 
-
-
         <TableCell>
           <Label
             variant="soft"
-            color={
-              (status === 0 && 'warning') ||
-              (status === 1 && 'success') ||
-              'default'
-            }
+            color={(status === 0 && 'warning') || (status === 1 && 'success') || 'default'}
           >
             {status === 1 ? 'Active' : 'Inactive'}
           </Label>
@@ -100,7 +70,6 @@ export default function ZoneTableRow({ row, selected, onEditRow, onSelectRow, on
             <Iconify icon="eva:more-vertical-fill" />
           </IconButton>
         </TableCell>
-
       </TableRow>
       <CustomPopover
         open={popover.open}
@@ -110,8 +79,8 @@ export default function ZoneTableRow({ row, selected, onEditRow, onSelectRow, on
       >
         <MenuItem
           onClick={() => {
-            confirm.onTrue()
-            popover.onClose()
+            confirm.onTrue();
+            popover.onClose();
           }}
           sx={{ color: 'error.main' }}
         >
@@ -121,8 +90,8 @@ export default function ZoneTableRow({ row, selected, onEditRow, onSelectRow, on
 
         <MenuItem
           onClick={() => {
-            onEditRow()
-            popover.onClose()
+            onEditRow();
+            popover.onClose();
           }}
         >
           <Iconify icon="solar:pen-bold" />
@@ -142,7 +111,7 @@ export default function ZoneTableRow({ row, selected, onEditRow, onSelectRow, on
         }
       />
     </>
-  )
+  );
 }
 
 ZoneTableRow.propTypes = {
@@ -151,4 +120,4 @@ ZoneTableRow.propTypes = {
   onSelectRow: PropTypes.func,
   row: PropTypes.object,
   selected: PropTypes.bool,
-}
+};

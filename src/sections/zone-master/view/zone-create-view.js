@@ -46,7 +46,7 @@ export default function ZoneCreateView() {
             href: paths.dashboard.root,
           },
           {
-            name: 'Zone',
+            name: 'Zone list',
             href: paths.dashboard.location.zonelist,
           },
           { name: 'New zone' },

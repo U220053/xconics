@@ -28,16 +28,9 @@ export default function ZoneEditView({ id }) {
         });
         setUserPer(newGroupData);
         setIsLoading(false);
-        setIsLoading(false); // Set loading to false when data is fetched
-        // const groupresponse = await axios.get('api/user/usergroups');
-        // const newdata = JSON.parse(JSON.stringify(groupresponse.data.data));
-        // eslint-disable-next-line arrow-body-style
-        // const newGroupData = newdata.map((item) => {
-        //   return { id: item._id, group_name: item.user_group_name }
-        // })
-        // setUserPer(newGroupData);
+        setIsLoading(false); 
       } catch (error) {
-        console.error('Error fetching API data:', error);
+       
         setIsLoading(false); // Set loading to false on error
       }
     }
@@ -59,7 +52,7 @@ export default function ZoneEditView({ id }) {
             href: paths.dashboard.root,
           },
           {
-            name: 'Zone',
+            name: 'Zone list',
             href: paths.dashboard.location.zonelist,
           },
           { name: 'Edit Zone' },

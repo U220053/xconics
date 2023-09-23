@@ -2,7 +2,7 @@
 import isEqual from 'lodash/isEqual';
 import { useState, useCallback, useEffect } from 'react';
 // @mui
-import Stack from '@mui/material/Stack';
+
 import { alpha } from '@mui/material/styles';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
@@ -68,7 +68,7 @@ const TABLE_HEAD = [
 ];
 const defaultFilters = {
   name: '',
-  // role: [],
+ 
   status: 'all',
 };
 // ----------------------------------------------------------------------
@@ -77,7 +77,7 @@ export default function ZoneListView() {
   const table = useTable();
 
   const settings = useSettingsContext();
-  // const [updateTrigger, setUpdateTrigger] = useState(false);
+  
   const router = useRouter();
 
   const confirm = useBoolean();
@@ -90,7 +90,7 @@ export default function ZoneListView() {
     async function fetchData() {
       try {
         const response = await axios.get('api/location/zone');
-        // const data = await response.json();
+        
 
         setisSuccess(response.data.success);
         setTableData(response.data.data);
@@ -130,7 +130,7 @@ export default function ZoneListView() {
   async function deletegroup(id) {
     await axios.post(`api/location/zone/delete/${id}`);
   }
-  /// have to call API
+ 
   const handleDeleteRow = useCallback(
     (id) => {
       const deleteRow = tableData.filter((row) => row._id !== id);
@@ -152,7 +152,7 @@ export default function ZoneListView() {
     try {
       await Promise.all(deletePromises);
       // Optionally, you can perform additional actions after deleting all groups
-      console.log('Selected groups deleted successfully');
+     
     } catch (error) {
       console.error('Error deleting selected groups:', error);
     }
@@ -163,7 +163,7 @@ export default function ZoneListView() {
     try {
       deleteSelectedGroups(selectedIds);
 
-      console.log('Selected groups deleted successfully');
+     
     } catch (error) {
       console.error('Error deleting selected groups:', error);
     }
@@ -225,7 +225,7 @@ export default function ZoneListView() {
     const tableData = allRowsData.map((rowData) => {
       return Object.values(rowData);
     });
-    console.log(tableData);
+    
     doc.autoTable({
       head: [labels],
       body: tableData,
@@ -242,7 +242,7 @@ export default function ZoneListView() {
           links={[
             { name: 'Dashboard', href: paths.dashboard.root },
             { name: 'Zone', href: paths.dashboard.location.root },
-            // { name: 'Permission' },
+           
           ]}
           action={
             <Button
@@ -271,9 +271,7 @@ export default function ZoneListView() {
             Export to PDF
           </Button>
         </div>
-        {/* <div>
-          <button onClick={exportToPDF}>Export to PDF</button>
-        </div> */}
+      
         <Card>
           <Tabs
             value={filters.status}
@@ -311,16 +309,16 @@ export default function ZoneListView() {
           <ZoneTableToolbar
             filters={filters}
             onFilters={handleFilters}
-            //
+            
             roleOptions={_roles}
           />
           {canReset && (
             <ZoneTableFiltersResult
               filters={filters}
               onFilters={handleFilters}
-              //
+              
               onResetFilters={handleResetFilters}
-              //
+              
               results={dataFiltered.length}
               sx={{ p: 2.5, pt: 0 }}
             />

@@ -56,12 +56,12 @@ export default function ProductNewEditForm({ currentProduct, category, enclosure
     InputVoltage: Yup.string(),
     PowerConsumption: Yup.string(),
     Enclosure: Yup.string(),
-    ApiCloudURL: Yup.string()
-      .matches(
-        /((https?):\/\/)?(www.)?[a-z0-9]+(\.[a-z]{2,}){1,3}(#?\/?[a-zA-Z0-9#]+)*\/?(\?[a-zA-Z0-9-_]+=[a-zA-Z0-9-%]+&?)?$/,
-        'Enter correct url!'
-      )
-      .required('Please enter website'),
+    // ApiCloudURL: Yup.string()
+    //   .matches(
+    //     /((https?):\/\/)?(www.)?[a-z0-9]+(\.[a-z]{2,}){1,3}(#?\/?[a-zA-Z0-9#]+)*\/?(\?[a-zA-Z0-9-_]+=[a-zA-Z0-9-%]+&?)?$/,
+    //     'Enter correct url!'
+    //   )
+    //   .required('Please enter website'),
 
     PrimarySensor: Yup.string(),
     SecondarySensor: Yup.string(),
@@ -92,7 +92,7 @@ export default function ProductNewEditForm({ currentProduct, category, enclosure
       InputVoltage: currentProduct?.input_voltage,
       PowerConsumption: currentProduct?.power_consumption,
       Enclosure: currentProduct?.enclosure,
-      ApiCloudURL: currentProduct?.api_cloud_url,
+      // ApiCloudURL: currentProduct?.api_cloud_url,
       PrimarySensor: currentProduct?.primary_sensor,
       SecondarySensor: currentProduct?.secondary_sensor,
       Geolocation: currentProduct?.geolocation,
@@ -150,7 +150,7 @@ export default function ProductNewEditForm({ currentProduct, category, enclosure
         input_voltage: data.InputVoltage,
         power_consumption: data.PowerConsumption,
         enclosure: data.Enclosure,
-        api_cloud_url: data.ApiCloudURL,
+        // api_cloud_url: data.ApiCloudURL,
         primary_sensor: data.PrimarySensor,
         secondary_sensor: data.SecondarySensor,
         geolocation: data.Geolocation,
@@ -233,6 +233,7 @@ export default function ProductNewEditForm({ currentProduct, category, enclosure
                   </MenuItem>
                 ))}
               </RHFSelect>
+              <RHFTextField name="PrimaryMcu" label="Primary Mcu" />
               <RHFTextField name="SecondaryMcu" label="Secondary Mcu" />
 
               <RHFSelect
@@ -292,7 +293,7 @@ export default function ProductNewEditForm({ currentProduct, category, enclosure
                 ))}
               </RHFSelect>
 
-              <RHFTextField name="ApiCloudURL" label="Api Cloud URL" />
+              {/* <RHFTextField name="ApiCloudURL" label="Api Cloud URL" /> */}
               <RHFTextField name="PrimarySensor" label="Primary Sensor" />
               <RHFTextField name="SecondarySensor" label="Secondary Sensor" />
               <RHFSelect
