@@ -43,6 +43,7 @@ const ICONS = {
   ecommerce: icon('ic_ecommerce'),
   analytics: icon('ic_analytics'),
   dashboard: icon('ic_dashboard'),
+  location: icon('ic_tour'),
 };
 
 // ----------------------------------------------------------------------
@@ -103,7 +104,7 @@ export function useNavData() {
             children: [
               { title: t('list'), path: paths.dashboard.user.list },
               { title: t('group'), path: paths.dashboard.user.group },
-              { title: t('permission'), path: paths.dashboard.user.permission},
+              { title: t('permission'), path: paths.dashboard.user.permission },
             ],
           },
 
@@ -112,20 +113,14 @@ export function useNavData() {
             title: t('Customer'),
             path: paths.dashboard.user.root,
             icon: ICONS.user,
-            children: [
-              { title: t('list'), path: paths.dashboard.customer.list },
-             
-            ],
+            children: [{ title: t('list'), path: paths.dashboard.customer.list }],
           },
           // CLIENT
           {
             title: t('Client'),
             path: paths.dashboard.user.root,
             icon: ICONS.user,
-            children: [
-              { title: t('list'), path: paths.dashboard.client.list },
-             
-            ],
+            children: [{ title: t('list'), path: paths.dashboard.client.list }],
           },
           // PRODUCT
           {
@@ -133,16 +128,35 @@ export function useNavData() {
             path: paths.dashboard.product.root,
             icon: ICONS.product,
             children: [
-              { title: t('list'), path: paths.dashboard.product.root },
+              { title: t('list'), path: paths.dashboard.product.masterlist },
               {
                 title: t('Category'),
                 path: paths.dashboard.product.category,
               },
+              // { title: t('list'), path: paths.dashboard.product.root },
+              // { title: t('list'), path: paths.dashboard.product.masterlist },
+              // {
+              //   title: t('details'),
+              //   path: paths.dashboard.product.demo.details,
+              // },
               // { title: t('create'), path: paths.dashboard.product.new },
               // { title: t('edit'), path: paths.dashboard.product.demo.edit },
             ],
           },
+          // LOCATION
+          {
+            title: t('location'),
+            path: paths.dashboard.user.root,
+            icon: ICONS.location,
+            children: [
 
+              { title: t('list'), path: paths.dashboard.location.list },
+              { title: t('premises'), path: paths.dashboard.user.list },
+              { title: t('floor'), path: paths.dashboard.user.list },
+              { title: t('zone'), path: paths.dashboard.user.list },
+
+            ],
+          },
           // ORDER
           // {
           //   title: t('order'),
