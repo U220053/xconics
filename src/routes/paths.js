@@ -143,12 +143,6 @@ export const paths = {
       list: `${ROOTS.DASHBOARD}/client/list`,
       edit: (id) => `${ROOTS.DASHBOARD}/client/${id}/edit`,
     },
-    location: {
-      root: `${ROOTS.DASHBOARD}/location`,
-      zonelist: `${ROOTS.DASHBOARD}/location/zonelist`,
-      zonenew: `${ROOTS.DASHBOARD}/location/zone/new`,
-      zoneedit: (id) => `${ROOTS.DASHBOARD}/location/zone/${id}/edit`,
-    },
     product: {
       root: `${ROOTS.DASHBOARD}/product`,
       new: `${ROOTS.DASHBOARD}/product/new`,
@@ -179,9 +173,15 @@ export const paths = {
       list: `${ROOTS.DASHBOARD}/location/list`,
       edit: (id) => `${ROOTS.DASHBOARD}/location/${id}/edit`,
 
+      zonelist: `${ROOTS.DASHBOARD}/location/zonelist`,
+      zonenew: `${ROOTS.DASHBOARD}/location/zone/new`,
+      zoneedit: (id) => `${ROOTS.DASHBOARD}/location/zone/${id}/edit`,
+
       premiseslist: `${ROOTS.DASHBOARD}/location/premiseslist`,
       premisesnew: `${ROOTS.DASHBOARD}/location/premises/new`,
       premisesedit: (id) => `${ROOTS.DASHBOARD}/location/premises/${id}/edit`,
+
+      // floor TODO
 
     },
     invoice: {
