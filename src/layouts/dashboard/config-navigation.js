@@ -129,41 +129,28 @@ export function useNavData() {
             path: paths.dashboard.product.root,
             icon: ICONS.product,
             children: [
-              { 
-                title: t('list'), path: paths.dashboard.product.masterlist 
+              {
+                title: t('list'), path: paths.dashboard.product.masterlist
               },
               {
                 title: t('Category'),
                 path: paths.dashboard.product.category,
               },
-              { 
-                title: t('production batch'), path: paths.dashboard.product.batchlist 
+              {
+                title: t('production batch'), path: paths.dashboard.product.batchlist
               },
             ],
           },
-          // LOCATION
-          {
-            title: t('location'),
-            path: paths.dashboard.user.root,
-            icon: ICONS.location,
-            children: [
-              { title: t('list'), path: paths.dashboard.customer.list },
-              { title: t('premises'), path: paths.dashboard.customer.list },
-              { title: t('floor'), path: paths.dashboard.user.list },
-              { title: t('zone'), path: paths.dashboard.location.zonelist},
-            ],
-          },
 
-          // LOCATION
+          // Location master
           {
             title: t('location'),
             path: paths.dashboard.user.root,
             icon: ICONS.location,
             children: [
               { title: t('list'), path: paths.dashboard.location.list },
-              { title: t('premises'), path: paths.dashboard.user.list },
-              { title: t('floor'), path: paths.dashboard.user.list },
-              { title: t('zone'), path: paths.dashboard.user.list },
+              { title: t('premises'), path: paths.dashboard.location.premiseslist },
+              { title: t('zone'), path: paths.dashboard.location.zonelist },
             ],
           },
         ],

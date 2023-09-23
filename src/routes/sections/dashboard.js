@@ -21,10 +21,8 @@ const ProductDetailsPage = lazy(() => import('src/pages/dashboard/product/detail
 const ProductListPage = lazy(() => import('src/pages/dashboard/product/list'));
 const ProductCreatePage = lazy(() => import('src/pages/dashboard/product/new'));
 const ProductEditPage = lazy(() => import('src/pages/dashboard/product/edit'));
-//location-premises
-const ZoneListPage = lazy(() => import('src/pages/dashboard/location/zone-list'));
-const ZoneCreatePage = lazy(() => import('src/pages/dashboard/location/zone-new'));
-const ZoneEditPage = lazy(() => import('src/pages/dashboard/location/zone-edit'));
+
+
 
 const CategoryListPage = lazy(() => import('src/pages/dashboard/product/category-list'));
 const CategoryEditPage = lazy(() => import('src/pages/dashboard/product/category-edit'));
@@ -33,23 +31,38 @@ const CategoryCreatePage = lazy(() => import('src/pages/dashboard/product/catego
 const BatchListPage = lazy(() => import('src/pages/dashboard/product/batch-list'));
 const BatchCreatePage = lazy(() => import('src/pages/dashboard/product/batch-new'));
 const BatchEditPage = lazy(() => import('src/pages/dashboard/product/batch-edit'));
+
 //PRODUCT-MASTER
 const ProductMasterListPage = lazy(() => import('src/pages/dashboard/product/master-list'));
 const ProductMasterCreatePage = lazy(() => import('src/pages/dashboard/product/master-new'));
 const ProductMasterEditPage = lazy(() => import('src/pages/dashboard/product/master-edit'));
-//LOCATION-MASTER
 
+//LOCATION-MASTER
 const LocationListPage = lazy(() => import('src/pages/dashboard/location/list'));
 const LocationCreatePage = lazy(() => import('src/pages/dashboard/location/new'));
 const LocationEditPage = lazy(() => import('src/pages/dashboard/location/edit'));
+
+//location-premises
+const PremisesListPage = lazy(() => import('src/pages/dashboard/location/premises-list'));
+const PremisesCreatePage = lazy(() => import('src/pages/dashboard/location/premises-new'));
+const PremisesEditPage = lazy(() => import('src/pages/dashboard/location/premises-edit'));
+
+//location-zone
+const ZoneListPage = lazy(() => import('src/pages/dashboard/location/zone-list'));
+const ZoneCreatePage = lazy(() => import('src/pages/dashboard/location/zone-new'));
+const ZoneEditPage = lazy(() => import('src/pages/dashboard/location/zone-edit'));
+
+
 // ORDER
 const OrderListPage = lazy(() => import('src/pages/dashboard/order/list'));
 const OrderDetailsPage = lazy(() => import('src/pages/dashboard/order/details'));
+
 // INVOICE
 const InvoiceListPage = lazy(() => import('src/pages/dashboard/invoice/list'));
 const InvoiceDetailsPage = lazy(() => import('src/pages/dashboard/invoice/details'));
 const InvoiceCreatePage = lazy(() => import('src/pages/dashboard/invoice/new'));
 const InvoiceEditPage = lazy(() => import('src/pages/dashboard/invoice/edit'));
+
 // USER
 // const UserProfilePage = lazy(() => import('src/pages/dashboard/user/profile'));
 // const UserCardsPage = lazy(() => import('src/pages/dashboard/user/cards'));
@@ -192,18 +205,18 @@ export const dashboardRoutes = [
           { path: 'list', element: <LocationListPage /> },
           { path: 'new', element: <LocationCreatePage /> },
           { path: ':id/edit', element: <LocationEditPage /> },
-        ],
-      },
-      {
-        path: 'location',
-        children: [
-          { element: <ZoneListPage />, index: true },
+
           { path: 'zonelist', element: <ZoneListPage /> },
           { path: 'zone/new', element: <ZoneCreatePage /> },
           { path: 'zone/:id/edit', element: <ZoneEditPage /> },
+
+          { path: 'premiseslist', element: <PremisesListPage /> },
+          { path: 'premises/new', element: <PremisesCreatePage /> },
+          { path: 'premises/:id/edit', element: <PremisesEditPage /> },
+
+          // Floor TODO
         ],
       },
-
       {
         path: 'order',
         children: [
