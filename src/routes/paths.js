@@ -152,6 +152,11 @@ export const paths = {
       category:`${ROOTS.DASHBOARD}/product/categorylist`,
       categorynew:`${ROOTS.DASHBOARD}/product/category/new`,
       categoryedit: (id)=>`${ROOTS.DASHBOARD}/product/category/${id}/edit`,
+
+      batchlist:`${ROOTS.DASHBOARD}/product/batchlist`,
+      batchnew:`${ROOTS.DASHBOARD}/product/batch/new`,
+      batchedit: (id)=>`${ROOTS.DASHBOARD}/product/batch/${id}/edit`,
+      
       demo: {
         details: `${ROOTS.DASHBOARD}/product/${MOCK_ID}`,
         edit: `${ROOTS.DASHBOARD}/product/${MOCK_ID}/edit`,
