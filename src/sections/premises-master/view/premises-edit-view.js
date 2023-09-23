@@ -1,43 +1,38 @@
 import PropTypes from 'prop-types';
 // @mui
 import Container from '@mui/material/Container';
-// routes
 import { useState, useEffect } from 'react';
 import { paths } from 'src/routes/paths';
-// components
 import { useSettingsContext } from 'src/components/settings';
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
-//
 import axios from 'src/utils/axios';
-import UserNewEditForm from '../user-new-edit-form';
-// ----------------------------------------------------------------------
+import PremisesNewEditForm from '../premises-new-edit-form';
 
-// ...
-export default function UserEditView({ id }) {
+export default function PremisesEditView({ id }) {
   const settings = useSettingsContext();
- const [userGroup, setUserGroup] = useState([]); 
-  const [dataUser, setDataUser] = useState(null);
+  const [userLoc, setUserLoc] = useState([]);
+  const [dataPre, setDataPre] = useState(null);
   const [isLoading, setIsLoading] = useState(true); // Add a loading state
 
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await axios.get(`api/user/get/${id}`);
-        setDataUser(response.data.data);
-        setIsLoading(false); // Set loading to false when data is fetched
+        const response = await axios.get(`api/location/premises/get/${id}`);
+        setDataPre(response.data.data);
 
-        const groupresponse = await axios.get('api/user/usergroups');
-        const newdata = JSON.parse(JSON.stringify(groupresponse.data.data));
-        const newGroupData = newdata.map((item) => {
-          return { id: item._id, group_name: item.user_group_name };
-        });
-        setUserGroup(newGroupData);
+        setIsLoading(false); // Set loading to false when data is fetched
+        const locresponse = await axios.get('api/location');
+        const newdata = JSON.parse(JSON.stringify(locresponse.data.data));
+        // eslint-disable-next-line arrow-body-style
+        const newlocData = newdata.map((item) => {
+          return { id: item._id, location_name: item.location_name }
+        })
+        setUserLoc(newlocData);
       } catch (error) {
         console.error('Error fetching API data:', error);
         setIsLoading(false); // Set loading to false on error
       }
     }
-
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
@@ -46,7 +41,6 @@ export default function UserEditView({ id }) {
     return <div>Loading...</div>; // Display a loading indicator
   }
 
-  // Render the component when data is available
   return (
     <Container maxWidth={settings.themeStretch ? false : 'lg'}>
       <CustomBreadcrumbs
@@ -57,21 +51,27 @@ export default function UserEditView({ id }) {
             href: paths.dashboard.root,
           },
           {
-            name: 'List',
-            href: paths.dashboard.user.root,
+            name: 'Premises',
+            href: paths.dashboard.location.premiseslist,
           },
-          { name: 'List Edit' },
+          { name: 'Edit' },
         ]}
         sx={{
           mb: { xs: 3, md: 5 },
         }}
       />
-
-      <UserNewEditForm currentUser={dataUser} userGroup={userGroup} />
+    <PremisesNewEditForm currentPremises={dataPre} userLoc={userLoc} />
     </Container>
   );
 }
 
-UserEditView.propTypes = {
-  id: PropTypes.string,
+PremisesEditView.propTypes = {
+  id: PropTypes.string.isRequired, // Add this line to validate the 'id' prop
 };
+
+
+
+
+
+
+

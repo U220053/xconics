@@ -82,12 +82,12 @@ const [deletePermission,setdeletePermission] = useState(true);
   const confirm = useBoolean();
   const fetchData = async () => {
     try {
-      const response = await axios.post('/api/user/permissions', {
-        screen_name: 'Sample Screen',
-      });
-      console.log(response.data);
-      setaddPermission(response.data.add_permission);
-      setdeletePermission(response.data.delete_permission);
+      // const response = await axios.post('/api/user/permissions', {
+      //   screen_name: 'Sample Screen',
+      // });
+      // console.log(response.data);
+      // setaddPermission(response.data.add_permission);
+      // setdeletePermission(response.data.delete_permission);
     } catch (error) {
      
       console.error('Error fetching permissions:', error);

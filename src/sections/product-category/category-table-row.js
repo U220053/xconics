@@ -17,13 +17,13 @@ import Iconify from 'src/components/iconify'
 import CustomPopover, { usePopover } from 'src/components/custom-popover'
 import { ConfirmDialog } from 'src/components/custom-dialog'
 //
-import UserQuickEditForm from '../temp/user-quick-edit-form'
+// import UserQuickEditForm from '../temp/user-quick-edit-form'
 
 // ----------------------------------------------------------------------
 
 // eslint-disable-next-line react/prop-types
-export default function UserTableRow({ row, selected, onEditRow, onSelectRow, onDeleteRow }) {
-  const { user_email, user_mobile, user_group_ref, status } = row
+export default function CategoryTableRow({ row, selected, onEditRow, onSelectRow, onDeleteRow }) {
+  const { category_name, category_description, status } = row
 
   const confirm = useBoolean()
 
@@ -68,9 +68,10 @@ export default function UserTableRow({ row, selected, onEditRow, onSelectRow, on
           />
           </TableCell> */}
 
-        <TableCell sx={{ whiteSpace: 'nowrap' }}>{user_email}</TableCell>
-        <TableCell sx={{ whiteSpace: 'nowrap' }}>{user_mobile}</TableCell>
-        <TableCell sx={{ whiteSpace: 'nowrap' }}>{user_group_ref.user_group_name}</TableCell>
+        <TableCell sx={{ whiteSpace: 'nowrap' }}>{category_name}</TableCell>
+        <TableCell sx={{ whiteSpace: 'nowrap' }}>{category_description}</TableCell>
+        <TableCell sx={{ whiteSpace: 'nowrap' }}></TableCell>
+        {/* <TableCell sx={{ whiteSpace: 'nowrap' }}>{user_group_ref.user_group_name}</TableCell> */}
 
         <TableCell>
           <Label
@@ -81,7 +82,7 @@ export default function UserTableRow({ row, selected, onEditRow, onSelectRow, on
               'default'
             }
           >
-            {status === 1 ? 'Active' : 'InActive'}
+            {status === 1 ? 'Active' : 'Inactive'}
           </Label>
         </TableCell>
 
@@ -120,7 +121,7 @@ export default function UserTableRow({ row, selected, onEditRow, onSelectRow, on
           Edit
         </MenuItem>
 
-        <MenuItem
+        {/* <MenuItem
           onClick={() => {
             onEditRow()
             popover.onClose()
@@ -129,7 +130,7 @@ export default function UserTableRow({ row, selected, onEditRow, onSelectRow, on
         >
           <Iconify icon="solar:eye-bold" />
           AuditTrailView
-        </MenuItem>
+        </MenuItem> */}
       </CustomPopover>
 
       <ConfirmDialog
@@ -147,7 +148,7 @@ export default function UserTableRow({ row, selected, onEditRow, onSelectRow, on
   )
 }
 
-UserTableRow.propTypes = {
+CategoryTableRow.propTypes = {
   onDeleteRow: PropTypes.func,
   onEditRow: PropTypes.func,
   onSelectRow: PropTypes.func,

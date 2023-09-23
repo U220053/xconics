@@ -1,33 +1,37 @@
-import PropTypes from 'prop-types'
-import { useState, useCallback, useEffect } from 'react'
+
+import PropTypes from 'prop-types';
+import { useState, useCallback, useEffect } from 'react';
 
 // @mui
-import Button from '@mui/material/Button'
-import MenuItem from '@mui/material/MenuItem'
-import TableRow from '@mui/material/TableRow'
-import Checkbox from '@mui/material/Checkbox'
-import TableCell from '@mui/material/TableCell'
-import IconButton from '@mui/material/IconButton'
-import ListItemText from '@mui/material/ListItemText'
+import Button from '@mui/material/Button';
+// import Avatar from '@mui/material/Avatar';
+// import Tooltip from '@mui/material/Tooltip';
+import MenuItem from '@mui/material/MenuItem';
+import TableRow from '@mui/material/TableRow';
+import Checkbox from '@mui/material/Checkbox';
+import TableCell from '@mui/material/TableCell';
+import IconButton from '@mui/material/IconButton';
+// import ListItemText from '@mui/material/ListItemText';
 // hooks
-import { useBoolean } from 'src/hooks/use-boolean'
+import { useBoolean } from 'src/hooks/use-boolean';
 // components
-import Label from 'src/components/label'
-import Iconify from 'src/components/iconify'
-import CustomPopover, { usePopover } from 'src/components/custom-popover'
-import { ConfirmDialog } from 'src/components/custom-dialog'
+import Label from 'src/components/label';
+import Iconify from 'src/components/iconify';
+import CustomPopover, { usePopover } from 'src/components/custom-popover';
+import { ConfirmDialog } from 'src/components/custom-dialog';
 //
-import UserQuickEditForm from '../temp/user-quick-edit-form'
+// import UserQuickEditForm from './user-quick-edit-form';
 
 // ----------------------------------------------------------------------
 
 // eslint-disable-next-line react/prop-types
-export default function UserTableRow({ row, selected, onEditRow, onSelectRow, onDeleteRow }) {
-  const { user_email, user_mobile, user_group_ref, status } = row
+export default function PremisesTableRow({ row, selected, onEditRow, onSelectRow, onDeleteRow }) {
+  console.log(row);
+  const { premises_name, lat, lang, svg_tag, premises_type, activation_date, location, status } = row
 
   const confirm = useBoolean()
 
-  const quickEdit = useBoolean()
+  // const quickEdit = useBoolean()
 
   const popover = usePopover()
   // useEffect(() => {
@@ -67,11 +71,13 @@ export default function UserTableRow({ row, selected, onEditRow, onSelectRow, on
             }}
           />
           </TableCell> */}
-
-        <TableCell sx={{ whiteSpace: 'nowrap' }}>{user_email}</TableCell>
-        <TableCell sx={{ whiteSpace: 'nowrap' }}>{user_mobile}</TableCell>
-        <TableCell sx={{ whiteSpace: 'nowrap' }}>{user_group_ref.user_group_name}</TableCell>
-
+        <TableCell sx={{ whiteSpace: 'nowrap' }}>{premises_name}</TableCell>
+        <TableCell sx={{ whiteSpace: 'nowrap' }}>{premises_type}</TableCell>
+        <TableCell sx={{ whiteSpace: 'nowrap' }}>{lat}</TableCell>
+        <TableCell sx={{ whiteSpace: 'nowrap' }}>{lang}</TableCell>
+        <TableCell sx={{ whiteSpace: 'nowrap' }}>{svg_tag}</TableCell>
+        <TableCell sx={{ whiteSpace: 'nowrap' }}>{activation_date}</TableCell>
+        <TableCell sx={{ whiteSpace: 'nowrap' }}>{location.location_name}</TableCell>
         <TableCell>
           <Label
             variant="soft"
@@ -81,7 +87,7 @@ export default function UserTableRow({ row, selected, onEditRow, onSelectRow, on
               'default'
             }
           >
-            {status === 1 ? 'Active' : 'InActive'}
+            {status === 1 ? 'Active' : 'Inactive'}
           </Label>
         </TableCell>
 
@@ -90,9 +96,8 @@ export default function UserTableRow({ row, selected, onEditRow, onSelectRow, on
             <Iconify icon="eva:more-vertical-fill" />
           </IconButton>
         </TableCell>
-        
-      </TableRow>
 
+      </TableRow>
       <CustomPopover
         open={popover.open}
         onClose={popover.onClose}
@@ -119,17 +124,6 @@ export default function UserTableRow({ row, selected, onEditRow, onSelectRow, on
           <Iconify icon="solar:pen-bold" />
           Edit
         </MenuItem>
-
-        <MenuItem
-          onClick={() => {
-            onEditRow()
-            popover.onClose()
-          }}
-
-        >
-          <Iconify icon="solar:eye-bold" />
-          AuditTrailView
-        </MenuItem>
       </CustomPopover>
 
       <ConfirmDialog
@@ -147,7 +141,7 @@ export default function UserTableRow({ row, selected, onEditRow, onSelectRow, on
   )
 }
 
-UserTableRow.propTypes = {
+PremisesTableRow.propTypes = {
   onDeleteRow: PropTypes.func,
   onEditRow: PropTypes.func,
   onSelectRow: PropTypes.func,

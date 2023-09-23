@@ -30,26 +30,22 @@ import axios from 'src/utils/axios'
 // ----------------------------------------------------------------------
 
 // eslint-disable-next-line react/prop-types
-export default function UserNewEditForm({ currentUser, userGroup }) {
+export default function CategoryNewEditForm({ currentUser}) {
 
   const router = useRouter()
   const [formData, setFormData] = useState({});
   const { enqueueSnackbar } = useSnackbar()
 
   const NewUserSchema = Yup.object().shape({
-    email: Yup.string().required('User Email is required'),
-    mobile: Yup.string().required('User Mobile is required'),
-    password: Yup.string().required('Password is required'),
+    name: Yup.string().required('Category Name is required'),
+    description: Yup.string().required('Category Description is required'),
     status: Yup.number().required('Status is required'),
-    groupref: Yup.string(),
   })
 
   const defaultValues = useMemo(
     () => ({
-      email: currentUser?.user_email || '',
-      mobile: currentUser?.user_mobile || '',
-      password: currentUser?.password || '',
-      groupref: currentUser?.user_group_ref || '',
+      name: currentUser?.category_name || '',
+      description: currentUser?.category_description || '',
       status: currentUser?.status || 1,
     }),
     [currentUser]
@@ -70,13 +66,10 @@ export default function UserNewEditForm({ currentUser, userGroup }) {
   } = methods
 
   const [user, setUser] = useState(false)
-  const [dropdownData, setdropdownData] = useState([]);
-
-
   const values = watch()
 
   useEffect(() => {
-    if (currentUser?.user_email) setUser(true);
+    if (currentUser?.category_name) setUser(true);
     else setUser(false);
 
     console.log(currentUser);
@@ -92,25 +85,23 @@ export default function UserNewEditForm({ currentUser, userGroup }) {
   const onSubmit = handleSubmit(async (data) => {
     try {
       const newData = {
-        user_email: data.email,
-        user_mobile: data.mobile,
-        password: data.password,
-        user_group_ref: data.groupref,
+        category_name: data.name,
+        category_description: data.description,
         status: data.status
       }
       console.log(data);
       let response;
       if (!user) {
-        response = await axios.post('/api/user/create', newData);
+        response = await axios.post('/api/product/category/create', newData);
       } else {
-        response = await axios.post(`/api/user/update/${currentUser._id}`, newData);
+        response = await axios.post(`/api/product/category/update/${currentUser._id}`, newData);
       }
       await new Promise((resolve) => setTimeout(resolve, 500));
       reset();
       enqueueSnackbar(currentUser ? 'Update success!' : 'Create success!')
       await new Promise((resolve) => setTimeout(resolve, 500));
       console.log(response);
-      router.push(paths.dashboard.user.list);
+      router.push(paths.dashboard.product.category);
     } catch (error) {
   console.error(error);
   }
@@ -144,10 +135,9 @@ export default function UserNewEditForm({ currentUser, userGroup }) {
               sm: 'repeat(2, 1fr)',
             }}
           >
-            <RHFTextField name="email" label="User Email" type="email" />
-            <RHFTextField name="mobile" label="User Mobile" type="number" />
-            <RHFTextField name="password" label="Password" />
-
+            <RHFTextField name="name" label="Category Name"  />
+            <RHFTextField name="description" label="Category Description" />
+{/* 
             <RHFSelect
               // helperText= "Select Group"
               fullWidth
@@ -160,7 +150,7 @@ export default function UserNewEditForm({ currentUser, userGroup }) {
               {
                 userGroup.map((option) => <MenuItem key={option.id} value={option.id}>{option.group_name}</MenuItem>)
               }
-            </RHFSelect>
+            </RHFSelect> */}
 
 
             <RHFSelect
@@ -181,7 +171,7 @@ export default function UserNewEditForm({ currentUser, userGroup }) {
 
           <Stack alignItems="flex-end" sx={{ mt: 3 }}>
             <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
-              {!currentUser ? 'Create New User' : 'Save Changes'}
+              {!currentUser ? 'Create New Category' : 'Save Changes'}
             </LoadingButton>
           </Stack>
         </Card>
@@ -191,11 +181,6 @@ export default function UserNewEditForm({ currentUser, userGroup }) {
   )
 }
 
-UserNewEditForm.propTypes = {
-  currentUser: PropTypes.object,
-  userGroup: PropTypes.object
+CategoryNewEditForm.propTypes = {
+  currentUser: PropTypes.object
 }
-
-
-
-
