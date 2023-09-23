@@ -179,27 +179,11 @@ export const dashboardRoutes = [
         path: 'location',
         children: [
           { element: <LocationListPage />, index: true },
-          // { path: 'list', element: <ProductListPage /> },
-          // { path: ':id', element: <ProductDetailsPage /> },
-          // { path: 'new', element: <ProductCreatePage /> },
-          // { path: ':id/edit', element: <ProductEditPage /> },
-
           { path: 'list', element: <LocationListPage /> },
-
           { path: 'new', element: <LocationCreatePage /> },
           { path: ':id/edit', element: <LocationEditPage /> },
         ],
       },
-      // {
-      //   path: 'productmaster',
-      //   children: [
-      //     { element: <ProductMasterListPage />, index: true },
-      //     { path: 'list', element: <ProductMasterListPage /> },
-
-      //     { path: 'new', element: <ProductMasterCreatePage /> },
-      //     { path: ':id/edit', element: <ProductMasterEditPage /> },
-      //   ],
-      // },
       {
         path: 'order',
         children: [
