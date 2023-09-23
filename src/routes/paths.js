@@ -149,6 +149,10 @@ export const paths = {
       details: (id) => `${ROOTS.DASHBOARD}/product/${id}`,
       edit: (id) => `${ROOTS.DASHBOARD}/product/${id}/edit`,
 
+      devicelist:`${ROOTS.DASHBOARD}/product/devicelist`,
+      devicenew:`${ROOTS.DASHBOARD}/product/device/new`,
+      deviceedit: (id)=>`${ROOTS.DASHBOARD}/product/device/${id}/edit`,
+      
       category: `${ROOTS.DASHBOARD}/product/categorylist`,
       categorynew: `${ROOTS.DASHBOARD}/product/category/new`,
       categoryedit: (id) => `${ROOTS.DASHBOARD}/product/category/${id}/edit`,

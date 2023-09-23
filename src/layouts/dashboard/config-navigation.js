@@ -129,16 +129,10 @@ export function useNavData() {
             path: paths.dashboard.product.root,
             icon: ICONS.product,
             children: [
-              {
-                title: t('list'), path: paths.dashboard.product.masterlist
-              },
-              {
-                title: t('Category'),
-                path: paths.dashboard.product.category,
-              },
-              {
-                title: t('production batch'), path: paths.dashboard.product.batchlist
-              },
+              {title: t('list'), path: paths.dashboard.product.masterlist},
+              {title: t('Category'),path: paths.dashboard.product.category,},
+              {title: t('production batch'), path: paths.dashboard.product.batchlist},
+              { title: t('Device Master'), path: paths.dashboard.product.devicelist },
             ],
           },
 
